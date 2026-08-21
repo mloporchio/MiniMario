@@ -8,7 +8,7 @@
 #ifndef TEXTURES_H
 #define TEXTURES_H
 
-#include "tilemap.h"
+#include "Tilemap.hpp"
 
 #define MENU_FOREGROUND_TEXTURE "images/FOREGROUND.png"
 #define BACKGROUND_TEXTURE "images/BACKGROUND.png"

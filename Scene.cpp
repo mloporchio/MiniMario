@@ -24,7 +24,6 @@
 #include "OneUpMushroom.hpp"
 #include "CoinPowerup.hpp"
 
-
 /**
  *	@brief Metodo costruttore della classe scena
  *
@@ -35,6 +34,7 @@
  *
  */
 Scene::Scene(FILE *level) :
+	tilemap(level),
 	fg(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT})),
 	bg(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT})),
 	bgImage(BACKGROUND_TEXTURE),
@@ -45,14 +45,6 @@ Scene::Scene(FILE *level) :
 	winLabel(font, WIN_MSG, WIN_FONT_SIZE),
 	infoLabel(font, INFO_MSG, INFO_FONT_SIZE)
 {
-	if (!level) throw std::invalid_argument(E_INVALID_ARG);
-	// Carico lo sfondo.
-	//this -> bgImage.loadFromFile(BACKGROUND_TEXTURE);
-	//this -> bgSprite.setTexture(this -> bgImage);
-	// Carico la tilemap dal file di livello.
-	this -> level = level;
-	this -> tilemap = loadTilemap(this -> level);
-	if (!(this -> tilemap)) throw std::runtime_error(E_TILEMAP_LOAD);
 	// Carico le texture.
 	this -> loadTextures();
 	// Analizzo la tilemap per produrre le sprite e gli ostacoli.
@@ -91,7 +83,7 @@ Scene::~Scene() {
 		delete powerups[i];
 	}
 	// Cancello la tilemap.
-	destroyTilemap(this -> tilemap);
+	// destroyTilemap(this -> tilemap);
 	// Cancello i suoni.
 	for (int i = 0; i < SCENE_SOUND_N; i++) {
 		delete soundBuffers[i];
@@ -186,11 +178,11 @@ void Scene::loadSounds() {
  */
 void Scene::processTilemap() {
 	block_t current;
-	unsigned int rows = this -> tilemap -> rows,
-	cols = (this -> tilemap -> cols);
+	unsigned int rows = (this -> tilemap).getRows();
+	unsigned int cols = (this -> tilemap).getCols();
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-			current = this -> tilemap -> map[i][j];
+			current = (this -> tilemap).getElement(i, j);
 			// Controllo di che tipo di blocco si tratta.
 			switch (current) {
 				case QUESTION: {
@@ -681,7 +673,7 @@ void Scene::playSound(scene_sound_t id) {
  *	@return Numero di pixel di larghezza
  */
 int Scene::getSceneWidth() {
-	int cols = this -> tilemap -> cols;
+	int cols = (this -> tilemap).getCols();
 	return cols * SIZE;
 }
 
@@ -692,6 +684,6 @@ int Scene::getSceneWidth() {
  * 	@return Numero di pixel in altezza
  */
 int Scene::getSceneHeight() {
-	int rows = this -> tilemap -> rows;
+	int rows = (this -> tilemap).getRows();
 	return rows * SIZE;
 }

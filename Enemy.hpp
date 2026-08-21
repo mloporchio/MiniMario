@@ -11,7 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Block.hpp"
-#include "tilemap.h"
+#include "Tilemap.hpp"
 
 class Enemy {
 	protected:

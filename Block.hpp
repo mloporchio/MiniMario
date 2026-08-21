@@ -15,7 +15,7 @@
 #define BLOCK_H
 
 #include <SFML/Graphics.hpp>
-#include "tilemap.h"
+#include "Tilemap.hpp"
 
 class Block {
 	protected:

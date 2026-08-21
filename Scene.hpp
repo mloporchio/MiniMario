@@ -18,7 +18,7 @@
 #include "Enemy.hpp"
 #include "Powerup.hpp"
 #include "Layer.hpp"
-#include "tilemap.h"
+#include "Tilemap.hpp"
 
 /** Testo iniziale dell'etichetta del punteggio. */
 #define SCORE_INIT_MSG "Score: 0"
@@ -52,7 +52,6 @@
 
 class Scene {
 	private:
-		FILE *level;
 		Layer fg;
 		Layer bg;
 		sf::Texture bgImage;
@@ -77,7 +76,7 @@ class Scene {
 		sf::Music theme;
 		std::vector<sf::SoundBuffer *> soundBuffers;
 		std::vector<sf::Sound *> sounds;
-		tilemap_t *tilemap;
+		Tilemap tilemap; //tilemap_t *tilemap;
 		sf::Clock timer;
 		Mario hero;
 		bool win;

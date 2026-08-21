@@ -22,9 +22,12 @@
  *	@param id identificativo del tipo di powerup da generare
  *	@param textures puntatore al vettore delle texture da utilizzare
  */
-QuestionBlock::QuestionBlock(int x, int y, powerup_t id,
-	std::vector<sf::Texture> *textures)
-	: Block(QUESTION, x, y, &((*textures)[0])) {
+QuestionBlock::QuestionBlock(
+	int x, 
+	int y, 
+	powerup_t id, 
+	std::vector<sf::Texture> *textures
+) : Block(QUESTION, x, y, &((*textures)[0])) {
 	// Automaticamente vengono settati:
 	// this -> active = true;
 	// this -> collidable = true;
@@ -75,8 +78,7 @@ Powerup *QuestionBlock::getPowerup() {
 				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
 				t -> loadFromFile(COIN_POWERUP_TEXTURE);
-				CoinPowerup *c = new CoinPowerup((int) pos.x,
-				((int) pos.y) - SIZE, t);
+				CoinPowerup *c = new CoinPowerup((int) pos.x, ((int) pos.y) - SIZE, t);
 				p = (Powerup *) c;
 			}; break;
 			default: break;

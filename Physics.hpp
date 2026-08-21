@@ -8,7 +8,7 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-#include "tilemap.h"
+#include "Tilemap.hpp"
 
 /** Tipo enumerato per indicare le quattro direzioni. */
 typedef enum {
