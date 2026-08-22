@@ -134,7 +134,7 @@ void Mario::loadTextures() {
 void Mario::loadSounds() {
 	for (int i = 0; i < MARIO_SOUND_N; i++) {
 		sf::SoundBuffer *sb = new sf::SoundBuffer();
-		sb -> loadFromFile(MarioSoundPath((mario_sound_t) i));
+		sb -> loadFromFile(getMarioSoundPath((mario_sound_t) i));
 		this -> soundBuffers.push_back(sb);
 		// 
 		// sf::Sound *snd = new sf::Sound();
@@ -456,8 +456,8 @@ void Mario::handleXCollisions(float *px, float *py, float *vx,
 	std::vector<Powerup *> *powerups) {
 	// Controllo se il personaggio ha posizione negativa.
 	if (checkBorderCollision(px, vx)) return;
-	sf::IntRect MarioR({(int) *px, (int) *py}, size), IntR;
-	//sf::IntRect MarioR((int) *px, (int) *py, size.x, size.y), IntR;
+	sf::IntRect MarioR({(int) *px, (int) *py}, size);
+	sf::IntRect IntR;
 	int collidedBlock = -1, collidedEnemy = -1;
 	// Controllo se c'è una collisione con qualche blocco.
 	collidedBlock = checkBlockCollisions(blocks, MarioR, &IntR);
@@ -473,13 +473,10 @@ void Mario::handleXCollisions(float *px, float *py, float *vx,
 		}
 		// Altrimenti si procede normalmente.
 		if (MarioR.position.x < BlockR.position.x) {
-		//if (MarioR.left < BlockR.left) {
-			//*px = *px - IntR.width;
 			*px = *px - IntR.size.x;
 			*vx = 0;
 		}
 		else {
-			//*px = *px + IntR.width;
 			*px = *px + IntR.size.x;
 			*vx = 0;
 		}
@@ -685,7 +682,6 @@ void Mario::setSuper(bool v) {
 		this -> textureID = switchMarioTexture(this -> textureID);
 		sf::Vector2f p = this -> getPosition();
 		this -> sprite.setTextureRect(sf::IntRect({0, 0}, {size.x, size.y}));
-		//this -> sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 		this -> sprite.setTexture(textures[(int) textureID]);
 		this -> playSound(POWERUP_TAKEN);
 	}
@@ -699,7 +695,6 @@ void Mario::setSuper(bool v) {
 		// Ripristino la texture small.
 		this -> textureID = switchMarioTexture(this -> textureID);
 		this -> sprite.setTextureRect(sf::IntRect({0, 0}, {size.x, size.y}));
-		//this -> sprite.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 		this -> sprite.setTexture(textures[(int) textureID]);
 	}
 	return;

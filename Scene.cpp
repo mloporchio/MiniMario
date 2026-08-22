@@ -100,7 +100,7 @@ void Scene::loadTextures() {
 	// Carico le texture statiche.
 	for (int i = 0; i < STATIC_TEXTURE_N; i++) {
 		sf::Texture t;
-		t.loadFromFile(StaticTexturePath((static_texture_t) i));
+		t.loadFromFile(getStaticTexturePath((static_texture_t) i));
 		this -> staticTextures.push_back(t);
 	}
 	sf::Image questionSheet, coinSheet, goombaSheet, piranhaPlantSheet,
@@ -221,7 +221,7 @@ void Scene::processTilemap() {
 				}; break;
 				default: {
 					// Altimenti si tratta di un blocco statico.
-					int tid = StaticTextureID(current);
+					int tid = getStaticTextureID(current);
 					if (tid != -1) {
 						Block *b = new Block(current, j * SIZE,
 						i * SIZE, &(this -> staticTextures[tid]));

@@ -16,7 +16,7 @@
 Game::Game() : window(sf::VideoMode({W_WIDTH, W_HEIGHT}), W_TITLE) {
 	// Inizializzo la finestra.
 	this -> window.setVerticalSyncEnabled(true);
-	//this -> window.setFramerateLimit(W_FRAMERATE_LIMIT);
+	this -> window.setFramerateLimit(W_FRAMERATE_LIMIT);
 	this -> level = NULL;
 	this -> scene = NULL;
 	this -> gameMode = MENU;

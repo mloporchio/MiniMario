@@ -100,7 +100,8 @@ sf::Vector2f Enemy::getSpeed() {
  *	@param y componente del vettore lungo l'asse y
  */
 void Enemy::setSpeed(float x, float y) {
-	this -> speed.x = x; this -> speed.y = y;
+	this -> speed.x = x; 
+	this -> speed.y = y;
 }
 
 /**

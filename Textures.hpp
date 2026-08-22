@@ -59,7 +59,7 @@ typedef enum {
  *
  *	@return Stringa contenente il percorso della texture
  */
-static inline const char *StaticTexturePath(static_texture_t id) {
+static inline const char *getStaticTexturePath(static_texture_t id) {
 	switch (id) {
 		case STATIC_BRICKS: return BRICKS_TEXTURE;
 		case STATIC_TERRAIN: return TERRAIN_TEXTURE;
@@ -85,7 +85,7 @@ static inline const char *StaticTexturePath(static_texture_t id) {
  *	@return L'identificativo della texture statica in caso di successo,
  *	-1 in caso di fallimento
  */
-static inline int StaticTextureID(block_t element) {
+static inline int getStaticTextureID(block_t element) {
 	switch (element) {
 		case BRICKS: return (int) STATIC_BRICKS;
 		case TERRAIN: return (int) STATIC_TERRAIN;

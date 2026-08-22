@@ -76,7 +76,7 @@ class Scene {
 		sf::Music theme;
 		std::vector<sf::SoundBuffer *> soundBuffers;
 		std::vector<sf::Sound *> sounds;
-		Tilemap tilemap; //tilemap_t *tilemap;
+		Tilemap tilemap;
 		sf::Clock timer;
 		Mario hero;
 		bool win;

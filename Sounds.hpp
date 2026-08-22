@@ -52,14 +52,14 @@ static inline const char *SceneSoundPath(scene_sound_t id) {
 
 /** Tipo enumerato per indicizzare i suoni di Mario. */
 typedef enum {
-	JUMP = 0,
-	PICK_COIN = 1,
-	JUMP_BIG = 2,
-	STOMP = 3,
-	POWERUP_TRIGGERED = 4,
-	POWERUP_TAKEN = 5,
-	ONEUP_TAKEN = 6,
-	DIE = 7
+	JUMP 				= 0,
+	PICK_COIN 			= 1,
+	JUMP_BIG 			= 2,
+	STOMP 				= 3,
+	POWERUP_TRIGGERED 	= 4,
+	POWERUP_TAKEN 		= 5,
+	ONEUP_TAKEN 		= 6,
+	DIE 				= 7
 } mario_sound_t;
 
 /**
@@ -69,7 +69,7 @@ typedef enum {
  *
  *	@return Una stringa contenente il path del suono
  */
-static inline const char *MarioSoundPath(mario_sound_t id) {
+static inline const char *getMarioSoundPath(mario_sound_t id) {
 	switch (id) {
 		case JUMP: return MARIO_SOUND_JUMP;
 		case PICK_COIN: return MARIO_SOUND_COIN;
