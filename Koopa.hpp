@@ -31,7 +31,7 @@ class Koopa : public Enemy {
 		bool hit;
 		void checkBounce();
 	public:
-		Koopa(int x, int y, block_t k, std::vector<sf::Texture> *textures);
+		Koopa(float x, float y, block_t k, std::vector<sf::Texture> *textures);
 		bool isOnGround();
 		bool isHit();
 		void setHit();

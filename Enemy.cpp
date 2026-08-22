@@ -19,15 +19,14 @@
  *	@param h altezza dell'elemento
  *	@param t puntatore alla texture da utilizzare
  */
-Enemy::Enemy(block_t type, int x, int y, int w, int h, sf::Texture *t) : sprite(*t) {
+Enemy::Enemy(block_t type, float x, float y, int w, int h, sf::Texture &t) : sprite(t) {
 	this -> type = type;
 	this -> onGround = false;
 	this -> alive = true;
 	this -> collidable = true;
 	this -> speed.x = 0;
 	this -> speed.y = 0;
-	//this -> sprite.setTexture(*t);
-	this -> sprite.setPosition({static_cast<float>(x), static_cast<float>(y)});
+	this -> sprite.setPosition({x, y});
 	this -> size.x = w;
 	this -> size.y = h;
 }

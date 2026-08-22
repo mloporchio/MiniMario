@@ -24,7 +24,7 @@ class Block {
 		bool collidable;
 		sf::Sprite sprite;
 	public:
-		Block(block_t type, int x, int y, sf::Texture *t);
+		Block(block_t type, float x, float y, sf::Texture *t);
 		~Block();
 		block_t getType();
 		bool isActive();

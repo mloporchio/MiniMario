@@ -19,7 +19,7 @@ class Coin : public Block {
 		coin_texture_t textureID;
 		int elapsed;
 	public:
-		Coin(int x, int y, std::vector<sf::Texture> *textures);
+		Coin(float x, float y, std::vector<sf::Texture> *textures);
 		void hit();
 		void update(sf::Time dt);
 };

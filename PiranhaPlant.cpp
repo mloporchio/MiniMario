@@ -16,7 +16,7 @@
  *	@param textures puntatore al vettore delle texture da utilizzare
  */
 PiranhaPlant::PiranhaPlant(int x, int y, std::vector<sf::Texture> *textures)
-	: Enemy(PIRANHA_PLANT, x, y, SIZE, PIRANHAPLANT_HEIGHT, &((*textures)[0]))
+	: Enemy(PIRANHA_PLANT, x, y, SIZE, PIRANHAPLANT_HEIGHT, ((*textures)[0]))
 {
 	this -> textures = textures;
 	this -> textureID = PLANT_0;

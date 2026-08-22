@@ -23,7 +23,7 @@ class Goomba : public Enemy {
 		goomba_texture_t textureID;
 		int elapsed;
 	public:
-		Goomba(int x, int y, std::vector<sf::Texture> *textures);
+		Goomba(float x, float y, std::vector<sf::Texture> *textures);
 		void update(sf::Time dt, std::vector<Block *> blocks,
 			std::vector<Enemy *> enemies, int index);
 		void handleXCollisions(float *px, float *py, float *vx,

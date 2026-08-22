@@ -16,8 +16,8 @@
  *	@param k identificativo del tipo di Koopa (verde o rosso)
  *	@param textures puntatore al vettore contenente le texture
  */
-Koopa::Koopa(int x, int y, block_t k, std::vector<sf::Texture> *textures)
-	: Enemy(k, x, y, SIZE, KOOPA_HEIGHT, &((*textures)[0])) {
+Koopa::Koopa(float x, float y, block_t k, std::vector<sf::Texture> *textures)
+	: Enemy(k, x, y, SIZE, KOOPA_HEIGHT, ((*textures)[0])) {
 	this -> textures = textures;
 	this -> textureID = ((k == GREEN_KOOPA) ? GREEN_KOOPA_0 : RED_KOOPA_0);
 	this -> hit = false;
