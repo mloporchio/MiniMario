@@ -29,7 +29,7 @@ Menu::Menu() :
 	selectionTitle(labelFont, SELECTION_TITLE, FONT_SIZE)
 {
 	this -> menuMode = MAIN;
-	this -> levelName = NULL;
+	this -> levelName = std::nullopt;
 	this -> enterKeyPressed = false;
 	// this -> labelFont.loadFromFile(FONT_PATH);
 	// Creazione delle entry per il menu principale.
@@ -256,12 +256,12 @@ void Menu::drawMenu(sf::RenderWindow *window) {
  *	@return Una stringa contenente il percorso del file selezionato
  *	in caso di successo, NULL in caso di fallimento
  */
-char *Menu::getLevelFile() {
-	char *filename = (char *) calloc(BUFSIZE, sizeof(char));
-	if (filename) {
-		snprintf(filename, BUFSIZE, "%s/%s", LEVEL_DIRECTORY,
-		this -> levelName);
-		return filename;
+std::string Menu::getLevelFile() {
+	if (!this -> levelName.has_value()) {
+		throw std::runtime_error("getLevelFile: level name has no value.");
 	}
-	return NULL;
+    return std::string(LEVEL_DIRECTORY) + "/" + (this -> levelName).value();
 }
+
+
+

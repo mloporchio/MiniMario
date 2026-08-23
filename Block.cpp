@@ -18,12 +18,11 @@
  *	@param y posizione iniziale sull'asse y
  *	@param t puntatore alla texture da usare
  */
-Block::Block(block_t type, float x, float y, sf::Texture *t) : sprite(*t) {
+Block::Block(block_t type, float x, float y, sf::Texture &t) : sprite(t) {
 	this -> type = type;
 	this -> active = true;
 	this -> collidable = true;
 	this -> sprite.setPosition({x, y});
-	//this -> sprite.setTexture(*t);
 }
 
 /**

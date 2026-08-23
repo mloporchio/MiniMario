@@ -20,8 +20,7 @@ class QuestionBlock : public Block {
 		int elapsed;
 		bool hasPowerup;
 	public:
-		QuestionBlock(int x, int y, powerup_t id,
-			std::vector<sf::Texture> *textures);
+		QuestionBlock(float x, float y, powerup_t id, std::vector<sf::Texture> *textures);
 		void setActive(bool v);
 		bool getActive();
 		void hit();

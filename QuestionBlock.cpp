@@ -23,11 +23,12 @@
  *	@param textures puntatore al vettore delle texture da utilizzare
  */
 QuestionBlock::QuestionBlock(
-	int x, 
-	int y, 
+	float x, 
+	float y, 
 	powerup_t id, 
-	std::vector<sf::Texture> *textures
-) : Block(QUESTION, x, y, &((*textures)[0])) {
+	std::vector<sf::Texture> *textures) 
+	: Block(QUESTION, x, y, (*textures)[0]) 
+{
 	// Automaticamente vengono settati:
 	// this -> active = true;
 	// this -> collidable = true;
@@ -56,29 +57,31 @@ void QuestionBlock::hit() {
 Powerup *QuestionBlock::getPowerup() {
 	if (this -> hasPowerup) {
 		Powerup *p = NULL;
+		bool loadResult = false;
 		switch (this -> spawn) {
 			case SUPER_MUSHROOM: {
 				// Ottengo la posizione del blocco corrente.
 				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
-				t -> loadFromFile(SUPERMUSHROOM_TEXTURE);
-				SuperMushroom *m = new SuperMushroom((int) pos.x,
-				((int) pos.y) - SIZE, t);
+				loadResult = t -> loadFromFile(SUPERMUSHROOM_TEXTURE);
+				if (!loadResult) throw std::runtime_error("getPowerup: Cannot load super mushroom texture.");
+				SuperMushroom *m = new SuperMushroom(pos.x, pos.y - SIZE, *t);
 				p = (Powerup *) m;
 			}; break;
 			case ONEUP_MUSHROOM: {
 				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
-				t -> loadFromFile(ONEUPMUSHROOM_TEXTURE);
-				OneUpMushroom *o = new OneUpMushroom((int) pos.x,
-				((int) pos.y) - SIZE, t);
+				loadResult = t -> loadFromFile(ONEUPMUSHROOM_TEXTURE);
+				if (!loadResult) throw std::runtime_error("getPowerup: Cannot load one-up mushroom texture.");
+				OneUpMushroom *o = new OneUpMushroom(pos.x, pos.y - SIZE, *t);
 				p = (Powerup *) o;
 			}; break;
 			case COIN_POWERUP: {
 				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
-				t -> loadFromFile(COIN_POWERUP_TEXTURE);
-				CoinPowerup *c = new CoinPowerup((int) pos.x, ((int) pos.y) - SIZE, t);
+				loadResult = t -> loadFromFile(COIN_POWERUP_TEXTURE);
+				if (!loadResult) throw std::runtime_error("getPowerup: Cannot load coin texture.");
+				CoinPowerup *c = new CoinPowerup(pos.x, pos.y - SIZE, *t);
 				p = (Powerup *) c;
 			}; break;
 			default: break;

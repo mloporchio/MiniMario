@@ -17,7 +17,6 @@ Game::Game() : window(sf::VideoMode({W_WIDTH, W_HEIGHT}), W_TITLE) {
 	// Inizializzo la finestra.
 	this -> window.setVerticalSyncEnabled(true);
 	this -> window.setFramerateLimit(W_FRAMERATE_LIMIT);
-	this -> level = NULL;
 	this -> scene = NULL;
 	this -> gameMode = MENU;
 }
@@ -27,7 +26,6 @@ Game::Game() : window(sf::VideoMode({W_WIDTH, W_HEIGHT}), W_TITLE) {
  */
 Game::~Game() {
 	if (scene) delete scene;
-	fclose(level);
 }
 
 /**
@@ -52,24 +50,6 @@ void Game::handleEvent() {
                 break;
         }
     }
-
-	// sf::Event event;
-    // 	while (this -> window.pollEvent(event)) {
-    //     	switch (event.type) {
-    //     		case sf::Event::Closed: this -> window.close(); break;
-	// 		default: {
-	// 			switch (this -> gameMode) {
-	// 				case MENU: {
-	// 					this -> mainMenu.handleEvent(event);
-	// 				}; break;
-	// 				case PLAYING: {
-	// 					this -> scene -> handleEvent(event, &gameMode);
-	// 				}; break;
-	// 				default: break;
-	// 			}
-	// 		}; break;
-    //     	}
-    // 	}
 }
 
 /**
@@ -88,23 +68,14 @@ int Game::update() {
 				this -> scene = NULL;
 				// Resetto la vista.
 				sf::View defaultView(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT}));
-				//sf::View defaultView(sf::FloatRect(0, 0, W_WIDTH, W_HEIGHT));
 				window.setView(defaultView);
 			}
 			// Aggiorno il menu.
 			this -> mainMenu.updateMenu(&(this -> gameMode));
 			if (this -> gameMode == PLAYING) {
-				// Apro il file del livello.
-				char *path = mainMenu.getLevelFile();
-				N_ERR(!(this -> level = fopen(path, "rb")), E_FILE_OPEN);
-				// Creo una nuova scena.
-				try {
-					this -> scene = new Scene(this -> level);
-				}
-				catch (std::exception &e) {
-					std::cerr << e.what() << std::endl;
-					return 1;
-				}
+				// Open the level file and create a new scene.
+				std::string levelPath = (this -> mainMenu).getLevelFile();
+				this -> scene = new Scene(levelPath);
 			}
 			if (this -> gameMode == QUIT) this -> window.close();
 		}; break;

@@ -15,7 +15,7 @@
  *	@param y posizione iniziale sull'asse y
  *	@param t puntatore alla texture iniziale
  */
-OneUpMushroom::OneUpMushroom(int x, int y, sf::Texture *t)
+OneUpMushroom::OneUpMushroom(float x, float y, sf::Texture &t)
 	: Powerup(ONEUP_MUSHROOM, x, y, SIZE, SIZE, t) {
 	// Imposto la velocità con cui esce fuori il powerup.
 	this -> setSpeed(ONEUP_MUSHROOM_SPEED, 0);

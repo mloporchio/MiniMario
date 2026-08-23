@@ -16,8 +16,7 @@
  *	@param y posizione del blocco sull'asse y
  *	@param textures puntatore al vettore delle texture da utilizzare
  */
-Coin::Coin(float x, float y, std::vector<sf::Texture> *textures)
-	: Block(COIN, x, y, &((*textures)[0])) {
+Coin::Coin(float x, float y, std::vector<sf::Texture> *textures) : Block(COIN, x, y, ((*textures)[0])) {
 	// Automaticamente vengono settati:
 	// this -> active = true;
 	// this -> collidable = true;

@@ -8,7 +8,7 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
-#include <cstdio>
+#include <string>
 
 /** Number of distinct blocks represented in a tilemap. */
 #define BLOCK_N 20
@@ -48,13 +48,13 @@ typedef enum {
 class Tilemap {
 public:
     Tilemap(unsigned int rows, unsigned int cols);
-    Tilemap(FILE *fp);
+    Tilemap(const std::string &path);
     ~Tilemap();
     unsigned int getRows();
     unsigned int getCols();
     void setElement(unsigned int i, unsigned int j, block_t e);
     block_t getElement(unsigned int i, unsigned int j);
-    void save(FILE *fp);
+    void save(const std::string &path);
 private:
     unsigned int rows;
     unsigned int cols;

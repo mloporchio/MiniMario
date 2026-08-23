@@ -15,7 +15,7 @@
 
 class SuperMushroom : public Powerup {
 	public:
-		SuperMushroom(int x, int y, sf::Texture *t);
+		SuperMushroom(float x, float y, sf::Texture &t);
 		void update(sf::Time dt, std::vector<Block *> blocks);
 		void handleXCollisions(float *px, float *py, float *vx,
 			std::vector<Block *> blocks);

@@ -18,7 +18,7 @@ class CoinPowerup : public Powerup {
 	private:
 		float y0;
 	public:
-		CoinPowerup(float x, float y, sf::Texture *t);
+		CoinPowerup(float x, float y, sf::Texture &t);
 		void update(sf::Time dt);
 };
 

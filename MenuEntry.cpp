@@ -16,7 +16,7 @@
  *	@param font puntatore al font da utilizzare
  *	@param fontSize dimensione del font
  */
-MenuEntry::MenuEntry(char *label, sf::Font *font, int fontSize) : sf::Text(*font, label, fontSize) {
+MenuEntry::MenuEntry(const std::string &label, sf::Font *font, int fontSize) : sf::Text(*font, label, fontSize) {
 	// this -> setString(label);
 	// this -> setCharacterSize(fontSize);
 	// this -> setFont(*font);
@@ -29,16 +29,9 @@ MenuEntry::MenuEntry(char *label, sf::Font *font, int fontSize) : sf::Text(*font
  *	@return Una stringa contenente il testo in caso di successo, NULL in
  *	caso di fallimento
  */
-char *MenuEntry::getLabel() {
+std::string MenuEntry::getLabel() {
 	sf::String nameSfString = this -> getString();
-	std::string name = nameSfString.toAnsiString();
-	//std::string name = this -> getString();
-	char *label = (char *) calloc(BUFSIZE, sizeof(char));
-	if (label) {
-		strcpy(label, name.c_str());
-		return label;
-	}
-	return NULL;
+	return nameSfString.toAnsiString();
 }
 
 /**
@@ -46,7 +39,7 @@ char *MenuEntry::getLabel() {
  *
  *	@param label stringa con il testo associato all'entry
  */
-void MenuEntry::setLabel(char *label) {
+void MenuEntry::setLabel(const std::string &label) {
 	// Per ora non fa nulla.
 	return;
 }
@@ -67,9 +60,7 @@ bool MenuEntry::isSelected() {
  */
 void MenuEntry::setSelected(bool v) {
 	this -> selected = v;
-	if (this -> selected) {
-		this -> setFillColor(C_YELLOW);
-	}
+	if (this -> selected) this -> setFillColor(C_YELLOW);
 	else this -> setFillColor(C_WHITE);
 	return;
 }

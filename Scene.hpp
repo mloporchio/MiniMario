@@ -83,7 +83,6 @@ class Scene {
 		bool gameOver;
 		void loadTextures();
 		void loadSounds();
-		void initLabels();
 		void processTilemap();
 		void updateBlocks(sf::Time dt);
 		void updateEnemies(sf::Time dt);
@@ -96,7 +95,7 @@ class Scene {
 		bool checkPlayerWin();
 		void playSound(scene_sound_t id);
 	public:
-		Scene(FILE *level);
+		Scene(const std::string &path);
 		~Scene();
 		void handleEvent(sf::Event e, game_mode_t *gameMode);
 		void updateScene();

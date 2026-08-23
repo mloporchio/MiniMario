@@ -25,7 +25,7 @@ class Powerup {
 		sf::Vector2i size;
 		sf::Sprite sprite;
 	public:
-		Powerup(powerup_t type, int x, int y, int w, int h, sf::Texture *t);
+		Powerup(powerup_t type, float x, float y, int w, int h, sf::Texture &t);
 		powerup_t getType();
 		bool isTaken();
 		void setTaken(bool v);
@@ -38,10 +38,8 @@ class Powerup {
 		sf::Sprite getSprite();
 		// Metodi virtuali: da implementare da parte delle sottoclassi.
 		virtual void update(sf::Time dt, std::vector<Block *> blocks) {};
-		virtual void handleXCollisions(float *px, float *py, float *vx,
-			std::vector<Block *> blocks) {};
-		virtual void handleYCollisions(float *px, float *py, float *vy,
-			std::vector<Block *> blocks) {};
+		virtual void handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks) {};
+		virtual void handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> blocks) {};
 };
 
 #endif

@@ -14,9 +14,9 @@ class MenuEntry : public sf::Text {
 	private:
 		bool selected;
 	public:
-		MenuEntry(char *label, sf::Font *font, int fontSize);
-		char *getLabel();
-		void setLabel(char *label);
+		MenuEntry(const std::string &label, sf::Font *font, int fontSize);
+		std::string getLabel();
+		void setLabel(const std::string &label);
 		bool isSelected();
 		void setSelected(bool v);
 };

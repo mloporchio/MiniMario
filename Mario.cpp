@@ -2,8 +2,7 @@
  *	@file Mario.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Questo file contiene l'implementazione dei metodi relativi
- *	all'oggetto di tipo Mario
+ *	@brief This file contains the implementation of the methods related to the Mario object
  */
 
 #include <cmath>
@@ -16,37 +15,43 @@
 #include "SuperMushroom.hpp"
 #include "OneUpMushroom.hpp"
 
-// 
+/**
+ *	@brief Utility function that loads Mario textures from a texture sheet and places them in a vector.
+ *
+ *	@return A vector containing the textures loaded from the texture sheet
+ */
 std::vector<sf::Texture> buildTextureVector() {
+	bool loadResult = false;
 	std::vector<sf::Texture> textures;
 	sf::Image sheet;
-	sheet.loadFromFile(MARIO_TEXTURE_SHEET);
+	loadResult = sheet.loadFromFile(MARIO_TEXTURE_SHEET);
+	if (!loadResult) throw std::runtime_error("buildTextureVector: Cannot load texture sheet.");
 	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 0}, {SIZE, SIZE});
-		//sf::IntRect rect(i * SIZE, 0, SIZE, SIZE);
-		t.loadFromImage(sheet, false, rect);
+		loadResult = t.loadFromImage(sheet, false, rect);
+		if (!loadResult) throw std::runtime_error("buildTextureVector: Cannot load texture.");
 		textures.push_back(t);
 	}
 	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, SIZE}, {SIZE, SIZE});
-		//sf::IntRect rect(i * SIZE, SIZE, SIZE, SIZE);
-		t.loadFromImage(sheet, false, rect);
+		loadResult = t.loadFromImage(sheet, false, rect);
+		if (!loadResult) throw std::runtime_error("buildTextureVector: Cannot load texture.");
 		textures.push_back(t);
 	}
 	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 2 * SIZE}, {SIZE, 2 * SIZE});
-		//sf::IntRect rect(i * SIZE, 2 * SIZE, SIZE, 2 * SIZE);
-		t.loadFromImage(sheet, false, rect);
+		loadResult = t.loadFromImage(sheet, false, rect);
+		if (!loadResult) throw std::runtime_error("buildTextureVector: Cannot load texture.");
 		textures.push_back(t);
 	}
 	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 4 * SIZE}, {SIZE, 2 * SIZE});
-		//sf::IntRect rect(i * SIZE, 4 * SIZE, SIZE, 2 * SIZE);
-		t.loadFromImage(sheet, false, rect);
+		loadResult = t.loadFromImage(sheet, false, rect);
+		if (!loadResult) throw std::runtime_error("buildTextureVector: Cannot load texture.");
 		textures.push_back(t);
 	}
 	return textures;
@@ -56,11 +61,7 @@ std::vector<sf::Texture> buildTextureVector() {
  *	@brief Metodo costruttore della classe relativa a Mario
  */
 Mario::Mario() : textures(buildTextureVector()), sprite(textures[(int) STANDING]) {
-	// Carico le texture.
-	// this -> loadTextures();
-	// Carico i suoni.
 	this -> loadSounds();
-	//this -> sprite.setTexture(textures[(int) STANDING]);
 	this -> sprite.setPosition(MARIO_POSITION);
 	this -> size.x = SIZE;
 	this -> size.y = SIZE;
@@ -91,54 +92,15 @@ Mario::~Mario() {
 }
 
 /**
- *	@brief Carica le texture relative al personaggio e le salva
- *	nell'apposito array
- */
-void Mario::loadTextures() {
-	sf::Image sheet;
-	sheet.loadFromFile(MARIO_TEXTURE_SHEET);
-	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
-		sf::Texture t;
-		sf::IntRect rect({i * SIZE, 0}, {SIZE, SIZE});
-		//sf::IntRect rect(i * SIZE, 0, SIZE, SIZE);
-		t.loadFromImage(sheet, false, rect);
-		this -> textures.push_back(t);
-	}
-	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
-		sf::Texture t;
-		sf::IntRect rect({i * SIZE, SIZE}, {SIZE, SIZE});
-		//sf::IntRect rect(i * SIZE, SIZE, SIZE, SIZE);
-		t.loadFromImage(sheet, false,rect);
-		this -> textures.push_back(t);
-	}
-	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
-		sf::Texture t;
-		sf::IntRect rect({i * SIZE, 2 * SIZE}, {SIZE, 2 * SIZE});
-		//sf::IntRect rect(i * SIZE, 2 * SIZE, SIZE, 2 * SIZE);
-		t.loadFromImage(sheet, false, rect);
-		this -> textures.push_back(t);
-	}
-	for (int i = 0; i < MARIO_TEXTURE_N / 4; i++) {
-		sf::Texture t;
-		sf::IntRect rect({i * SIZE, 4 * SIZE}, {SIZE, 2 * SIZE});
-		//sf::IntRect rect(i * SIZE, 4 * SIZE, SIZE, 2 * SIZE);
-		t.loadFromImage(sheet, false, rect);
-		this -> textures.push_back(t);
-	}
-	return;
-}
-
-/**
  *	@brief Carica i file audio per gli effetti sonori
  */
 void Mario::loadSounds() {
+	bool loadResult = false;
 	for (int i = 0; i < MARIO_SOUND_N; i++) {
 		sf::SoundBuffer *sb = new sf::SoundBuffer();
-		sb -> loadFromFile(getMarioSoundPath((mario_sound_t) i));
+		loadResult = sb -> loadFromFile(getMarioSoundPath((mario_sound_t) i));
+		if (!loadResult) throw std::runtime_error("loadSounds: Cannot load sound.");
 		this -> soundBuffers.push_back(sb);
-		// 
-		// sf::Sound *snd = new sf::Sound();
-		// snd -> setBuffer(*(this -> soundBuffers[i]));
 		sf::Sound *snd = new sf::Sound(*(this -> soundBuffers[i]));
 		this -> sounds.push_back(snd);
 	}

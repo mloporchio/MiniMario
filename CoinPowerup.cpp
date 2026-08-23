@@ -16,8 +16,9 @@
  *	@param y posizione iniziale lungo l'asse y
  *	@param t puntatore alla texture da utilizzare
  */ 
-CoinPowerup::CoinPowerup(float x, float y, sf::Texture *t)
-	: Powerup(COIN_POWERUP, x, y, SIZE, SIZE, t) {
+CoinPowerup::CoinPowerup(float x, float y, sf::Texture &t) 
+: Powerup(COIN_POWERUP, x, y, SIZE, SIZE, t) 
+{
 	this -> y0 = y;
 	this -> setSpeed(0, -COIN_POWERUP_SPEED);
 }

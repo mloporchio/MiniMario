@@ -51,7 +51,6 @@ class Mario {
 		direction_t facing;
 		mario_texture_t textureID;
 		void triggerBlockAction(Block *b, std::vector<Powerup *> *powerups);
-		void loadTextures();
 		void loadSounds();
 		int checkBlockCollisions(std::vector<Block *> blocks,
 			sf::IntRect MarioR, sf::IntRect *IntR);

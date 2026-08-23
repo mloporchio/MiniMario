@@ -11,8 +11,9 @@
 /**
  *	@brief Costruttore della classe SuperMushroom
  */
-SuperMushroom::SuperMushroom(int x, int y, sf::Texture *t)
-	: Powerup(SUPER_MUSHROOM, x, y, SIZE, SIZE, t) {
+SuperMushroom::SuperMushroom(float x, float y, sf::Texture &t)
+	: Powerup(SUPER_MUSHROOM, x, y, SIZE, SIZE, t) 
+{
 	// Imposto la velocità con cui esce fuori il powerup.
 	this -> setSpeed(SUPER_MUSHROOM_SPEED, 0);
 }

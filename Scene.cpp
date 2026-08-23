@@ -33,8 +33,8 @@
  *	oppure se fallisce il caricamento della tilemap da file
  *
  */
-Scene::Scene(FILE *level) :
-	tilemap(level),
+Scene::Scene(const std::string &path) :
+	tilemap(path),
 	fg(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT})),
 	bg(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT})),
 	bgImage(BACKGROUND_TEXTURE),
@@ -58,7 +58,7 @@ Scene::Scene(FILE *level) :
 	// Carico i suoni.
 	this -> loadSounds();
 	// Inizializza le etichette.
-	this -> initLabels();
+	this -> scoreLabel.setPosition(SCORE_POSITION);
 	// Imposta lo stato del gioco.
 	this -> win = false;
 	this -> gameOver = false;
@@ -97,59 +97,70 @@ Scene::~Scene() {
  *	all'array delle texture
  */
 void Scene::loadTextures() {
+	bool loadResult = false;
 	// Carico le texture statiche.
 	for (int i = 0; i < STATIC_TEXTURE_N; i++) {
 		sf::Texture t;
-		t.loadFromFile(getStaticTexturePath((static_texture_t) i));
+		loadResult = t.loadFromFile(getStaticTexturePath((static_texture_t) i));
+		if (!loadResult) throw std::runtime_error("loadTextures: Cannot load static texture.");
 		this -> staticTextures.push_back(t);
 	}
-	sf::Image questionSheet, coinSheet, goombaSheet, piranhaPlantSheet,
-	koopaSheet;
+	sf::Image questionSheet, coinSheet, goombaSheet, piranhaPlantSheet, koopaSheet;
 	// Carico le texture per i question block.
-	questionSheet.loadFromFile(QUESTION_TEXTURE_SHEET);
+	loadResult = questionSheet.loadFromFile(QUESTION_TEXTURE_SHEET);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load question block texture sheet.");
 	for (int i = 0; i < QUESTION_TEXTURE_N; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 0}, {SIZE, SIZE});
-		t.loadFromImage(questionSheet, false, rect);
+		loadResult = t.loadFromImage(questionSheet, false, rect);
+		if (!loadResult) throw std::runtime_error("loadTextures: Cannot load question block texture.");
 		this -> questionTextures.push_back(t);
 	}
 	// Carico le texture per le monete.
-	coinSheet.loadFromFile(COIN_TEXTURE_SHEET);
+	loadResult = coinSheet.loadFromFile(COIN_TEXTURE_SHEET);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load coin texture sheet.");
 	for (int i = 0; i < COIN_TEXTURE_N; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 0}, {SIZE, SIZE});
-		t.loadFromImage(coinSheet, false, rect);
+		loadResult = t.loadFromImage(coinSheet, false, rect);
+		if (!loadResult) throw std::runtime_error("loadTextures: Cannot load coin texture.");
 		this -> coinTextures.push_back(t);
 	}
 	// Carico le texture per i Goomba.
-	goombaSheet.loadFromFile(GOOMBA_TEXTURE_SHEET);
+	loadResult = goombaSheet.loadFromFile(GOOMBA_TEXTURE_SHEET);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Goomba texture sheet.");
 	for (int i = 0; i < GOOMBA_TEXTURE_N; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 0}, {SIZE, SIZE});
-		t.loadFromImage(goombaSheet, false, rect);
+		loadResult = t.loadFromImage(goombaSheet, false, rect);
+		if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Goomba texture.");
 		this -> goombaTextures.push_back(t);
 	}
 	// Carico le texture per le Piranha Plant.
-	piranhaPlantSheet.loadFromFile(PIRANHAPLANT_TEXTURE_SHEET);
+	loadResult = piranhaPlantSheet.loadFromFile(PIRANHAPLANT_TEXTURE_SHEET);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Piranha Plant texture sheet.");
 	for (int i = 0; i < PIRANHAPLANT_TEXTURE_N; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 0}, {SIZE, PIRANHAPLANT_HEIGHT});
-		//sf::IntRect rect(i * SIZE, 0, SIZE, PIRANHAPLANT_HEIGHT);
-		t.loadFromImage(piranhaPlantSheet, false, rect);
+		loadResult = t.loadFromImage(piranhaPlantSheet, false, rect);
+		if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Piranha Plant texture.");
 		this -> piranhaPlantTextures.push_back(t);
 	}
 	// Carico le texture per Koopa.
-	koopaSheet.loadFromFile(KOOPA_TEXTURE_SHEET);
+	loadResult = koopaSheet.loadFromFile(KOOPA_TEXTURE_SHEET);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Koopa texture sheet.");
 	for (int i = 0; i < KOOPA_TEXTURE_N - 2; i++) {
 		sf::Texture t;
 		sf::IntRect rect({i * SIZE, 0}, {SIZE, KOOPA_HEIGHT});
-		//sf::IntRect rect(i * SIZE, 0, SIZE, KOOPA_HEIGHT);
-		t.loadFromImage(koopaSheet, false, rect);
+		loadResult = t.loadFromImage(koopaSheet, false, rect);
+		if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Koopa texture.");
 		this -> koopaTextures.push_back(t);
 	}
 	sf::Texture koopaGreenShell, koopaRedShell;
-	koopaGreenShell.loadFromFile(KOOPA_GREEN_SHELL_TEXTURE);
-	koopaRedShell.loadFromFile(KOOPA_RED_SHELL_TEXTURE);
+	loadResult = koopaGreenShell.loadFromFile(KOOPA_GREEN_SHELL_TEXTURE);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Koopa green shell texture.");
+	loadResult = koopaRedShell.loadFromFile(KOOPA_RED_SHELL_TEXTURE);
+	if (!loadResult) throw std::runtime_error("loadTextures: Cannot load Koopa red shell texture.");
 	this -> koopaTextures.push_back(koopaGreenShell);
 	this -> koopaTextures.push_back(koopaRedShell);
 }
@@ -159,12 +170,15 @@ void Scene::loadTextures() {
  *	li inserisce negli appositi array
  */
 void Scene::loadSounds() {
-	this -> theme.openFromFile(SCENE_MUSIC_THEME);
+	bool loadResult = false;
+	loadResult = this -> theme.openFromFile(SCENE_MUSIC_THEME);
+	if (!loadResult) throw std::runtime_error("loadSounds: Cannot load music file.");
 	this -> theme.setLooping(true);
 	this -> theme.play();
 	for (int i = 0; i < SCENE_SOUND_N; i++) {
 		sf::SoundBuffer *sb = new sf::SoundBuffer();
-		sb -> loadFromFile(SceneSoundPath((scene_sound_t) i));
+		loadResult = sb -> loadFromFile(SceneSoundPath((scene_sound_t) i));
+		if (!loadResult) throw std::runtime_error("loadSounds: Cannot load sound file.");
 		this -> soundBuffers.push_back(sb);
 		sf::Sound *snd = new sf::Sound(*(this -> soundBuffers[i]));
 		//snd -> setBuffer(*(this -> soundBuffers[i]));
@@ -224,7 +238,7 @@ void Scene::processTilemap() {
 					int tid = getStaticTextureID(current);
 					if (tid != -1) {
 						Block *b = new Block(current, j * SIZE,
-						i * SIZE, &(this -> staticTextures[tid]));
+						i * SIZE, this -> staticTextures[tid]);
 						b -> setCollidable(isCollidable(current));
 						this -> blocks.push_back(b);
 					}
@@ -232,28 +246,6 @@ void Scene::processTilemap() {
 			}
 		}
 	}
-}
-
-/**
- *	@brief Inizializza le etichette della scena, impostando font,
- *	testo e posizione (se necessario)
- */
-void Scene::initLabels() {
-	this -> scoreLabel.setPosition(SCORE_POSITION);
-	// this -> font.loadFromFile(FONT_PATH);
-	// this -> scoreLabel.setFont(this -> font);
-	// this -> scoreLabel.setString((char *) SCORE_INIT_MSG);
-	// this -> scoreLabel.setCharacterSize(SCORE_FONT_SIZE);
-	// this -> scoreLabel.setPosition(SCORE_POSITION);
-	// this -> gameOverLabel.setFont(this -> font);
-	// this -> gameOverLabel.setString((char *) GAME_OVER_MSG);
-	// this -> gameOverLabel.setCharacterSize(GAME_OVER_FONT_SIZE);
-	// this -> winLabel.setFont(this -> font);
-	// this -> winLabel.setString((char *) WIN_MSG);
-	// this -> winLabel.setCharacterSize(WIN_FONT_SIZE);
-	// this -> infoLabel.setFont(this -> font);
-	// this -> infoLabel.setString(INFO_MSG);
-	// this -> infoLabel.setCharacterSize(INFO_FONT_SIZE);
 }
 
 /**
@@ -293,42 +285,6 @@ void Scene::handleEvent(sf::Event e, game_mode_t *gameMode) {
 				default: break;
 		};
 	}
-    
-	// switch (e.type) {
-	// 	// Tasto premuto.
-	// 	case sf::Event::KeyPressed:
-	// 		switch (e.key.code) {
-	// 			case sf::Keyboard::Left: {
-	// 				this -> hero.startRunning(LEFT);
-	// 			}; break;
-	// 			case sf::Keyboard::Right: {
-	// 				this -> hero.startRunning(RIGHT);
-	// 			}; break;
-	// 			case sf::Keyboard::Space: {
-	// 				this -> hero.startJump();
-	// 			}; break;
-	// 			case sf::Keyboard::Return: {
-	// 				if (gameOver || win) *gameMode = MENU;
-	// 			}; break;
-	// 			default: break;
-	// 		}; break;
-	// 	// Tasto rilasciato.
-	// 	case sf::Event::KeyReleased:
-	// 		switch (e.key.code) {
-	// 			case sf::Keyboard::Space: {
-	// 				this -> hero.endJump();
-	// 			}; break;
-	// 			case sf::Keyboard::Left: {
-	// 				this -> hero.endRunning();
-	// 			}; break;
-	// 			case sf::Keyboard::Right: {
-	// 				this -> hero.endRunning();
-	// 			}; break;
-	// 			default: break;
-	// 		}; break;
-	// 	// Evento non riconosciuto.
-	// 	default: break;
-	// }
 }
 
 /**

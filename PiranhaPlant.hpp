@@ -24,7 +24,7 @@ class PiranhaPlant : public Enemy {
 		plant_texture_t textureID;
 		int elapsed;
 	public:
-		PiranhaPlant(int x, int y, std::vector<sf::Texture> *textures);
+		PiranhaPlant(float x, float y, std::vector<sf::Texture> *textures);
 		void update(sf::Time dt);
 };
 

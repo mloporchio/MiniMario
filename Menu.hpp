@@ -60,7 +60,7 @@ class Menu {
 	private:
 		int selected;
 		bool enterKeyPressed;
-		char *levelName;
+		std::optional<std::string> levelName;
 		menu_mode_t menuMode;
 		std::vector<MenuEntry> mainEntries;
 		std::vector<MenuEntry> levelEntries;
@@ -79,7 +79,7 @@ class Menu {
 		void handleEvent(sf::Event e);
 		void updateMenu(game_mode_t *gameMode);
 		void drawMenu(sf::RenderWindow *window);
-		char *getLevelFile();
+		std::string getLevelFile();
 };
 
 /**
@@ -106,7 +106,5 @@ static inline int prevOption(int id, int n) {
 	if (id > 0) return ((id - 1) % n);
 	else return n - 1;
 }
-
-
 
 #endif

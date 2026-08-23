@@ -8,7 +8,7 @@
 #include "Powerup.hpp"
 
 /**
- *	@brief Il metodo costruttore della classe Powerup
+ *	@brief Constructor of the Powerup class
  *
  *	@param type identificativo del tipo di powerup
  *	@param x posizione lungo l'asse x
@@ -17,15 +17,14 @@
  *	@param h altezza del powerup
  *	@param t puntatore alla texture da utilizzare per il powerup
  */
-Powerup::Powerup(powerup_t type, int x, int y, int w, int h, sf::Texture *t) : sprite(*t) {
+Powerup::Powerup(powerup_t type, float x, float y, int w, int h, sf::Texture &t) : sprite(t) {
 	this -> type = type;
 	this -> taken = false;
 	this -> speed.x = 0;
 	this -> speed.y = 0;
 	this -> size.x = w;
 	this -> size.y = h;
-	this -> sprite.setPosition({static_cast<float>(x), static_cast<float>(y)});
-	//this -> sprite.setTexture(*t);
+	this -> sprite.setPosition({x, y});
 }
 
 /**
