@@ -11,6 +11,7 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <random>
 #include <cstdio>
 #include <vector>
 #include "Config.hpp"
@@ -19,6 +20,9 @@
 #include "Powerup.hpp"
 #include "Layer.hpp"
 #include "Tilemap.hpp"
+
+/** Massimo valore intero generabile da std::uniform_int_distribution. */
+#define MAX_RANDOM_VALUE 100000
 
 /** Testo iniziale dell'etichetta del punteggio. */
 #define SCORE_INIT_MSG "Score: 0"
@@ -61,7 +65,8 @@ class Scene {
 		sf::Text gameOverLabel;
 		sf::Text winLabel;
 		sf::Text infoLabel;
-		unsigned int seed;
+    	std::default_random_engine random_engine;
+		std::uniform_int_distribution<int> uniform_dist;
 		std::vector<sf::Texture> staticTextures;
 		std::vector<sf::Texture> questionTextures;
 		std::vector<sf::Texture> coinTextures;

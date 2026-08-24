@@ -43,7 +43,11 @@ Scene::Scene(const std::string &path) :
 	scoreLabel(font, SCORE_INIT_MSG, SCORE_FONT_SIZE),
 	gameOverLabel(font, GAME_OVER_MSG, GAME_OVER_FONT_SIZE),
 	winLabel(font, WIN_MSG, WIN_FONT_SIZE),
-	infoLabel(font, INFO_MSG, INFO_FONT_SIZE)
+	infoLabel(font, INFO_MSG, INFO_FONT_SIZE),
+	random_engine(std::random_device()()),
+	uniform_dist(0, MAX_RANDOM_VALUE),
+	win(false),
+	gameOver(false)
 {
 	// Carico le texture.
 	this -> loadTextures();
@@ -59,10 +63,6 @@ Scene::Scene(const std::string &path) :
 	this -> loadSounds();
 	// Inizializza le etichette.
 	this -> scoreLabel.setPosition(SCORE_POSITION);
-	// Imposta lo stato del gioco.
-	this -> win = false;
-	this -> gameOver = false;
-	this -> seed = time(NULL);
 }
 
 /**
@@ -200,7 +200,8 @@ void Scene::processTilemap() {
 			// Controllo di che tipo di blocco si tratta.
 			switch (current) {
 				case QUESTION: {
-					QuestionBlock *q = new QuestionBlock(j * SIZE, i * SIZE, getSpawnID(rand_r(&seed)), this -> questionTextures);
+					powerup_t powerupId = getSpawnID(uniform_dist(random_engine));
+					QuestionBlock *q = new QuestionBlock(j * SIZE, i * SIZE, powerupId, this -> questionTextures);
 					this -> blocks.push_back(q);
 				}; break;
 				case COIN: {
