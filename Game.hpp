@@ -16,7 +16,6 @@
 class Game {
 	private:
 		sf::RenderWindow window;
-		FILE *level;
 		Scene *scene;
 		Menu mainMenu;
 		game_mode_t gameMode;

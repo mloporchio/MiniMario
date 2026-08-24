@@ -25,13 +25,13 @@ class Koopa : public Enemy {
 	private:
 		block_t koopaType;
 		koopa_texture_t textureID;
-		std::vector<sf::Texture> *textures;
+		std::vector<sf::Texture> &textures;
 		int elapsed;
 		int bounce;
 		bool hit;
 		void checkBounce();
 	public:
-		Koopa(float x, float y, block_t k, std::vector<sf::Texture> *textures);
+		Koopa(float x, float y, block_t k, std::vector<sf::Texture> &textures_);
 		bool isOnGround();
 		bool isHit();
 		void setHit();

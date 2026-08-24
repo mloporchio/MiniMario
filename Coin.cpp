@@ -14,15 +14,17 @@
  *
  *	@param x posizione del blocco sull'asse x
  *	@param y posizione del blocco sull'asse y
- *	@param textures puntatore al vettore delle texture da utilizzare
+ *	@param textures_ riferimento al vettore delle texture da utilizzare
  */
-Coin::Coin(float x, float y, std::vector<sf::Texture> *textures) : Block(COIN, x, y, ((*textures)[0])) {
-	// Automaticamente vengono settati:
+Coin::Coin(float x, float y, std::vector<sf::Texture> &textures_) : 
+	Block(COIN, x, y, textures_[0]), 
+	textures(textures_),
+	elapsed(0), 
+	textureID(STILL) 
+{
+	// The following are automatically set:
 	// this -> active = true;
 	// this -> collidable = true;
-	this -> textures = textures;
-	this -> elapsed = 0;
-	this -> textureID = STILL;
 }
 
 /**
@@ -41,6 +43,6 @@ void Coin::hit() {
 void Coin::update(sf::Time dt) {
 	if (this -> active) {
 		textureID = nextCoinTexture(textureID);
-		this -> sprite.setTexture((*textures)[(int) textureID]);
+		this -> sprite.setTexture(textures[(int) textureID]);
 	}
 }

@@ -13,12 +13,14 @@
 /**
  *	@brief Costruttore della classe di gioco
  */
-Game::Game() : window(sf::VideoMode({W_WIDTH, W_HEIGHT}), W_TITLE) {
+Game::Game() : 
+	window(sf::VideoMode({W_WIDTH, W_HEIGHT}), W_TITLE), 
+	scene(NULL), 
+	gameMode(MENU) 
+{
 	// Inizializzo la finestra.
 	this -> window.setVerticalSyncEnabled(true);
 	this -> window.setFramerateLimit(W_FRAMERATE_LIMIT);
-	this -> scene = NULL;
-	this -> gameMode = MENU;
 }
 
 /**

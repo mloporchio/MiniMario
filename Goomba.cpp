@@ -15,11 +15,12 @@
  *	@param y posizione sull'asse y
  *	@param textures puntatore al vettore con le texture
  */
-Goomba::Goomba(float x, float y, std::vector<sf::Texture> *textures)
-	: Enemy(GOOMBA, x, y, SIZE, SIZE, ((*textures)[0])) {
-	this -> textures = textures;
-	this -> textureID = GOOMBA_0;
-	this -> elapsed = 0;
+Goomba::Goomba(float x, float y, std::vector<sf::Texture> &textures_) :
+	Enemy(GOOMBA, x, y, SIZE, SIZE, textures_[0]), 
+	textures(textures_), 
+	textureID(GOOMBA_0), 
+	elapsed(0) 
+{
 	this -> setSpeed(-GOOMBA_SPEED, 0);
 }
 
@@ -52,7 +53,7 @@ void Goomba::update(sf::Time dt, std::vector<Block *> blocks,
 		elapsed = 0;
 	}
 	else elapsed += dt.asMilliseconds();
-	this -> sprite.setTexture((*textures)[(int) textureID]);
+	this -> sprite.setTexture(textures[(int) textureID]);
 }
 
 /**

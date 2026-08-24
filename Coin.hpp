@@ -15,11 +15,11 @@
 
 class Coin : public Block {
 	private:
-		std::vector<sf::Texture> *textures;
+		std::vector<sf::Texture> &textures;
 		coin_texture_t textureID;
 		int elapsed;
 	public:
-		Coin(float x, float y, std::vector<sf::Texture> *textures);
+		Coin(float x, float y, std::vector<sf::Texture> &textures_);
 		void hit();
 		void update(sf::Time dt);
 };

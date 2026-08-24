@@ -60,24 +60,25 @@ std::vector<sf::Texture> buildTextureVector() {
 /**
  *	@brief Metodo costruttore della classe relativa a Mario
  */
-Mario::Mario() : textures(buildTextureVector()), sprite(textures[(int) STANDING]) {
+Mario::Mario() : 
+	textures(buildTextureVector()), 
+	sprite(textures[(int) STANDING]),
+	size({SIZE, SIZE}),
+	speed(0, 0),
+	animationTime(0),
+	invisibleTime(0),
+	score(0),
+	super(false),
+	invisible(false),
+	dead(false),
+	running(false),
+	onGround(false),
+	ignoreEnemyCollision(false),
+	facing(RIGHT),	
+	textureID(STANDING)
+{
 	this -> loadSounds();
 	this -> sprite.setPosition(MARIO_POSITION);
-	this -> size.x = SIZE;
-	this -> size.y = SIZE;
-	this -> speed.x = 0;
-	this -> speed.y = 0;
-	this -> animationTime = 0;
-	this -> invisibleTime = 0;
-	this -> score = 0;
-	this -> super = false;
-	this -> invisible = false;
-	this -> dead = false;
-	this -> running = false;
-	this -> onGround = false;
-	this -> ignoreEnemyCollision = false;
-	this -> facing = RIGHT;
-	this -> textureID = STANDING;
 }
 
 /**
@@ -229,7 +230,6 @@ void Mario::endRunning() {
 	this -> running = false;
 	this -> speed.x = 0;
 }
-
 
 /**
  *	@brief Funzione di aggiornamento della texture del personaggio

@@ -14,14 +14,15 @@
  *	@param x posizione iniziale sull'asse x
  *	@param y posizione iniziale sull'asse y
  *	@param k identificativo del tipo di Koopa (verde o rosso)
- *	@param textures puntatore al vettore contenente le texture
+ *	@param textures_ reference al vettore contenente le texture
  */
-Koopa::Koopa(float x, float y, block_t k, std::vector<sf::Texture> *textures)
-	: Enemy(k, x, y, SIZE, KOOPA_HEIGHT, ((*textures)[0])) {
-	this -> textures = textures;
-	this -> textureID = ((k == GREEN_KOOPA) ? GREEN_KOOPA_0 : RED_KOOPA_0);
-	this -> hit = false;
-	this -> elapsed = 0;
+Koopa::Koopa(float x, float y, block_t k, std::vector<sf::Texture> &textures_) : 
+	Enemy(k, x, y, SIZE, KOOPA_HEIGHT, textures_[0]),
+	textures(textures_),
+	textureID(((k == GREEN_KOOPA) ? GREEN_KOOPA_0 : RED_KOOPA_0)),
+	hit(false),
+	elapsed(0)
+{
 	this -> setSpeed(-KOOPA_SPEED, 0);
 }
 
@@ -112,7 +113,7 @@ void Koopa::update(sf::Time dt, std::vector<Block *> blocks,
 		else elapsed += dt.asMilliseconds();
 	}
 	else this -> sprite.setTextureRect(sf::IntRect({0, 0}, {size.x, size.y}));
-	this -> sprite.setTexture((*textures)[(int) textureID]);
+	this -> sprite.setTexture(textures[(int) textureID]);
 }
 
 /**

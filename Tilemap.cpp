@@ -6,6 +6,7 @@
  */
 
 #include "Tilemap.hpp"
+#include <iostream>
 #include <fstream>
 #include <stdexcept>
 
@@ -69,6 +70,7 @@ Tilemap::~Tilemap() {
         delete[] map[i];
     }
     delete[] map;
+    std::cout << "Tilemap destroyed!" << std::endl;
 }
 
 /**

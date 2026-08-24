@@ -15,12 +15,13 @@
  *	@param y posizione lungo l'asse y
  *	@param textures puntatore al vettore delle texture da utilizzare
  */
-PiranhaPlant::PiranhaPlant(float x, float y, std::vector<sf::Texture> *textures) 
-: Enemy(PIRANHA_PLANT, x, y, SIZE, PIRANHAPLANT_HEIGHT, ((*textures)[0]))
+PiranhaPlant::PiranhaPlant(float x, float y, std::vector<sf::Texture> &textures_) :
+	Enemy(PIRANHA_PLANT, x, y, SIZE, PIRANHAPLANT_HEIGHT, textures_[0]),
+	textures(textures_),
+	textureID(PLANT_0),
+	elapsed(0)
 {
-	this -> textures = textures;
-	this -> textureID = PLANT_0;
-	this -> elapsed = 0;
+	// Nothing else to do here.
 }
 
 /**
@@ -35,5 +36,5 @@ void PiranhaPlant::update(sf::Time dt) {
 		elapsed = 0;
 	}
 	else elapsed += dt.asMilliseconds();
-	this -> sprite.setTexture((*textures)[(int) textureID]);
+	this -> sprite.setTexture(textures[(int) textureID]);
 }

@@ -99,7 +99,6 @@ class Mario {
  */
 static inline mario_texture_t nextAnimationTexture(bool super,
 	mario_texture_t current) {
-
 	if (super == false) {
 		switch (current) {
 			case STANDING: return RUNNING_0;

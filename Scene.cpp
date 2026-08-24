@@ -6,7 +6,7 @@
  *	del gioco
  */
 
-#include <ctime>
+#include <iostream>
 #include <stdexcept>
 #include "Scene.hpp"
 #include "Config.hpp"
@@ -69,7 +69,6 @@ Scene::Scene(const std::string &path) :
  *	@brief Distruttore della classe scena
  */
 Scene::~Scene() {
-	printf("Scene destroyed!\n");
 	// Distruggo tutti i blocchi.
 	for (int i = 0; i < this -> blocks.size(); i++) {
 		delete blocks[i];
@@ -89,6 +88,7 @@ Scene::~Scene() {
 		delete soundBuffers[i];
 		delete sounds[i];
 	}
+	std::cout << "Scene destroyed!" << std::endl;
 }
 
 
@@ -200,45 +200,34 @@ void Scene::processTilemap() {
 			// Controllo di che tipo di blocco si tratta.
 			switch (current) {
 				case QUESTION: {
-					QuestionBlock *q = new QuestionBlock(j * SIZE,
-					i * SIZE, getSpawnID(rand_r(&seed)),
-					&(this -> questionTextures));
+					QuestionBlock *q = new QuestionBlock(j * SIZE, i * SIZE, getSpawnID(rand_r(&seed)), this -> questionTextures);
 					this -> blocks.push_back(q);
 				}; break;
 				case COIN: {
-					Coin *c = new Coin(j * SIZE, i * SIZE,
-					&(this -> coinTextures));
+					Coin *c = new Coin(j * SIZE, i * SIZE, this -> coinTextures);
 					this -> blocks.push_back(c);
 				}; break;
 				case GOOMBA: {
-					Goomba *g = new Goomba(j * SIZE, i * SIZE,
-					&(this -> goombaTextures));
+					Goomba *g = new Goomba(j * SIZE, i * SIZE, this -> goombaTextures);
 					this -> enemies.push_back(g);
 				}; break;
 				case GREEN_KOOPA: {
-					Koopa *k = new Koopa(j * SIZE,
-					i * SIZE - (KOOPA_HEIGHT - SIZE), GREEN_KOOPA,
-					&(this -> koopaTextures));
+					Koopa *k = new Koopa(j * SIZE, i * SIZE - (KOOPA_HEIGHT - SIZE), GREEN_KOOPA, this -> koopaTextures);
 					this -> enemies.push_back(k);
 				}; break;
 				case RED_KOOPA: {
-					Koopa *k = new Koopa(j * SIZE,
-					i * SIZE - (KOOPA_HEIGHT - SIZE), RED_KOOPA,
-					&(this -> koopaTextures));
+					Koopa *k = new Koopa(j * SIZE, i * SIZE - (KOOPA_HEIGHT - SIZE), RED_KOOPA, this -> koopaTextures);
 					this -> enemies.push_back(k);
 				}; break;
 				case PIRANHA_PLANT: {
-					PiranhaPlant *p = new PiranhaPlant(j * SIZE,
-					i * SIZE - (PIRANHAPLANT_HEIGHT - SIZE),
-					&(this -> piranhaPlantTextures));
+					PiranhaPlant *p = new PiranhaPlant(j * SIZE, i * SIZE - (PIRANHAPLANT_HEIGHT - SIZE), this -> piranhaPlantTextures);
 					this -> enemies.push_back(p);
 				}; break;
 				default: {
 					// Altimenti si tratta di un blocco statico.
 					int tid = getStaticTextureID(current);
 					if (tid != -1) {
-						Block *b = new Block(current, j * SIZE,
-						i * SIZE, this -> staticTextures[tid]);
+						Block *b = new Block(current, j * SIZE, i * SIZE, this -> staticTextures[tid]);
 						b -> setCollidable(isCollidable(current));
 						this -> blocks.push_back(b);
 					}
@@ -557,7 +546,6 @@ void Scene::drawScene(sf::RenderWindow *window) {
 		window -> setView(bg);
 		// Disegno lo sfondo.
 		int width = (int) bgSprite.getLocalBounds().size.x;
-		//int width = (int) bgSprite.getLocalBounds().width;
 		for (int i = 0; i < getSceneWidth(); i += W_WIDTH) {
 			bgSprite.setPosition({
 				static_cast<float>(i), 

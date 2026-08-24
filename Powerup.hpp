@@ -25,7 +25,7 @@ class Powerup {
 		sf::Vector2i size;
 		sf::Sprite sprite;
 	public:
-		Powerup(powerup_t type, float x, float y, int w, int h, sf::Texture &t);
+		Powerup(powerup_t type_, float x, float y, int w, int h, sf::Texture &t);
 		powerup_t getType();
 		bool isTaken();
 		void setTaken(bool v);

@@ -23,7 +23,7 @@ class Enemy {
 		sf::Vector2i size;
 		sf::Sprite sprite;
 	public:
-		Enemy(block_t type, float x, float y, int w, int h, sf::Texture &t);
+		Enemy(block_t type_, float x, float y, int w, int h, sf::Texture &t);
 		~Enemy();
 		block_t getType();
 		bool isAlive();

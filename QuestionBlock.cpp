@@ -20,23 +20,19 @@
  *	@param x posizione lungo l'asse x
  *	@param y posizione lungo l'asse y
  *	@param id identificativo del tipo di powerup da generare
- *	@param textures puntatore al vettore delle texture da utilizzare
+ *	@param textures_ riferimento al vettore delle texture da utilizzare
  */
-QuestionBlock::QuestionBlock(
-	float x, 
-	float y, 
-	powerup_t id, 
-	std::vector<sf::Texture> *textures) 
-	: Block(QUESTION, x, y, (*textures)[0]) 
+QuestionBlock::QuestionBlock(float x, float y, powerup_t id, std::vector<sf::Texture> &textures_) :
+	Block(QUESTION, x, y, textures_[0]),
+	textures(textures_),
+	elapsed(0),
+	textureID(ACTIVE_0),
+	hasPowerup(true),
+	spawn(id)
 {
 	// Automaticamente vengono settati:
 	// this -> active = true;
 	// this -> collidable = true;
-	this -> textures = textures;
-	this -> elapsed = 0;
-	this -> textureID = ACTIVE_0;
-	this -> hasPowerup = true;
-	this -> spawn = id;
 }
 
 /**
@@ -45,7 +41,7 @@ QuestionBlock::QuestionBlock(
 void QuestionBlock::hit() {
 	if (this -> active) {
 		this -> active = false;
-		this -> sprite.setTexture((*textures)[(int) INACTIVE]);
+		this -> sprite.setTexture(textures[(int) INACTIVE]);
 	}
 }
 
@@ -100,6 +96,6 @@ Powerup *QuestionBlock::getPowerup() {
 void QuestionBlock::update(sf::Time dt) {
 	if (this -> active) {
 		textureID = nextQuestionTexture(textureID);
-		this -> sprite.setTexture((*textures)[(int) textureID]);
+		this -> sprite.setTexture(textures[(int) textureID]);
 	}
 }

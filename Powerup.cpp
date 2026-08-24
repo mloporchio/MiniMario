@@ -17,13 +17,13 @@
  *	@param h altezza del powerup
  *	@param t puntatore alla texture da utilizzare per il powerup
  */
-Powerup::Powerup(powerup_t type, float x, float y, int w, int h, sf::Texture &t) : sprite(t) {
-	this -> type = type;
-	this -> taken = false;
-	this -> speed.x = 0;
-	this -> speed.y = 0;
-	this -> size.x = w;
-	this -> size.y = h;
+Powerup::Powerup(powerup_t type_, float x, float y, int w, int h, sf::Texture &t) : 
+	sprite(t),
+	type(type_),
+	taken(false),
+	speed(0, 0),
+	size({w, h})
+{
 	this -> sprite.setPosition({x, y});
 }
 

@@ -13,15 +13,17 @@
 /**
  *	@brief Costruttore della classe Block
  *	
- *	@param type identificativo del tipo di blocco
+ *	@param type_ identificativo del tipo di blocco
  *	@param x posizione iniziale sull'asse x
  *	@param y posizione iniziale sull'asse y
  *	@param t puntatore alla texture da usare
  */
-Block::Block(block_t type, float x, float y, sf::Texture &t) : sprite(t) {
-	this -> type = type;
-	this -> active = true;
-	this -> collidable = true;
+Block::Block(block_t type_, float x, float y, sf::Texture &t) : 
+	sprite(t),
+	type(type_),
+	active(true),
+	collidable(true)
+{
 	this -> sprite.setPosition({x, y});
 }
 

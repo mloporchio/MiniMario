@@ -14,13 +14,13 @@
 
 class QuestionBlock : public Block {
 	private:
-		std::vector<sf::Texture> *textures;
+		std::vector<sf::Texture> &textures;
 		question_texture_t textureID;
 		powerup_t spawn;
 		int elapsed;
 		bool hasPowerup;
 	public:
-		QuestionBlock(float x, float y, powerup_t id, std::vector<sf::Texture> *textures);
+		QuestionBlock(float x, float y, powerup_t id, std::vector<sf::Texture> &textures_);
 		void setActive(bool v);
 		bool getActive();
 		void hit();
