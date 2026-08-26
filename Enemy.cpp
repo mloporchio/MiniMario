@@ -2,22 +2,21 @@
  *	@file Enemy.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe Enemy relativa al
- *	generico nemico di Mario
+ *	@brief Implementation of the Enemy class
  */
 
 #include "Enemy.hpp"
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe Enemy
+ *	@brief Enemy constructor
  *
- *	@param type elemento della tilemap che identifica il tipo di nemico
- *	@param x posizione inziale sull'asse x
- *	@param y posizione iniziale sull'asse y
- *	@param w larghezza dell'elemento
- *	@param h altezza dell'elemento
- *	@param t puntatore alla texture da utilizzare
+ *	@param type_ 
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param w enemy width
+ *	@param h enemy height
+ *	@param t texture to be used for the Enemy sprite
  */
 Enemy::Enemy(block_t type_, float x, float y, int w, int h, sf::Texture &t) : 
 	sprite(t),
@@ -28,83 +27,73 @@ Enemy::Enemy(block_t type_, float x, float y, int w, int h, sf::Texture &t) :
 	speed(0, 0),
 	size({w, h})
 {
-	// this -> type = type;
-	// this -> onGround = false;
-	// this -> alive = true;
-	// this -> collidable = true;
-	// this -> speed.x = 0;
-	// this -> speed.y = 0;
 	this -> sprite.setPosition({x, y});
-	// this -> size.x = w;
-	// this -> size.y = h;
 }
 
 /**
- *	@brief Distruttore della classe Enemy
+ *	@brief Enemy destructor
  */
 Enemy::~Enemy() {}
 
 /**
- *	@brief Restituisce il tipo del nemico corrente
+ *	@brief Returns the type of the Enemy
  *
- *	@return Identificativo del tipo di nemico
+ *	@return Enemy type identifier
  */
 block_t Enemy::getType() {
 	return this -> type;
 }
 
 /**
- *	@brief Dice se il nemico è vivo oppure no
+ *	@brief Tells whether the Enemy is alive or not
  *
- *	@return Un valore di verità che indica se il nemico è vivo o no
+ *	@return true if the Enemy is alive, false otherwise
  */
 bool Enemy::isAlive() {
 	return this -> alive;
 }
 
 /**
- *	@brief Rende il nemico vivo/morto
+ *	@brief Sets the Enemy alive or dead
  *
- *	@param v valore di verità che indica se il nemico è vivo o morto
+ *	@param v true to make the Enemy alive, false to make it dead
  */
 void Enemy::setAlive(bool v) {
 	this -> alive = v;
 }
 
 /**
- *	@brief Indica se il nemico è soggetto a collisioni
+ *	@brief Tells whether the Enemy is collidable or not
  *	
- *	@return Un valore di verità che indica se il nemico è soggetto
- *	alle collisioni oppure no
+ *	@return true if the Enemy is collidable, false otherwise
  */
 bool Enemy::isCollidable() {
 	return this -> collidable;
 }
 
 /**
- *	@brief Rende il nemico soggetto/non soggetto a collisioni
+ *	@brief Makes the Enemy collidable or not
  *
- *	@param v valore di verità che indica se il nemico è o non è
- *	soggetto a collisioni
+ *	@param v true to make the Enemy collidable, false to disable collisions
  */
 void Enemy::setCollidable(bool v) {
 	this -> collidable = v;
 }
 
 /**
- *	@brief Restituisce la velocità corrente del nemico
+ *	@brief Returns the current speed of the Enemy
  *
- *	@return Il vettore velocità del nemico
+ *	@return Enemy speed vector
  */
 sf::Vector2f Enemy::getSpeed() {
 	return this -> speed;
 }
 
 /**
- *	@brief Imposta la velocità corrente del nemico
+ *	@brief Sets the current speed of the Enemy
  *
- *	@param x componente del vettore lungo l'asse x
- *	@param y componente del vettore lungo l'asse y
+ *	@param x speed component along the x axis
+ *	@param y speed component along the y axis
  */
 void Enemy::setSpeed(float x, float y) {
 	this -> speed.x = x; 

@@ -2,18 +2,18 @@
  *	@file Goomba.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe relativa al nemico Goomba
+ *	@brief Implementation of the Goomba class
  */
 
 #include "Goomba.hpp"
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe Goomba
+ *	@brief Goomba constructor
  *
- *	@param x posizione sull'asse x
- *	@param y posizione sull'asse y
- *	@param textures puntatore al vettore con le texture
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param textures_ texture vector for the associated sprite
  */
 Goomba::Goomba(float x, float y, std::vector<sf::Texture> &textures_) :
 	Enemy(GOOMBA, x, y, SIZE, SIZE, textures_[0]), 
@@ -25,15 +25,14 @@ Goomba::Goomba(float x, float y, std::vector<sf::Texture> &textures_) :
 }
 
 /**
- *	@brief Funzione di aggiornamento del nemico Goomba
+ *	@brief Update function for the Goomba object
  *
- *	@param dt intervallo di tempo dall'ultimo aggiornamento
+ *	@param dt time elapsed since last update
  *	@param blocks vettore contenente i blocchi
  *	@param enemies vettore contenente i nemici
  *	@param index indice di Goomba all'interno del vettore dei nemici
  */
-void Goomba::update(sf::Time dt, std::vector<Block *> blocks,
-	std::vector<Enemy *> enemies, int index) {
+void Goomba::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index) {
 	float posX = this -> sprite.getPosition().x;
 	float posY = this -> sprite.getPosition().y;
 	float velX = this -> speed.x;
@@ -57,14 +56,14 @@ void Goomba::update(sf::Time dt, std::vector<Block *> blocks,
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni di Goomba lungo l'asse x
+ *	@brief Handles collisions of Goomba along the x axis
  *
- *	@param px puntatore alla posizione sull'asse x
- *	@param py puntatore alla posizione sull'asse y
- *	@param vx puntatore alla velocità lungo l'asse x
- *	@param blocks vettore contenente i blocchi
- *	@param enemies vettore contenente i nemici
- *	@param index indice di Goomba all'interno del vettore dei nemici
+ *	@param px current x position
+ *	@param py current y position
+ *	@param vx current x velocity
+ *	@param blocks vector of blocks
+ *	@param enemies vector of enemies
+ *	@param index index of Goomba within the vector of enemies
  */
 void Goomba::handleXCollisions(float *px, float *py, float *vx,
 	std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index) {

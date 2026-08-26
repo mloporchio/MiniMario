@@ -13,26 +13,7 @@
  *	Vengono utilizzati nella classe "Scene".
  */
 #define SCENE_MUSIC_THEME "sounds/scene_theme.ogg"
-#define SCENE_SOUND_N 1
 #define SCENE_SOUND_WIN "sounds/scene_win.wav"
-
-/** Tipo enumerato per indicizzare i suoni del livello. */
-typedef enum {
-	WIN = 0
-} scene_sound_t;
-
-/**
- *	@brief Restituisce il percorso dei suoni relativi al livello
- *
- *	@param id identificativo del suono
- *
- *	@return Una stringa contenente il path del suono
- */
-static inline const char *SceneSoundPath(scene_sound_t id) {
-	switch (id) {
-		case WIN: return SCENE_SOUND_WIN;
-	}
-}
 
 /*
  *	Definizione dei suoni relativi al personaggio Mario.

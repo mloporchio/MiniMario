@@ -1,17 +1,16 @@
-/*
+/** 
  *	@file Game.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Implementazione della classe principale del gioco
+ *	@brief Implementation of the Game class
  */
 
 #include <ctime>
 #include "Game.hpp"
 #include "Config.hpp"
-#include "Errors.hpp"
 
 /**
- *	@brief Costruttore della classe di gioco
+ *	@brief Game constructor
  */
 Game::Game() : 
 	window(sf::VideoMode({W_WIDTH, W_HEIGHT}), W_TITLE), 
@@ -24,14 +23,14 @@ Game::Game() :
 }
 
 /**
- *	@brief Distruttore della classe di gioco
+ *	@brief Game destructor
  */
 Game::~Game() {
 	if (scene) delete scene;
 }
 
 /**
- *	@brief Gestisce gli eventi indirizzati alla finestra principale di gioco
+ *	@brief Handles all events directed to the main game window
  */
 void Game::handleEvent() {
 	while (const std::optional<sf::Event> event = this->window.pollEvent()) {
@@ -55,51 +54,49 @@ void Game::handleEvent() {
 }
 
 /**
- *	@brief Aggiorna lo stato corrente del gioco
- *
- *	@return 0 in caso di successo, 1 in caso di fallimento
+ *	@brief Updates the current game state
  */
-int Game::update() {
+void Game::update() {
 	switch (this -> gameMode) {
-		// Finisco qui se sono nel menu principale del gioco.
+		// Main menu.
 		case MENU: {
-			// Controllo se sono appena uscito dal livello.
+			// Check if we have just left the level.
 			if (this -> scene) {
-				// Cancello il livello.
+				// Delete the level scene.
 				delete scene;
 				this -> scene = NULL;
-				// Resetto la vista.
+				// Reset the view.
 				sf::View defaultView(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT}));
 				window.setView(defaultView);
 			}
-			// Aggiorno il menu.
+			// Update the menu.
 			this -> mainMenu.updateMenu(&(this -> gameMode));
 			if (this -> gameMode == PLAYING) {
-				// Open the level file and create a new scene.
+				// Open the level file and create a new scene object.
 				std::string levelPath = (this -> mainMenu).getLevelFile();
 				this -> scene = new Scene(levelPath);
 			}
 			if (this -> gameMode == QUIT) this -> window.close();
 		}; break;
-		// Finisco qui se sto giocando.
+		// Playing.
 		case PLAYING: {
+			// Update the scene.
 			this -> scene -> updateScene();
 		}; break;
 		default: break;
 	}
-	return 0;
 }
 
 /**
- *	@brief Disegna il contenuto della finestra
+ *	@brief Draws the content of the game window.
  */
 void Game::draw() {
 	switch (this -> gameMode) {
-		// Disegno il menu.
+		// Draw the main menu.
 		case MENU: {
 			this -> mainMenu.drawMenu(&(this -> window));
 		}; break;
-		// Disegno la schermata di gioco.
+		// Draw the game scene.
 		case PLAYING: {
 			this -> scene -> drawScene(&(this -> window));
 		}; break;
@@ -108,19 +105,16 @@ void Game::draw() {
 }
 
 /**
- *	@brief Manda in esecuzione il game loop
- *
- *	@return 0 in caso di successo, 1 in caso di fallimento
+ *	@brief Runs the game loop.
  */
-int Game::run() {
+void Game::run() {
 	while (window.isOpen()) {
         this -> handleEvent();
-        if (this -> update()) return 1;
+        this -> update();
 		this -> window.clear(C_BACKGROUND);
-		// Da qui in poi si disegna...
+		// Draw the content of the window.
 		this -> draw();
-		// Fine dei disegni...
+		// Display the window.
 		this -> window.display();
     }
-	return 0;
 }

@@ -2,8 +2,7 @@
  *	@file CoinPowerup.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe CoinPowerup, relativa al
- *	powerup di tipo moneta
+ *	@brief Definition of the CoinPowerup class
  */
 
 #ifndef COIN_POWERUP_H
@@ -11,7 +10,7 @@
 
 #include "Powerup.hpp"
 
-/** Velocità con cui esce il powerup. */
+/** Speed of the coin powerup. */
 #define COIN_POWERUP_SPEED 35.0f
 
 class CoinPowerup : public Powerup {

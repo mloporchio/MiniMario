@@ -2,7 +2,7 @@
  *	@file Koopa.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe relativa al nemico Koopa
+ *	@brief Definition of the Koopa class
  */
 
 #ifndef KOOPA_H
@@ -12,13 +12,13 @@
 #include "Physics.hpp"
 #include "Textures.hpp"
 
-/** Tempo di animazione per Koopa. */
+/** Koopa animation time. */
 #define KOOPA_ANIMATION_TIME 200
-/** Numero massimo di rimbalzi del guscio di Koopa. */
+/** Maximum number of bounces of the Koopa shell. */
 #define KOOPA_BOUNCE_MAX 3
-/** Altezza del personaggio Koopa. */
+/** Koopa height. */
 #define KOOPA_HEIGHT 48
-/** Velocità standard del personaggio Koopa. */
+/** Standard Koopa speed. */
 #define KOOPA_SPEED 5.0f
 
 class Koopa : public Enemy {

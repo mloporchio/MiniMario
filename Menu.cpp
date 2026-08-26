@@ -6,13 +6,10 @@
  */
 
 #include <cstdlib>
+#include <iostream>
 #include <cstring>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
+#include <filesystem>
 #include "Menu.hpp"
-#include "Errors.hpp"
 #include "Textures.hpp"
 
 /**
@@ -34,16 +31,15 @@ Menu::Menu() :
 	// this -> labelFont.loadFromFile(FONT_PATH);
 	// Creazione delle entry per il menu principale.
 	for (int i = 0; i < MAIN_ENTRY_N; i++) {
-		MenuEntry e((char *) getEntryName((main_entry_t) i),
-		&(this -> labelFont), FONT_SIZE);
+		MenuEntry e(getEntryName((main_entry_t) i), this -> labelFont, FONT_SIZE);
 		this -> mainEntries.push_back(e);
 	}
 	// Creazione delle entry per il menu di selezione livelli.
-	MenuEntry back((char *) "Indietro", &(this -> labelFont), FONT_SIZE);
+	MenuEntry back("Back", this -> labelFont, FONT_SIZE);
 	this -> levelEntries.push_back(back);
 	// Scansiono la directory dei file di livello.
 	if (this -> loadLevelEntries()) {
-		throw std::runtime_error(E_LEVEL_LIST_LOAD);
+		throw std::runtime_error("Menu: error while loading level entries.");
 	}
 	// Imposto il logo da mostrare nella schermata principale.
 	//this -> logoImage.loadFromFile(LOGO_TEXTURE);
@@ -70,35 +66,27 @@ Menu::Menu() :
 }
 
 /**
- *	@brief Analizza la directory contenente i livelli del gioco e
- *	crea una voce del menu per ciascuno di essi
+ *	@brief Reads the level files from the LEVEL_DIRECTORY and creates a MenuEntry for each of them
  *
- *	@return 0 in caso di successo, 1 in caso di fallimento
+ *	@return 0 in case of success, 1 in case of failure
  */
 int Menu::loadLevelEntries() {
-	DIR *dp = NULL;
-	struct dirent *entry = NULL;
-	char path[BUFSIZE];
-	// Apro la directory.
-	if (!(dp = opendir(LEVEL_DIRECTORY))) return 1;
-	// Scorro tutti i file della directory.
-	while ((entry = readdir(dp))) {
-		memset(path, 0, sizeof(path));
-		snprintf(path, sizeof(path), "%s/%s", LEVEL_DIRECTORY,
-		entry -> d_name);
-		// Prendo solo i file regolari e che non cominciano con il punto.
-		struct stat s;
-		if (!stat(path, &s)) {
-			if (S_ISREG(s.st_mode) && strncmp(entry -> d_name, ".", 1)) {
-				MenuEntry m((char *) entry -> d_name, &(this -> labelFont),
-				FONT_SIZE);
-				this -> levelEntries.push_back(m);
-			}
-		}
-		else return 1;
-	}
-	closedir(dp);
-	return 0;
+    try {
+        for (const auto& entry : std::filesystem::directory_iterator(LEVEL_DIRECTORY)) {
+			// Skip hidden files.
+            if (entry.path().filename().string().front() == '.') continue;
+			// Skip non-regular files.
+            if (entry.is_regular_file()) {
+                MenuEntry m(entry.path().filename().string(), this->labelFont, FONT_SIZE);
+                this->levelEntries.push_back(m);
+            }
+        }
+    }
+    catch (const std::filesystem::filesystem_error& e) {
+		std::cerr << "Menu: error while loading level entries: " << e.what() << std::endl;
+        return 1;
+    }
+    return 0;
 }
 
 /**
@@ -127,24 +115,6 @@ void Menu::handleEvent(sf::Event e) {
                 break;
         }
     }
-
-	// if (e.type == sf::Event::KeyPressed) {
-	// 	int entries =
-	// 		((menuMode == MAIN) ? mainEntries.size() : levelEntries.size());
-	// 	switch (e.key.code) {
-	// 		case sf::Keyboard::Up: {
-	// 			this -> selected = prevOption(this -> selected, entries);
-	// 		}; break;
-	// 		case sf::Keyboard::Down: {
-	// 			this -> selected = nextOption(this -> selected, entries);
-	// 		}; break;
-	// 		case sf::Keyboard::Return: {
-	// 			this -> enterKeyPressed = true;
-	// 		}; break;
-	// 		default: break;
-	// 	}
-	// }
-	// return;
 }
 
 /**

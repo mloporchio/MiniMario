@@ -2,19 +2,18 @@
  *	@file Coin.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe Coin relativa alle
- *	monete presenti nel gioco
+ *	@brief Implementation of the Coin class
  */
 
 #include "Coin.hpp"
 #include "Config.hpp"
 
 /**
- *	@brief Costruttore della classe Coin
+ *	@brief Coin constructor
  *
- *	@param x posizione del blocco sull'asse x
- *	@param y posizione del blocco sull'asse y
- *	@param textures_ riferimento al vettore delle texture da utilizzare
+ *	@param x initial position on the x axis 
+ *	@param y initial position on the y axis
+ *	@param textures_ texture vector for the associated sprite
  */
 Coin::Coin(float x, float y, std::vector<sf::Texture> &textures_) : 
 	Block(COIN, x, y, textures_[0]), 
@@ -28,7 +27,7 @@ Coin::Coin(float x, float y, std::vector<sf::Texture> &textures_) :
 }
 
 /**
- *	@brief Funzione invocata quando la moneta viene raccolta
+ *	@brief Called when the Coin is hit by the player
  */
 void Coin::hit() {
 	this -> active = false;
@@ -36,9 +35,9 @@ void Coin::hit() {
 }
 
 /**
- *	@brief Funzione di aggiornamento della moneta
+ *	@brief Update function for the Coin object
  *
- *	@param dt intervallo di tempo dall'ultimo aggiornamento
+ *	@param dt time elapsed since last update
  */
 void Coin::update(sf::Time dt) {
 	if (this -> active) {

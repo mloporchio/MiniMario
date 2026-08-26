@@ -2,8 +2,7 @@
  *	@file QuestionBlock.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Definizione della classe QuestionBlock relativa al blocco
- *	capace di produrre dei powerup
+ *	@brief Definition of the QuestionBlock class
  */
 #ifndef QUESTIONBLOCK_H
 #define QUESTIONBLOCK_H
@@ -27,22 +26,6 @@ class QuestionBlock : public Block {
 		Powerup *getPowerup();
 		void update(sf::Time dt);
 };
-
-/**
- *	@brief Restituisce un tipo di powerup da generare quando il blocco 
- *	viene colpito
- *
- *	@param i un intero pseudocasuale 
- *
- *	@return L'identificativo del powerup
- */
-static inline powerup_t getSpawnID(int i) {
-	int size = 10;
-	powerup_t A[] = {COIN_POWERUP, COIN_POWERUP, COIN_POWERUP, COIN_POWERUP,
-	COIN_POWERUP, COIN_POWERUP, SUPER_MUSHROOM, SUPER_MUSHROOM,
-	ONEUP_MUSHROOM, ONEUP_MUSHROOM};
-	return A[(i % size)];
-}
 
 /**
  *	@brief Restituisce la prossima texture da utilizzare per il Question Block

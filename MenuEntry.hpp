@@ -2,7 +2,9 @@
  *	@file MenuEntry.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Definizione della classe MenuEntry per le voci del menu
+ *	@brief Definition of the MenuEntry class
+ *
+ *	The MenuEntry class represents a single entry in the game menu.
  */
 
 #ifndef MENUENTRY_H
@@ -14,7 +16,7 @@ class MenuEntry : public sf::Text {
 	private:
 		bool selected;
 	public:
-		MenuEntry(const std::string &label, sf::Font *font, int fontSize);
+		MenuEntry(const std::string &label, const sf::Font &font, int fontSize);
 		std::string getLabel();
 		void setLabel(const std::string &label);
 		bool isSelected();

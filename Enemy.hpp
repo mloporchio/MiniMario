@@ -2,8 +2,7 @@
  *	@file Enemy.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe Enemy, che modella il
- *	generico nemico di Mario
+ *	@brief Definition of the Enemy class
  */
 
 #ifndef ENEMY_H

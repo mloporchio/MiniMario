@@ -2,7 +2,7 @@
  *	@file Physics.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Definizioni e parametri della fisica del gioco
+ *	@brief Definitions and parameters for the physics engine of the game
  */
 
 #ifndef PHYSICS_H

@@ -2,7 +2,9 @@
  *	@file Textures.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Definizioni relative alle texture usate nel gioco
+ *	@brief Definitions related to the textures used in the game
+ *
+ *	This file contains definitions related to the textures used in the game.
  */
 
 #ifndef TEXTURES_H

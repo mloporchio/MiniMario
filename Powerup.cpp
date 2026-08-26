@@ -2,13 +2,13 @@
  *	@file Powerup.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe Powerup
+ *	@brief Implementation of the Powerup class
  */
 
 #include "Powerup.hpp"
 
 /**
- *	@brief Constructor of the Powerup class
+ *	@brief Powerup constructor
  *
  *	@param type identificativo del tipo di powerup
  *	@param x posizione lungo l'asse x

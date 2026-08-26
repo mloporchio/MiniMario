@@ -24,8 +24,8 @@ typedef enum {
 	QUIT_ENTRY = 1
 } main_entry_t;
 
-#define PLAY_ENTRY_TEXT "Gioca"
-#define QUIT_ENTRY_TEXT "Esci"
+#define PLAY_ENTRY_TEXT "Play"
+#define QUIT_ENTRY_TEXT "Quit"
 
 /**
  *	@brief Restituisce il nome della voce del menu principale
@@ -34,7 +34,7 @@ typedef enum {
  *
  *	@return Una stringa contenente il nome della voce
  */
-static inline const char *getEntryName(main_entry_t id) {
+static inline std::string getEntryName(main_entry_t id) {
 	switch (id) {
 		case PLAY_ENTRY: return PLAY_ENTRY_TEXT;
 		case QUIT_ENTRY: return QUIT_ENTRY_TEXT;
@@ -45,7 +45,7 @@ static inline const char *getEntryName(main_entry_t id) {
 #define VSPACE 64
 
 /** Titolo della schermata di selezione livelli. */
-#define SELECTION_TITLE "Seleziona il livello"
+#define SELECTION_TITLE "Select a level"
 
 /** Tipo enumerato per lo stato interno del menu. */
 typedef enum {
@@ -104,7 +104,7 @@ static inline int nextOption(int id, int n) {
  */
 static inline int prevOption(int id, int n) {
 	if (id > 0) return ((id - 1) % n);
-	else return n - 1;
+	return n - 1;
 }
 
 #endif

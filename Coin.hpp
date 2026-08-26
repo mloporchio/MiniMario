@@ -2,8 +2,7 @@
  *	@file Coin.hpp
  *	@author Matteo Loporchio
  *	
- *	@brief Contiene la definizione della classe Coin per le monete presenti
- *	all'interno del gioco
+ *	@brief Definition of the Coin class
  */
 
 #ifndef COIN_H
@@ -25,12 +24,11 @@ class Coin : public Block {
 };
 
 /**
- *	@brief Funzione di utilità che restituisce la prossima texture da
- *	utilizzare per la moneta
+ *	@brief Returns the identifier of the next texture to be used for the Coin
  *
- *	@param id identificativo della texture corrente
+ *	@param id current texture identifier
  *	
- *	@return L'identificativo della prossima texture da utilizzare
+ *	@return identifier of the next texture to be used
  */
 static inline coin_texture_t nextCoinTexture(coin_texture_t id) {
 	return ((coin_texture_t) ((((int) id) + 1) % COIN_TEXTURE_N));

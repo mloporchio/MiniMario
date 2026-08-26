@@ -2,23 +2,25 @@
  *	@file Layer.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe Layer
+ *	@brief Implementation of the Layer class
  */
 
 #include "Layer.hpp"
 #include "Config.hpp"
 
 /**
- *	@brief Costruttore della classe Layer
+ *	@brief Layer constructor
+ *
+ *	@param viewR initial view rectangle
  */
 Layer::Layer(sf::FloatRect viewR) : View(viewR) {
-	// Non c'è niente da fare!
+	// Nothing else to do here.
 }
 
 /**
- *	@brief Restituisce il rettangolo della vista del layer
+ *	@brief Returns the view rectangle of the layer
  *
- *	@return Il rettangolo della vista corrente associata al layer
+ *	@return view rectangle of the layer
  */
 sf::FloatRect Layer::getViewRectangle() {
 	sf::Vector2f c = this -> getCenter();

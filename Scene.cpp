@@ -2,15 +2,14 @@
  *	@file Scene.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Implementazione della classe Scene, corrispondente al generico livello
- *	del gioco
+ *	@brief Implementation of the Scene class
+ *
  */
 
 #include <iostream>
 #include <stdexcept>
 #include "Scene.hpp"
 #include "Config.hpp"
-#include "Errors.hpp"
 #include "Physics.hpp"
 #include "Textures.hpp"
 #include "Sounds.hpp"
@@ -25,15 +24,11 @@
 #include "CoinPowerup.hpp"
 
 /**
- *	@brief Metodo costruttore della classe scena
+ *	@brief Scene constructor
  *
- *	@param level puntatore al file del livello
- *
- *	@note Può lanciare un'eccezione nei casi in cui l'argomento è NULL,
- *	oppure se fallisce il caricamento della tilemap da file
- *
+ *	@param path path of the level file
  */
-Scene::Scene(const std::string &path) :
+Scene::Scene(const std::string &path) : 
 	tilemap(path),
 	fg(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT})),
 	bg(sf::FloatRect({0, 0}, {W_WIDTH, W_HEIGHT})),
@@ -45,9 +40,12 @@ Scene::Scene(const std::string &path) :
 	winLabel(font, WIN_MSG, WIN_FONT_SIZE),
 	infoLabel(font, INFO_MSG, INFO_FONT_SIZE),
 	random_engine(std::random_device()()),
-	uniform_dist(0, MAX_RANDOM_VALUE),
+	uniform_dist(0, NUM_POWERUP-1),
 	win(false),
-	gameOver(false)
+	gameOver(false),
+	theme(SCENE_MUSIC_THEME),
+	sceneSoundBufferWin(SCENE_SOUND_WIN),
+	sceneSoundWin(sceneSoundBufferWin)
 {
 	// Carico le texture.
 	this -> loadTextures();
@@ -59,9 +57,10 @@ Scene::Scene(const std::string &path) :
 	this -> refreshCurrentBlocks();
 	// Aggiorno il vettore dei nemici correnti.
 	this -> refreshCurrentEnemies();
-	// Carico i suoni.
-	this -> loadSounds();
-	// Inizializza le etichette.
+	// Initialize music.
+	this -> theme.setLooping(true);
+	this -> theme.play();
+	// Initialize labels.
 	this -> scoreLabel.setPosition(SCORE_POSITION);
 }
 
@@ -81,13 +80,11 @@ Scene::~Scene() {
 	for (int i = 0; i < this -> powerups.size(); i++) {
 		delete powerups[i];
 	}
-	// Cancello la tilemap.
-	// destroyTilemap(this -> tilemap);
 	// Cancello i suoni.
-	for (int i = 0; i < SCENE_SOUND_N; i++) {
-		delete soundBuffers[i];
-		delete sounds[i];
-	}
+	// for (int i = 0; i < SCENE_SOUND_N; i++) {
+	// 	delete soundBuffers[i];
+	// 	delete sounds[i];
+	// }
 	std::cout << "Scene destroyed!" << std::endl;
 }
 
@@ -166,27 +163,6 @@ void Scene::loadTextures() {
 }
 
 /**
- *	@brief Carica tutti i suoni e gli effetti sonori della scena e
- *	li inserisce negli appositi array
- */
-void Scene::loadSounds() {
-	bool loadResult = false;
-	loadResult = this -> theme.openFromFile(SCENE_MUSIC_THEME);
-	if (!loadResult) throw std::runtime_error("loadSounds: Cannot load music file.");
-	this -> theme.setLooping(true);
-	this -> theme.play();
-	for (int i = 0; i < SCENE_SOUND_N; i++) {
-		sf::SoundBuffer *sb = new sf::SoundBuffer();
-		loadResult = sb -> loadFromFile(SceneSoundPath((scene_sound_t) i));
-		if (!loadResult) throw std::runtime_error("loadSounds: Cannot load sound file.");
-		this -> soundBuffers.push_back(sb);
-		sf::Sound *snd = new sf::Sound(*(this -> soundBuffers[i]));
-		//snd -> setBuffer(*(this -> soundBuffers[i]));
-		this -> sounds.push_back(snd);
-	}
-}
-
-/**
  *	@brief Scandisce tutta la tilemap per produrre le sprite e gli
  *	ostacoli
  */
@@ -200,7 +176,7 @@ void Scene::processTilemap() {
 			// Controllo di che tipo di blocco si tratta.
 			switch (current) {
 				case QUESTION: {
-					powerup_t powerupId = getSpawnID(uniform_dist(random_engine));
+					powerup_t powerupId = static_cast<powerup_t>(uniform_dist(random_engine));
 					QuestionBlock *q = new QuestionBlock(j * SIZE, i * SIZE, powerupId, this -> questionTextures);
 					this -> blocks.push_back(q);
 				}; break;
@@ -371,9 +347,8 @@ void Scene::updateLabels() {
 		float x = center.x - W_WIDTH / 2 + position.x,
 		y = center.y - W_HEIGHT / 2 + position.y;
 		this -> scoreLabel.setPosition({x, y});
-		char scoreString[(BUFSIZE / 8)];
-		unsigned int scoreValue = this -> hero.getScore();
-		snprintf(scoreString, sizeof(scoreString), "Score: %u", scoreValue);
+		std::string scoreValue = std::to_string(this -> hero.getScore());
+		std::string scoreString = "Score: " + scoreValue;
 		this -> scoreLabel.setString(scoreString);
 		return;
 	}
@@ -518,7 +493,7 @@ void Scene::updateScene() {
 	if (this -> checkPlayerWin() && !win) {
 		win = true;
 		this -> theme.stop();
-		this -> playSound(WIN);
+		this -> sceneSoundWin.play();
 	}
 	// Aggiorno i blocchi.
 	this -> updateBlocks(dt);
@@ -598,16 +573,6 @@ void Scene::drawScene(sf::RenderWindow *window) {
 			window -> draw(this -> scoreLabel);
 		}
 	}
-	return;
-}
-
-/**
- *	@brief Riproduce un suono della scena
- *
- * 	@param id identificativo del suono da riprodurre
- */
-void Scene::playSound(scene_sound_t id) {
-	this -> sounds[(int) id] -> play();
 	return;
 }
 

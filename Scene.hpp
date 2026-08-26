@@ -2,8 +2,7 @@
  *	@file Scene.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe Scene, che rappresenta ciascun
- *	livello del gioco
+ *	@brief Definition of the Scene class
  */
 
 #ifndef SCENE_H
@@ -40,13 +39,13 @@
 #define GAME_OVER_FONT_SIZE 20
 
 /** Testo dell'etichetta da mostrare quando si vince. */
-#define WIN_MSG "Livello completato!"
+#define WIN_MSG "Level complete!"
 
 /** Dimensione del font dell'etichetta di vittoria. */
 #define WIN_FONT_SIZE 20
 
 /** Testo dell'etichetta con le informazioni. */
-#define INFO_MSG "Premi invio per tornare al menu"
+#define INFO_MSG "Press ENTER to continue"
 
 /** Dimensione del font dell'etichetta con le informazioni. */
 #define INFO_FONT_SIZE 12
@@ -79,15 +78,14 @@ class Scene {
 		std::vector<Enemy *> currentEnemies;
 		std::vector<Powerup *> powerups;
 		sf::Music theme;
-		std::vector<sf::SoundBuffer *> soundBuffers;
-		std::vector<sf::Sound *> sounds;
+		sf::SoundBuffer sceneSoundBufferWin;
+		sf::Sound sceneSoundWin;
 		Tilemap tilemap;
 		sf::Clock timer;
 		Mario hero;
 		bool win;
 		bool gameOver;
 		void loadTextures();
-		void loadSounds();
 		void processTilemap();
 		void updateBlocks(sf::Time dt);
 		void updateEnemies(sf::Time dt);
@@ -98,7 +96,6 @@ class Scene {
 		void refreshCurrentEnemies();
 		bool checkPlayerDead();
 		bool checkPlayerWin();
-		void playSound(scene_sound_t id);
 	public:
 		Scene(const std::string &path);
 		~Scene();

@@ -2,7 +2,7 @@
  *	@file Mario.cpp
  *	@author Matteo Loporchio
  *
- *	@brief This file contains the implementation of the methods related to the Mario object
+ *	@brief Implementation of the Mario class
  */
 
 #include <cmath>
@@ -326,8 +326,6 @@ int Mario::checkBlockCollisions(std::vector<Block *> blocks, sf::IntRect MarioR,
 			*IntR = intersection.value();
 			return i;
 		}
-		//if (collidable && MarioR.intersects(BlockR, *IntR)) return i;
-		//if (collidable && sf::intersects(MarioR, BlockR, *IntR)) return i;
 	}
 	return -1;
 }
@@ -365,7 +363,6 @@ int Mario::checkEnemyCollisions(std::vector<Enemy *> enemies, sf::IntRect MarioR
  */
 void Mario::checkPowerupCollision(std::vector<Powerup *> *powerups, sf::IntRect MarioR) {
 	sf::IntRect PowerR;
-	//sf::IntRect IntR, PowerR;
 	bool taken = false;
 	powerup_t type;
 	for (int i = 0; i < powerups -> size(); i++) {

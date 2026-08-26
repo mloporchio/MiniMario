@@ -2,7 +2,7 @@
  *	@file Powerup.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Definizione della classe relativa al generico powerup del gioco
+ *	@brief Definition of the Powerup class
  */
 
 #ifndef POWERUP_H
@@ -12,10 +12,13 @@
 
 /** Tipo enumerato per indicizzare le varie tipologie di powerup. */
 typedef enum {
-	SUPER_MUSHROOM = 0,
-	ONEUP_MUSHROOM = 1,
-	COIN_POWERUP = 2
+	SUPER_MUSHROOM 	= 0,
+	ONEUP_MUSHROOM 	= 1,
+	COIN_POWERUP 	= 2
 } powerup_t;
+
+/** Number of powerup types. */
+#define NUM_POWERUP 3
 
 class Powerup {
 	protected:

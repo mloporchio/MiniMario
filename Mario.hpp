@@ -2,7 +2,7 @@
  *	@file Mario.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe relativa al personaggio Mario 
+ *	@brief Definition of the Mario class
  */
 #ifndef MARIO_H
 #define MARIO_H
@@ -52,19 +52,12 @@ class Mario {
 		mario_texture_t textureID;
 		void triggerBlockAction(Block *b, std::vector<Powerup *> *powerups);
 		void loadSounds();
-		int checkBlockCollisions(std::vector<Block *> blocks,
-			sf::IntRect MarioR, sf::IntRect *IntR);
-		int checkEnemyCollisions(std::vector<Enemy *> enemies,
-			sf::IntRect MarioR, sf::IntRect *IntR);
-		void checkPowerupCollision(std::vector<Powerup *> *powerups,
-			sf::IntRect MarioR);
+		int checkBlockCollisions(std::vector<Block *> blocks, sf::IntRect MarioR, sf::IntRect *IntR);
+		int checkEnemyCollisions(std::vector<Enemy *> enemies, sf::IntRect MarioR, sf::IntRect *IntR);
+		void checkPowerupCollision(std::vector<Powerup *> *powerups, sf::IntRect MarioR);
 		bool checkBorderCollision(float *px, float *vx);
-		void handleXCollisions(float *px, float *py, float *vx,
-			std::vector<Block *> blocks, std::vector<Enemy *> enemies,
-			std::vector<Powerup *> *powerups);
-		void handleYCollisions(float *px, float *py, float *vy,
-			std::vector<Block *> blocks, std::vector<Enemy *> enemies,
-			std::vector<Powerup *> *powerups);
+		void handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks, std::vector<Enemy *> enemies, std::vector<Powerup *> *powerups);
+		void handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> blocks, std::vector<Enemy *> enemies, std::vector<Powerup *> *powerups);
 		void updateTexture(sf::Time dt);
 	public:
 		Mario();
@@ -78,8 +71,7 @@ class Mario {
 		void endJump();
 		void startRunning(direction_t d);
 		void endRunning();
-		void update(sf::Time dt, std::vector<Block *> blocks,
-			std::vector<Enemy *> enemies, std::vector<Powerup *> *powerups);
+		void update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *> enemies, std::vector<Powerup *> *powerups);
 		bool isSuper();
 		void setSuper(bool v);
 		bool isInvisible();

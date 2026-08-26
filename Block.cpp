@@ -2,8 +2,7 @@
  *	@file Block.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Questo file contiene l'implementazione della classe Block
- *	relativa al generico blocco che costituisce il livello
+ *	@brief Implementation of the Block class
  */
 
 #include <cmath>
@@ -11,12 +10,12 @@
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe Block
+ *	@brief Block constructor
  *	
- *	@param type_ identificativo del tipo di blocco
- *	@param x posizione iniziale sull'asse x
- *	@param y posizione iniziale sull'asse y
- *	@param t puntatore alla texture da usare
+ *	@param type_ block type identifier
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param t initial texture for the Block sprite
  */
 Block::Block(block_t type_, float x, float y, sf::Texture &t) : 
 	sprite(t),
@@ -28,82 +27,80 @@ Block::Block(block_t type_, float x, float y, sf::Texture &t) :
 }
 
 /**
- *	@brief Distruttore della classe Block
+ *	@brief Block destructor
  */
 Block::~Block() {
 	// Do nothing!
 }
 
 /**
- *	@brief Restituisce il tipo del blocco
+ *	@brief Returns the block type identifier
  *	
- *	@return L'identificativo del tipo di blocco
+ *	@return block type identifier
  */
 block_t Block::getType() {
 	return this -> type;
 }
 
 /**
- *	@brief Dice se il blocco è attivo oppure no
+ *	@brief Tells whether the block is active or not
  *
- *	@return Un valore di verità che indica se il blocco è attivo
+ *	@return true if the block is active, false otherwise
  */
 bool Block::isActive() {
 	return this -> active;
 }
 
 /**
- *	@brief Attiva/disattiva il blocco
+ *	@brief Activates or disables the block
  *
- *	@param v valore di verità che indica se attivare o disattivare
+ *	@param v true to make the block active, false to disable it
  */
 void Block::setActive(bool v) {
 	this -> active = v;
 }
 
 /**
- *	@brief Indica se il blocco è soggetto a collisioni
+ *	@brief Tells whether the block is collidable or not
  *
- * 	@return Un valore di verità che indica se il blocco è soggetto
- *	alle collisioni oppure no
+ * 	@return true if the block is collidable, false otherwise
  */
 bool Block::isCollidable() {
 	return this -> collidable;
 }
 
 /**
- *	@brief Rende il blocco soggetto/non soggetto a collisioni
+ *	@brief Makes the block collidable or not
  *
- *	@param v valore di verità che indica se il blocco è o non è
- *	soggetto a collisioni
+ *	@param v true to make the block collidable, false to disable collisions
  */
 void Block::setCollidable(bool v) {
 	this -> collidable = v;
 }
 
 /**
- *	@brief Imposta la posizione corrente del blocco
+ *	@brief Sets the position of the block
  *
- *	@param x ascissa del punto
- *	@param y ordinata del punto
+ *	@param x x-axis position
+ *	@param y y-axis position
  */
 void Block::setPosition(float x, float y) {
 	this -> sprite.setPosition({x, y});
 }
 
 /**
- *	@brief Restiuisce la posizione corrente del blocco
+ *	@brief Returns the position of the block
  *
- *	@return Il vettore posizione del blocco
+ *	@return position vector of the block
  */
 sf::Vector2f Block::getPosition() {
 	return (this -> sprite.getPosition());
 }
 
 /**
- *	@brief Restituisce il bounding rectangle del blocco
+ *	@brief Returns the bounding rectangle of the block
  *
- *	@return Il rettangolo che contiene il blocco
+ *	@return bounding rectangle of the block
  */
 sf::IntRect Block::getRectangle() {
 	sf::Vector2f p = this -> getPosition();
@@ -111,9 +108,9 @@ sf::IntRect Block::getRectangle() {
 }
 
 /**
- *	@brief Restituisce la sprite associata al blocco
+ *	@brief Returns the sprite associated with the block
  *
- *	@return La sprite associata al blocco
+ *	@return sprite associated with the block
  */
 sf::Sprite Block::getSprite() {
 	return this -> sprite;

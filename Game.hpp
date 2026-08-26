@@ -1,8 +1,10 @@
-/*
+/** 
  *	@file Game.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe principale del gioco
+ *	@brief Definition of the Game class
+ *
+ *	The Game class is the main class of the game. It contains the main menu and the scene.
  */
 
 #ifndef GAME_H
@@ -12,7 +14,6 @@
 #include "Scene.hpp"
 #include "Config.hpp"
 
-// Definizione della classe del gioco.
 class Game {
 	private:
 		sf::RenderWindow window;
@@ -20,12 +21,12 @@ class Game {
 		Menu mainMenu;
 		game_mode_t gameMode;
 		void handleEvent();
-		int update();
+		void update();
 		void draw();
 	public:
 		Game();
 		~Game();
-		int run();
+		void run();
 };
 
 #endif

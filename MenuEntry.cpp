@@ -2,7 +2,7 @@
  *	@file MenuEntry.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Implementazione della classe relativa alla menu entry
+ *	@brief Implementation of the MenuEntry class
  */
 
 #include <cstring>
@@ -16,7 +16,7 @@
  *	@param font puntatore al font da utilizzare
  *	@param fontSize dimensione del font
  */
-MenuEntry::MenuEntry(const std::string &label, sf::Font *font, int fontSize) : sf::Text(*font, label, fontSize) {
+MenuEntry::MenuEntry(const std::string &label, const sf::Font &font, int fontSize) : sf::Text(font, label, fontSize) {
 	// this -> setString(label);
 	// this -> setCharacterSize(fontSize);
 	// this -> setFont(*font);

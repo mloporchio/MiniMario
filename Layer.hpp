@@ -2,9 +2,9 @@
  *	@file Layer.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe Layer
+ *	@brief Definition of the Layer class
  *
- *	Il layer estende il concetto di vista fornito da SFML.
+ *	Layer extends the concept of view provided by the SFML library.
  */
 
 #ifndef LAYER_H

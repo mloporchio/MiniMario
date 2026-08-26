@@ -12,5 +12,6 @@
 
 int main(int argc, char const *argv[]) {
 	Game myFavouriteGame;
-	return myFavouriteGame.run();
+	myFavouriteGame.run();
+	return 0;
 }

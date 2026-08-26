@@ -2,13 +2,9 @@
  *	@file Block.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe Block
+ *	@brief Definition of the Block class
  *
- *	La classe modella tutte le entità di tipo blocco. Un blocco è un
- *	generico elemento del mondo in cui si trova Mario.
- *
- *	I blocchi hanno tutti una dimensione fissa SIZE x SIZE, dove SIZE
- *	è un parametro definito nel file Physics.hpp.
+ *	The Block is the base class for all elements in the game.
  */
 
 #ifndef BLOCK_H

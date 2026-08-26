@@ -54,10 +54,10 @@ Powerup *QuestionBlock::getPowerup() {
 	if (this -> hasPowerup) {
 		Powerup *p = NULL;
 		bool loadResult = false;
+		sf::Vector2f pos = this -> getPosition();
 		switch (this -> spawn) {
 			case SUPER_MUSHROOM: {
 				// Ottengo la posizione del blocco corrente.
-				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
 				loadResult = t -> loadFromFile(SUPERMUSHROOM_TEXTURE);
 				if (!loadResult) throw std::runtime_error("getPowerup: Cannot load super mushroom texture.");
@@ -65,7 +65,6 @@ Powerup *QuestionBlock::getPowerup() {
 				p = (Powerup *) m;
 			}; break;
 			case ONEUP_MUSHROOM: {
-				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
 				loadResult = t -> loadFromFile(ONEUPMUSHROOM_TEXTURE);
 				if (!loadResult) throw std::runtime_error("getPowerup: Cannot load one-up mushroom texture.");
@@ -73,7 +72,6 @@ Powerup *QuestionBlock::getPowerup() {
 				p = (Powerup *) o;
 			}; break;
 			case COIN_POWERUP: {
-				sf::Vector2f pos = this -> getPosition();
 				sf::Texture *t = new sf::Texture();
 				loadResult = t -> loadFromFile(COIN_POWERUP_TEXTURE);
 				if (!loadResult) throw std::runtime_error("getPowerup: Cannot load coin texture.");

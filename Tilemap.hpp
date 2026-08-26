@@ -9,6 +9,7 @@
 #define TILEMAP_H
 
 #include <string>
+#include <vector>
 
 /** Number of distinct blocks represented in a tilemap. */
 #define BLOCK_N 20
@@ -41,9 +42,10 @@ typedef enum {
 
 
 /**
- *	@brief This class represents a generic tilemap.
+ *	@brief This class represents a generic tilemap
  *
- *	A tilemap is represented as a matrix of blocks.
+ *	A tilemap is represented as a rows*cols matrix of blocks.
+ *	The tilemap is linearized in memory, i.e., stored as a single vector of block_t elements.
  */
 class Tilemap {
 public:
@@ -58,7 +60,7 @@ public:
 private:
     unsigned int rows;
     unsigned int cols;
-    block_t **map;
+	std::vector<block_t> map;
 };
 
 #endif

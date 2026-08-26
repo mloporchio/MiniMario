@@ -2,8 +2,7 @@
  *	@file Goomba.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe Goomba, relativa all'omonimo
- *	nemico di Mario all'interno del gioco
+ *	@brief Definition of the Goomba class
  */
 
 #ifndef GOOMBA_H
@@ -12,9 +11,9 @@
 #include "Enemy.hpp"
 #include "Textures.hpp"
 
-/** Tempo che trascorre fra una texture e l'altra di Goomba. */
+/** Time elapsed between two Goomba textures. */
 #define GOOMBA_ANIMATION_TIME 200
-/** Velocità con cui si muove il nemico. */
+/** Speed with which the Goomba moves. */
 #define GOOMBA_SPEED 7.0f
 
 class Goomba : public Enemy {
@@ -24,26 +23,20 @@ class Goomba : public Enemy {
 		int elapsed;
 	public:
 		Goomba(float x, float y, std::vector<sf::Texture> &textures_);
-		void update(sf::Time dt, std::vector<Block *> blocks,
-			std::vector<Enemy *> enemies, int index);
-		void handleXCollisions(float *px, float *py, float *vx,
-			std::vector<Block *> blocks, std::vector<Enemy *> enemies,
-			int index);
-		void handleYCollisions(float *px, float *py, float *vy,
-			std::vector<Block *> blocks, std::vector<Enemy *> enemies,
-			int index);
+		void update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index);
+		void handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index);
+		void handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index);
 };
 
 /**
- *	@brief Funzione di utilità che restituisce la prossima texture per Goomba
+ *	@brief Utility function to get the next texture of a Goomba
  *
- *	@param id identificativo della texture corrente
+ *	@param id current texture identifier
  *
- *	@return L'identificativo della texture successiva
+ *	@return next texture identifier
  */
 static inline goomba_texture_t nextGoombaTexture(goomba_texture_t id) {
-	if (id == GOOMBA_0) return GOOMBA_1;
-	else return GOOMBA_0;
+	return ((id == GOOMBA_0) ? GOOMBA_1 : GOOMBA_0);
 }
 
 #endif

@@ -2,26 +2,29 @@
  *	@file SuperMushroom.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe SuperMushroom
+ *	@brief Implementation of the SuperMushroom class
  */
 
 #include "SuperMushroom.hpp"
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe SuperMushroom
+ *	@brief SuperMushroom constructor
+ *
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param t initial texture for the SuperMushroom sprite
  */
-SuperMushroom::SuperMushroom(float x, float y, sf::Texture &t)
-	: Powerup(SUPER_MUSHROOM, x, y, SIZE, SIZE, t) 
+SuperMushroom::SuperMushroom(float x, float y, sf::Texture &t) : Powerup(SUPER_MUSHROOM, x, y, SIZE, SIZE, t) 
 {
-	// Imposto la velocità con cui esce fuori il powerup.
+	// Set the speed with which the powerup will be ejected.
 	this -> setSpeed(SUPER_MUSHROOM_SPEED, 0);
 }
 
 /**
- *	@brief Funzione di aggiornamento dell'oggetto
+ *	@brief Update function for the SuperMushroom object
  *
- *	@param dt intervallo di tempo dall'ultimo aggiornamento
+ *	@param dt time elapsed since last update
  *	@param blocks vettore contenente i blocchi
  */
 void SuperMushroom::update(sf::Time dt, std::vector<Block *> blocks) {

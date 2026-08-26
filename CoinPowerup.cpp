@@ -2,19 +2,18 @@
  *	@file CoinPowerup.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe relativa al powerup
- *	di tipo moneta
+ *	@brief Implementation of the CoinPowerup class
  */
 
 #include "CoinPowerup.hpp"
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe CoinPowerup
+ *	@brief CoinPowerup constructor
  *
- *	@param x posizione iniziale lungo l'asse x
- *	@param y posizione iniziale lungo l'asse y
- *	@param t puntatore alla texture da utilizzare
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param t initial texture for the powerup sprite
  */ 
 CoinPowerup::CoinPowerup(float x, float y, sf::Texture &t) :
 	Powerup(COIN_POWERUP, x, y, SIZE, SIZE, t),
@@ -24,21 +23,21 @@ CoinPowerup::CoinPowerup(float x, float y, sf::Texture &t) :
 }
 
 /**
- *	@brief Funzione di aggiornamento del powerup CoinPowerup
+ *	@brief Update function for the CoinPowerup object
  *
- *	@param dt intervallo di tempo dall'ultimo aggiornamento
+ *	@param dt time elapsed since last update
  */
 void CoinPowerup::update(sf::Time dt) {
 	float posX = this -> sprite.getPosition().x;
 	float posY = this -> sprite.getPosition().y;
 	float velY = this -> speed.y;
 	posY += velY * 0.2f;
-	// Controllo se è giunto il momento di disattivarlo.
+	// Check if it is time to deactivate it.
 	if (posY < y0 - SIZE) {
 		this -> taken = true;
 		return;
 	}
-	// Scrivo i risultati dei calcoli.
+	// Write the results of the calculations.
 	this -> setPosition(posX, posY);
 	this -> speed.y = velY;
 }

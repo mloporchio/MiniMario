@@ -10,6 +10,20 @@
 #include <fstream>
 #include <stdexcept>
 
+/** 
+ *  @brief Utility function to validate the size of a tilemap
+ *
+ *  @param n size to validate
+ *
+ *  @return The input size if it is positive, otherwise throws an exception
+ *
+ *  @throw std::invalid_argument if the size is not positive
+ */
+static unsigned int validateSize(unsigned int n) {
+    if (n == 0) throw std::invalid_argument("Rows and columns must be positive integers.");
+    return n;
+}
+
 /**
  *	@brief Tilemap constructor
  *
@@ -18,14 +32,12 @@
  *
  *	@throw std::invalid_argument if the number of rows or columns is not positive
  */
-Tilemap::Tilemap(unsigned int nrows, unsigned int ncols) : rows(nrows), cols(ncols) {
-    if (!(rows > 0 && cols > 0)) {
-        throw std::invalid_argument("Rows and columns must be positive integers.");
-    }
-    map = new block_t*[rows];
-    for (unsigned int i = 0; i < rows; i++) {
-        map[i] = new block_t[cols]();
-    }
+Tilemap::Tilemap(unsigned int nrows, unsigned int ncols) : 
+    rows(validateSize(nrows)), 
+    cols(validateSize(ncols)), 
+    map(nrows*ncols, EMPTY) 
+{
+    // Nothing else to do here.
 }
 
 /**
@@ -38,38 +50,34 @@ Tilemap::Tilemap(unsigned int nrows, unsigned int ncols) : rows(nrows), cols(nco
 Tilemap::Tilemap(const std::string &path) {
     // Open the file in binary mode.
     std::ifstream file(path, std::ios::binary);
-    if (!file) throw std::runtime_error("Could not open file: " + path);
+    if (!file) {
+        throw std::runtime_error("Could not open file: " + path);
+    }
     // Read the width and height of the tilemap from the file.
     unsigned int size[2];
     file.read(reinterpret_cast<char*>(size), sizeof(size));
-    if (!file) throw std::runtime_error("Could not read tilemap dimensions.");
+    if (!file) {
+        throw std::runtime_error("Could not read tilemap dimensions.");
+    }
     // Create the tilemap with the specified dimensions.
     this->rows = size[0];
     this->cols = size[1];
-    this->map = new block_t*[this->rows];
-    for (unsigned int i = 0; i < this->rows; i++) {
-        this->map[i] = new block_t[this->cols]();
+    if (this->rows == 0 || this->cols == 0) {
+        throw std::runtime_error("Invalid tilemap dimensions.");
     }
-    // Read the content of the matrix.
-    for (unsigned int i = 0; i < this->rows; i++) {
-        file.read(reinterpret_cast<char*>(this->map[i]), this->cols * sizeof(block_t));
-        if (!file) {
-            // TODO: add cleanup code.
-            throw std::runtime_error("Could not read tilemap data.");
-        }
+    // Allocate the linearized tilemap.
+    this->map.resize(this->rows * this->cols);
+    // Read the tilemap data.
+    file.read(reinterpret_cast<char*>(this->map.data()), this->map.size() * sizeof(block_t));
+    if (!file) {
+        throw std::runtime_error("Could not read tilemap data.");
     }
 }
 
 /**
  *	@brief Tilemap destructor
- *
- *	Destroys the tilemap and frees the allocated memory.
  */
 Tilemap::~Tilemap() {
-    for (unsigned int i = 0; i < rows; i++) {
-        delete[] map[i];
-    }
-    delete[] map;
     std::cout << "Tilemap destroyed!" << std::endl;
 }
 
@@ -103,7 +111,7 @@ block_t Tilemap::getElement(unsigned int i, unsigned int j) {
     if (i >= this -> rows || j >= this -> cols) {
         throw std::out_of_range("getElement: Index out of range.");
     }
-    return this -> map[i][j];
+    return this -> map[i * (this -> cols) + j];
 }
 
 /**
@@ -117,7 +125,7 @@ void Tilemap::setElement(unsigned int i, unsigned int j, block_t e) {
     if (i >= this -> rows || j >= this -> cols) {
         throw std::out_of_range("setElement: Index out of range.");
     }
-    this -> map[i][j] = e;
+    this -> map[i * (this -> cols) + j] = e;
 }
 
 /**
@@ -128,10 +136,6 @@ void Tilemap::setElement(unsigned int i, unsigned int j, block_t e) {
  *  @throw std::invalid_argument if the file pointer is NULL or the tilemap is NULL
  */
 void Tilemap::save(const std::string &path) {
-    // Check that the tilemap is not NULL.
-    if (!this->map) {
-        throw std::invalid_argument("save: Tilemap is NULL.");
-    }
     // Open the file in binary mode.
     std::ofstream file(path, std::ios::binary);
     if (!file) {
@@ -142,9 +146,13 @@ void Tilemap::save(const std::string &path) {
     size[0] = this->rows;
     size[1] = this->cols;
     file.write(reinterpret_cast<char*>(size), sizeof(size));
+    if (!file) {
+        throw std::runtime_error("save: Could not write tilemap dimensions.");
+    }
     // Write the content of the matrix.
-    for (int i = 0; i < this->rows; i++) {
-        file.write(reinterpret_cast<char*>(this->map[i]), this->cols * sizeof(block_t));
+    file.write(reinterpret_cast<char*>(this->map.data()), this->map.size() * sizeof(block_t));
+    if (!file) {
+        throw std::runtime_error("save: Could not write tilemap data.");
     }
 }
 
