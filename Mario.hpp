@@ -19,23 +19,23 @@
 #include "Enemy.hpp"
 #include "Powerup.hpp"
 
-/** Posizione iniziale del personaggio. */
+/** Initial position of Mario. */
 #define MARIO_POSITION sf::Vector2f(0.0f, 0.0f)
-/** Intervallo di animazione per il personaggio (in millisecondi). */
+/** Animation time interval for Mario (in milliseconds). */
 #define MARIO_ANIMATION_TIME 60
-/** Tempo per cui Mario resta invisibile dopo il powerup. */
+/** Time for Mario to remain invisible after a powerup is collected (in milliseconds). */
 #define INVISIBLE_TIME 10000
-/** Tempo per cui Mario resta invisibile dopo essere tornato piccolo. */
+/** Time for Mario to remain invisible after becoming small (in milliseconds). */
 #define TRANSITION_TIME 2000
-/** L'incremento di punteggio. */
+/** Default score increment. */
 #define SCORE_INC 10
 
-/** Classe che rappresenta il personaggio. */
+/** Class representing Mario. */
 class Mario {
 	private:
 		std::vector<sf::Texture> textures;
-		std::vector<sf::SoundBuffer *> soundBuffers;
-		std::vector<sf::Sound *> sounds;
+		std::vector<std::unique_ptr<sf::SoundBuffer>> soundBuffers;
+		std::vector<std::unique_ptr<sf::Sound>> sounds;
 		sf::Sprite sprite;
 		sf::Vector2i size;
 		sf::Vector2f speed;
@@ -83,14 +83,13 @@ class Mario {
 };
 
 /**
- *	@brief Restituisce la prossima texture da utilizzare per l'animazione
+ *	@brief Returns the next texture to be used for Mario animation
  *
- *	@param current identificativo della texture corrente
+ *	@param current current texture identifier
  *
- *	@return L'identificativo della texture successiva
+ *	@return identifier of the next texture to be used
  */
-static inline mario_texture_t nextAnimationTexture(bool super,
-	mario_texture_t current) {
+static inline mario_texture_t nextAnimationTexture(bool super, mario_texture_t current) {
 	if (super == false) {
 		switch (current) {
 			case STANDING: return RUNNING_0;
@@ -126,13 +125,12 @@ static inline mario_texture_t nextAnimationTexture(bool super,
 }
 
 /**
- *	@brief Funzione di utilità che dato un identificativo di texture
- *	di Mario piccolo (risp. grande) restiuisce l'identificativo corrispondente
- *	di Mario grande (risp. piccolo)
+ *	Given a texture identifier for small (resp. large) Mario returns the texture identifier 
+ *	for the corresponding larger (resp. smaller) texture.
  *
- *	@param id identificativo della texture
+ *	@param id current texture identifier
  *
- *	@return Identificativo della texture corrispondente
+ *	@return identifer of the corresponding larger or smaller texture
  */
 static inline mario_texture_t switchMarioTexture(mario_texture_t id) {
 	switch (id) {

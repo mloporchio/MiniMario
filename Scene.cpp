@@ -3,7 +3,6 @@
  *	@author Matteo Loporchio
  *
  *	@brief Implementation of the Scene class
- *
  */
 
 #include <iostream>
@@ -65,33 +64,27 @@ Scene::Scene(const std::string &path) :
 }
 
 /**
- *	@brief Distruttore della classe scena
+ *	@brief Scene destructor
  */
 Scene::~Scene() {
-	// Distruggo tutti i blocchi.
+	// Destroy all blocks.
 	for (int i = 0; i < this -> blocks.size(); i++) {
 		delete blocks[i];
 	}
-	// Distruggo tutti i nemici.
+	// Destroy all enemies.
 	for (int i = 0; i < this -> enemies.size(); i++) {
 		delete enemies[i];
 	}
-	// Distruggo tutti i powerup.
+	// Destroy all powerups.
 	for (int i = 0; i < this -> powerups.size(); i++) {
 		delete powerups[i];
 	}
-	// Cancello i suoni.
-	// for (int i = 0; i < SCENE_SOUND_N; i++) {
-	// 	delete soundBuffers[i];
-	// 	delete sounds[i];
-	// }
 	std::cout << "Scene destroyed!" << std::endl;
 }
 
 
 /**
- *	@brief Carica tutte le texure dai relativi file e le aggiunge
- *	all'array delle texture
+ *	@brief Loads all textures from the texture sheets and adds them to the corresponding vectors
  */
 void Scene::loadTextures() {
 	bool loadResult = false;
@@ -163,8 +156,7 @@ void Scene::loadTextures() {
 }
 
 /**
- *	@brief Scandisce tutta la tilemap per produrre le sprite e gli
- *	ostacoli
+ *	@brief Reads the tilemap and initializes both sprites and obstacles
  */
 void Scene::processTilemap() {
 	block_t current;
@@ -215,11 +207,11 @@ void Scene::processTilemap() {
 }
 
 /**
- *	@brief Funzione di gestione degli eventi
+ *	@brief Event handling function
  *
- *	@param e l'evento da gestire
+ *	@param e event to be handled
  */
-void Scene::handleEvent(sf::Event e, game_mode_t *gameMode) {
+void Scene::handleEvent(sf::Event e, game_mode_t &gameMode) {
 	if (const auto* keyPressed = e.getIf<sf::Event::KeyPressed>()) {
 		switch (keyPressed->code) {
 			case sf::Keyboard::Key::Left: {
@@ -232,7 +224,7 @@ void Scene::handleEvent(sf::Event e, game_mode_t *gameMode) {
 					this -> hero.startJump();
 				}; break;
 			case sf::Keyboard::Key::Enter: {
-					if (gameOver || win) *gameMode = MENU;
+					if (gameOver || win) gameMode = MENU;
 				}; break;
 			default: break;
 		};
@@ -254,9 +246,9 @@ void Scene::handleEvent(sf::Event e, game_mode_t *gameMode) {
 }
 
 /**
- *	@brief Aggiorna lo stato dei blocchi della scena
+ *	@brief Updates the state of the blocks in the scene
  *
- * 	@param dt intervallo di tempo dall'ultimo aggiornamento
+ * 	@param dt time elapsed since last update
  */
 void Scene::updateBlocks(sf::Time dt) {
 	static int elapsed = 0;
@@ -281,9 +273,9 @@ void Scene::updateBlocks(sf::Time dt) {
 }
 
 /**
- *	@brief Aggiorna lo stato dei nemici nella scena
+ *	@brief Updates the state of the enemies in the scene
  *
- * 	@param dt intervallo di tempo dall'ultimo aggiornamento
+ * 	@param dt time elapsed since last update
  */
 void Scene::updateEnemies(sf::Time dt) {
 	for (int i = 0; i < this -> currentEnemies.size(); i++) {
@@ -311,9 +303,9 @@ void Scene::updateEnemies(sf::Time dt) {
 }
 
 /**
- *	@brief Aggiorna lo stato dei powerup nella scena
+ *	@brief Updates the state of the powerups in the scene
  *
- *	@param dt intervallo di tempo dall'ultimo aggiornamento
+ *	@param dt time elapsed since last update
  */
 void Scene::updatePowerups(sf::Time dt) {
 	for (int i = 0; i < this -> powerups.size(); i++) {
@@ -337,10 +329,10 @@ void Scene::updatePowerups(sf::Time dt) {
 }
 
 /**
- *	@brief Aggiorna le etichette da mostrare nella scena
+ *	@brief Upates the labels to be displayed in the scene
  */
 void Scene::updateLabels() {
-	// Durante il gioco aggiorno l'etichetta del punteggio.
+	// During the game, we update the score label.
 	if (!gameOver && !win) {
 		sf::Vector2f center = this -> fg.getCenter();
 		sf::Vector2f position = SCORE_POSITION;
@@ -370,14 +362,14 @@ void Scene::updateLabels() {
 }
 
 /**
- *	@brief Aggiorna i layer della scena (primo piano e sfondo)
+ *	@brief Updates the layers of the scene (foreground and background)
  *
- *	@param p posizione corrente del personaggio
+ *	@param p current position of the player
  */
 void Scene::updateLayers(sf::Vector2f p) {
-	// Escludo l'aggiornamento se il personaggio è morto.
+	// If the player is dead, we do not update the layers.
 	if (hero.isDead()) return;
-	// Altrimenti aggiorno il layer del primo piano e quello in secondo piano.
+	// Otherwise, we update both the foreground and background layers.
 	int sceneWidth = getSceneWidth();
 	if (W_WIDTH / 2 <= p.x && p.x <= sceneWidth - (W_WIDTH / 2)) {
 		fg.setCenter({p.x, W_HEIGHT / 2});
@@ -396,8 +388,7 @@ void Scene::updateLayers(sf::Vector2f p) {
 }
 
 /**
- *	@brief Determina i blocchi nella vista corrente e li aggiunge
- *	al vettore dei blocchi correnti
+ *	@brief Calculates the blocks in the current view and adds them to the current blocks vector
  */
 void Scene::refreshCurrentBlocks() {
 	block_t type = EMPTY;
@@ -411,11 +402,7 @@ void Scene::refreshCurrentBlocks() {
 		if (type == COIN && !active) continue;
 		//
 		sf::IntRect BlockR = blocks[i] -> getRectangle();
-		sf::Vector2f p{
-			static_cast<float>(BlockR.position.x), 
-			static_cast<float>(BlockR.position.y)
-		};
-		//sf::Vector2f p(BlockR.left, BlockR.top);
+		sf::Vector2f p{static_cast<float>(BlockR.position.x), static_cast<float>(BlockR.position.y)};
 		if (r.contains(p)) {
 			this -> currentBlocks.push_back(this -> blocks[i]);
 		}
@@ -423,8 +410,7 @@ void Scene::refreshCurrentBlocks() {
 }
 
 /**
- *	@brief Determina i nemici nella vista corrente e li aggiunge
- *	al vettore dei nemici correnti
+ *	@brief Calculates the enemies in the current view and adds them to the current enemies vector
  */
 void Scene::refreshCurrentEnemies() {
 	sf::FloatRect r = this -> fg.getRenderRectangle();
@@ -433,11 +419,7 @@ void Scene::refreshCurrentEnemies() {
 		sf::IntRect EnemyR = enemies[i] -> getRectangle();
 		// Prendo solo i nemici ancora vivi.
 		bool alive = enemies[i] -> isAlive();
-		sf::Vector2f p{
-			static_cast<float>(EnemyR.position.x), 
-			static_cast<float>(EnemyR.position.y)
-		};
-		//sf::Vector2f p(EnemyR.left, EnemyR.top);
+		sf::Vector2f p{static_cast<float>(EnemyR.position.x), static_cast<float>(EnemyR.position.y)};
 		if (alive && r.contains(p)) {
 			this -> currentEnemies.push_back(this -> enemies[i]);
 		}
@@ -445,9 +427,9 @@ void Scene::refreshCurrentEnemies() {
 }
 
 /**
- *	@brief Controlla la posizione di Mario per stabilire se è morto
+ *	@brief Checks the position of Mario to determine whether he is dead or not
  *
- * 	@return Un valore di verità che indica se Mario è morto o no
+ * 	@return true if Mario is dead, false otherwise
  */
 bool Scene::checkPlayerDead() {
 	// Ottengo la posizione corrente di Mario.
@@ -464,9 +446,9 @@ bool Scene::checkPlayerDead() {
 }
 
 /**
- *	@brief Controlla la posizione di Mario per stabilire se ha vinto
+ *	@brief Checks the position of Mario to determine whether he has won or not
  *
- * 	@return Un valore di verità che indica se la partita è stata vinta
+ * 	@return true if Mario has won, false otherwise
  */
 bool Scene::checkPlayerWin() {
 	// Ottengo la posizione corrente di Mario.
@@ -476,13 +458,12 @@ bool Scene::checkPlayerWin() {
 }
 
 /**
- *	@brief Funzione di aggiornamento della scena
+ *	@brief Update function for the entire Scene
  */
 void Scene::updateScene() {
 	// Aggiorno Mario e gestisco le sue collisioni.
 	sf::Time dt = timer.restart();
-	this -> hero.update(dt, this -> currentBlocks, this -> currentEnemies,
-	&(this -> powerups));
+	this -> hero.update(dt, this -> currentBlocks, this -> currentEnemies, &(this -> powerups));
 	// Controllo se Mario è morto.
 	if (this -> checkPlayerDead() && !gameOver) {
 		gameOver = true;
@@ -512,75 +493,68 @@ void Scene::updateScene() {
 }
 
 /**
- *	@brief Funzione per disegnare la scena corrente
+ *	@brief Draws the current Scene to the screen
  *
- *	@param window puntatore alla finestra su cui disegnare
+ *	@param window main window of the game
  */
-void Scene::drawScene(sf::RenderWindow *window) {
-	if (window) {
-		if (gameOver) window -> clear(C_GREY);
-		window -> setView(bg);
-		// Disegno lo sfondo.
-		int width = (int) bgSprite.getLocalBounds().size.x;
-		for (int i = 0; i < getSceneWidth(); i += W_WIDTH) {
-			bgSprite.setPosition({
-				static_cast<float>(i), 
-				0
-			});
-			if (gameOver) bgSprite.setColor(C_GREY);
-			window -> draw(bgSprite);
-		}
-		window -> setView(fg);
-		// Disegno i blocchi.
-		for (int i = 0; i < this -> currentBlocks.size(); i++) {
-			block_t type = currentBlocks[i] -> getType();
-			bool active = currentBlocks[i] -> isActive();
-			if (type == COIN && !active) continue;
-			sf::Sprite s = currentBlocks[i] -> getSprite();
+void Scene::drawScene(sf::RenderWindow &window) {
+	if (gameOver) window.clear(C_GREY);
+	window.setView(bg);
+	// Disegno lo sfondo.
+	int width = (int) bgSprite.getLocalBounds().size.x;
+	for (int i = 0; i < getSceneWidth(); i += W_WIDTH) {
+		bgSprite.setPosition({static_cast<float>(i), 0});
+		if (gameOver) bgSprite.setColor(C_GREY);
+		window.draw(bgSprite);
+	}
+	window.setView(fg);
+	// Disegno i blocchi.
+	for (int i = 0; i < this -> currentBlocks.size(); i++) {
+		block_t type = currentBlocks[i] -> getType();
+		bool active = currentBlocks[i] -> isActive();
+		if (type == COIN && !active) continue;
+		sf::Sprite s = currentBlocks[i] -> getSprite();
+		if (gameOver) s.setColor(C_GREY);
+		window.draw(s);
+	}
+	// Disegno i nemici.
+	for (int i = 0; i < this -> currentEnemies.size(); i++) {
+		bool alive = currentEnemies[i] -> isAlive();
+		if (!alive) continue;
+		sf::Sprite s = currentEnemies[i] -> getSprite();
+		if (gameOver) s.setColor(C_GREY);
+		window.draw(s);
+	}
+	// Disegno i powerup.
+	for (int i = 0; i < this -> powerups.size(); i++) {
+		if (!(powerups[i] -> isTaken())) {
+			sf::Sprite s = powerups[i] -> getSprite();
 			if (gameOver) s.setColor(C_GREY);
-			window -> draw(s);
-		}
-		// Disegno i nemici.
-		for (int i = 0; i < this -> currentEnemies.size(); i++) {
-			bool alive = currentEnemies[i] -> isAlive();
-			if (!alive) continue;
-			sf::Sprite s = currentEnemies[i] -> getSprite();
-			if (gameOver) s.setColor(C_GREY);
-			window -> draw(s);
-		}
-		// Disegno i powerup.
-		for (int i = 0; i < this -> powerups.size(); i++) {
-			if (!(powerups[i] -> isTaken())) {
-				sf::Sprite s = powerups[i] -> getSprite();
-				if (gameOver) s.setColor(C_GREY);
-				window -> draw(s);
-			}
-		}
-		if (!gameOver) {
-			// Disegno Mario.
-			window -> draw(this -> hero.getSprite());
-			// Se ho vinto disegno la scritta.
-			if (win) {
-				window -> draw(this -> winLabel);
-				window -> draw(this -> infoLabel);
-			}
-			// Disegno l'etichetta del punteggio.
-			window -> draw(this -> scoreLabel);
-		}
-		else {
-			window -> draw(this -> gameOverLabel);
-			window -> draw(this -> infoLabel);
-			window -> draw(this -> scoreLabel);
+			window.draw(s);
 		}
 	}
-	return;
+	if (!gameOver) {
+		// Disegno Mario.
+		window.draw(this -> hero.getSprite());
+		// Se ho vinto disegno la scritta.
+		if (win) {
+			window.draw(this -> winLabel);
+			window.draw(this -> infoLabel);
+		}
+		// Disegno l'etichetta del punteggio.
+		window.draw(this -> scoreLabel);
+	}
+	else {
+		window.draw(this -> gameOverLabel);
+		window.draw(this -> infoLabel);
+		window.draw(this -> scoreLabel);
+	}
 }
 
 /**
- *	@brief Restituisce la larghezza complessiva della scena
- *	espressa in pixel
+ *	@brief Returns the total width of the scene in pixels
  *
- *	@return Numero di pixel di larghezza
+ *	@return Total width of the scene in pixels
  */
 int Scene::getSceneWidth() {
 	int cols = (this -> tilemap).getCols();
@@ -588,10 +562,9 @@ int Scene::getSceneWidth() {
 }
 
 /**
- *	@brief Restituisce l'altezza complessiva della scena
- *	espressa in pixel
+ *	@brief Returns the total height of the scene in pixels
  *
- * 	@return Numero di pixel in altezza
+ * 	@return Total height of the scene in pixels
  */
 int Scene::getSceneHeight() {
 	int rows = (this -> tilemap).getRows();

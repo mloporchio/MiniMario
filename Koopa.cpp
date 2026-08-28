@@ -2,19 +2,19 @@
  *	@file Koopa.cpp
  *	@author Matteo Loporchio
  *
- * 	@brief Contiene l'implementazione della classe relativa al nemico Koopa
+ * 	@brief Implementation of the Koopa class
  */
 
 #include "Koopa.hpp"
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe Koopa
+ *	@brief Koopa constructor
  *
- *	@param x posizione iniziale sull'asse x
- *	@param y posizione iniziale sull'asse y
- *	@param k identificativo del tipo di Koopa (verde o rosso)
- *	@param textures_ reference al vettore contenente le texture
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param k identifier of the Koopa type (green or red)
+ *	@param textures_ vector of textures to be used for the Koopa sprite
  */
 Koopa::Koopa(float x, float y, block_t k, std::vector<sf::Texture> &textures_) : 
 	Enemy(k, x, y, SIZE, KOOPA_HEIGHT, textures_[0]),
@@ -27,26 +27,25 @@ Koopa::Koopa(float x, float y, block_t k, std::vector<sf::Texture> &textures_) :
 }
 
 /**
- *	@brief Dice se Koopa è atterrato (sul suolo)
+ *	@brief Tells whether Koopa is on the ground or not
  *
- *	@return Un valore di verità che indica se Koopa è atterrato
+ *	@return true if Koopa is on the ground, false otherwise
  */
 bool Koopa::isOnGround() {
 	return this -> onGround;
 }
 
 /**
- *	@brief Dice se Koopa è stato colpito dall'alto
+ *	@brief Tells whether Koopa has been hit from above or not
  *
- *	@return Un valore di verità che indica se Koopa è stato colpito
+ *	@return true if Koopa has been hit, false otherwise
  */
 bool Koopa::isHit() {
 	return this -> hit;
 }
 
 /**
- *	@brief Funzione invocata quando Koopa viene colpito dall'alto
- *	e si ritira dentro il guscio
+ *	@brief Called when Koopa is hit from above and hides inside its shell
  */
 void Koopa::setHit() {
 	if (!hit) {
@@ -60,18 +59,18 @@ void Koopa::setHit() {
 }
 
 /**
- *	@brief Indica se il guscio di Koopa è in movimento oppure no
+ *	@brief Tells whether the shell of Koopa is moving or not
  *
- *	@return Un valore di verità che indica il movimento del guscio di Koopa
+ *	@return true if the shell of Koopa is moving, false otherwise
  */
 bool Koopa::isMoving() {
 	return (this -> speed.x != 0);
 }
 
 /**
- *	@brief Funzione invocata quando il guscio di Koopa viene spinto
+ *	@brief Called when the shell of Koopa is spun
  *
- *	@param d direzione in cui mandare il guscio
+ *	@param d direction in which the shell is spun
  */
 void Koopa::move(direction_t d) {
 	switch (d) {
@@ -82,12 +81,12 @@ void Koopa::move(direction_t d) {
 }
 
 /**
- *	@brief Funzione di aggiornamento del personaggio Koopa
+ *	@brief Update function for the Koopa object
  *
- * 	@param dt intervallo di tempo
- *	@param blocks vettore dei blocchi
- *	@param enemies vettore dei nemici
- *	@param index indice del personaggio nel vettore dei nemici
+ * 	@param dt time elapsed since last update
+ *	@param blocks vector of blocks
+ *	@param enemies vector of enemies
+ *	@param index index of Koopa within the vector of enemies
  */
 void Koopa::update(sf::Time dt, std::vector<Block *> blocks,
 	std::vector<Enemy *> enemies, int index) {
@@ -117,14 +116,14 @@ void Koopa::update(sf::Time dt, std::vector<Block *> blocks,
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni di Koopa lungo l'asse x
+ *	@brief Handles collisions of Koopa along the x axis
  *
- * 	@param px puntatore alla posizione corrente lungo l'asse x
- * 	@param py puntatore alla posizione corrente lungo l'asse y
- * 	@param vx puntatore alla velocità corrente lungo l'asse x
- * 	@param blocks vettore dei blocchi
- * 	@param enemies vettore dei nemici
- * 	@param index indice del personaggio nel vettore dei nemici
+ * 	@param px current position on the x axis
+ * 	@param py current position on the y axis
+ * 	@param vx current velocity on the x axis
+ * 	@param blocks vector of blocks
+ * 	@param enemies vector of enemies
+ * 	@param index index of Koopa within the vector of enemies
  */
 void Koopa::handleXCollisions(float *px, float *py, float *vx,
 	std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index) {
@@ -183,14 +182,14 @@ void Koopa::handleXCollisions(float *px, float *py, float *vx,
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni di Koopa lungo l'asse y
+ *	@brief Handles collisions of Koopa along the y axis
  *
- * 	@param px puntatore alla posizione corrente lungo l'asse x
- * 	@param py puntatore alla posizione corrente lungo l'asse y
- * 	@param vy puntatore alla velocità corrente lungo l'asse y
- * 	@param blocks vettore dei blocchi
- * 	@param enemies vettore dei nemici
- * 	@param index indice del personaggio nel vettore dei nemici
+ * 	@param px current position on the x axis
+ * 	@param py current position on the y axis
+ * 	@param vy current velocity on the y axis
+ * 	@param blocks vector of blocks
+ * 	@param enemies vector of enemies
+ * 	@param index index of Koopa within the vector of enemies
  */
 void Koopa::handleYCollisions(float *px, float *py, float *vy,
 	std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index) {

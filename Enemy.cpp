@@ -101,37 +101,37 @@ void Enemy::setSpeed(float x, float y) {
 }
 
 /**
- *	@brief Restiuisce la posizione corrente del nemico
+ *	@brief Returns the current position of the Enemy
  *
- *	@return Il vettore posizione del nemico
+ *	@return current position of the Enemy
  */
 sf::Vector2f Enemy::getPosition() {
 	return this -> sprite.getPosition();
 }
 
 /**
- *	@brief Imposta la posizione corrente del nemico
+ *	@brief Sets the current position of the Enemy
  *
- *	@param x ascissa del punto
- *	@param y ordinata del punto
+ *	@param x position on the x axis
+ *	@param y position on the y axis
  */
 void Enemy::setPosition(float x, float y) {
 	this -> sprite.setPosition({x, y});
 }
 
 /**
- *	@brief Restituisce la dimensione del nemico
+ *	@brief Returns the size of the Enemy
  *
- *	@return Il vettore contenente larghezza e altezza del nemico
+ *	@return vector containing width and height of the Enemy
  */
 sf::Vector2i Enemy::getSize() {
 	return this -> size;
 }
 
 /**
- *	@brief Restituisce il bounding rectangle del nemico
+ *	@brief Returns the bounding rectangle of the Enemy
  *
- *	@return Il rettangolo che contiene il nemico
+ *	@return bounding rectangle of the Enemy
  */
 sf::IntRect Enemy::getRectangle() {
 	sf::Vector2f p = this -> getPosition();
@@ -139,9 +139,9 @@ sf::IntRect Enemy::getRectangle() {
 }
 
 /**
- *	@brief Restituisce la sprite associata al nemico
+ *	@brief Returns the sprite associated with the Enemy
  *
- *	@return La sprite associata al nemico
+ *	@return sprite associated with the Enemy
  */
 sf::Sprite Enemy::getSprite() {
 	return this -> sprite;

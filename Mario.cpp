@@ -16,9 +16,9 @@
 #include "OneUpMushroom.hpp"
 
 /**
- *	@brief Utility function that loads Mario textures from a texture sheet and places them in a vector.
+ *	@brief Loads Mario textures from a texture sheet
  *
- *	@return A vector containing the textures loaded from the texture sheet
+ *	@return vector containing the textures loaded from the texture sheet
  */
 std::vector<sf::Texture> buildTextureVector() {
 	bool loadResult = false;
@@ -58,7 +58,7 @@ std::vector<sf::Texture> buildTextureVector() {
 }
 
 /**
- *	@brief Metodo costruttore della classe relativa a Mario
+ *	@brief Mario constructor
  */
 Mario::Mario() : 
 	textures(buildTextureVector()), 
@@ -82,73 +82,69 @@ Mario::Mario() :
 }
 
 /**
- *	@brief Distruttore della classe relativa a Mario
+ *	@brief Mario destructor
  */
 Mario::~Mario() {
-	// Cancello tutti i suoni.
-	for (int i = 0; i < MARIO_SOUND_N; i++) {
-		delete soundBuffers[i];
-		delete sounds[i];
-	}
+	// Nothing to do here.
 }
 
 /**
- *	@brief Carica i file audio per gli effetti sonori
+ *	@brief Loads Mario's sound effects
  */
 void Mario::loadSounds() {
-	bool loadResult = false;
-	for (int i = 0; i < MARIO_SOUND_N; i++) {
-		sf::SoundBuffer *sb = new sf::SoundBuffer();
-		loadResult = sb -> loadFromFile(getMarioSoundPath((mario_sound_t) i));
-		if (!loadResult) throw std::runtime_error("loadSounds: Cannot load sound.");
-		this -> soundBuffers.push_back(sb);
-		sf::Sound *snd = new sf::Sound(*(this -> soundBuffers[i]));
-		this -> sounds.push_back(snd);
-	}
+	for (int i = 0; i < MARIO_SOUND_N; ++i) {
+        auto sb = std::make_unique<sf::SoundBuffer>();
+        if (!sb->loadFromFile(getMarioSoundPath(static_cast<mario_sound_t>(i)))) {
+            throw std::runtime_error("loadSounds: Cannot load sound.");
+        }
+        auto sound = std::make_unique<sf::Sound>(*sb);
+        this->soundBuffers.push_back(std::move(sb));
+        this->sounds.push_back(std::move(sound));
+    }
 }
 
 /**
- *	@brief Restituisce la posizione corrente della sprite di Mario
+ *	@brief Returns Mario's current position
  *
- *	@return Vettore posizione del personaggio
+ *	@return Mario's position vector
  */
 sf::Vector2f Mario::getPosition() {
 	return this -> sprite.getPosition();
 }
 
 /**
- *	@brief Imposta la posizione della sprite di Mario
+ *	@brief Sets Mario's current position
  *
- *	@param x ascissa del punto
- *	@param y ordinata del punto
+ *	@param x x-axis position
+ *	@param y y-axis position
  */
 void Mario::setPosition(float x, float y) {
 	this -> sprite.setPosition({x, y});
 }
 
 /**
- *	@brief Restituisce la sprite associata a Mario
+ *	@brief Returns Mario's sprite
  *
- *	@return La sprite associata al personaggio
+ *	@return sprite associated with Mario
  */
 sf::Sprite Mario::getSprite() {
 	return this -> sprite;
 }
 
 /**
- *	@brief Restituisce la velocità corrente di Mario
+ *	@brief Returns Mario's current speed
  *
- *	@return Il vettore velocità del personaggio
+ *	@return Mario's speed vector 
  */
 sf::Vector2f Mario::getSpeed() {
 	return this -> speed;
 }
 
 /**
- *	@brief Imposta la velocità di Mario
+ *	@brief Sets Mario's current speed
  *
- *	@param x componente del vettore velocità lungo l'asse x
- *	@param y componente del vettore velocità lungo l'asse y
+ *	@param x x-axis speed
+ *	@param y y-axis speed
  */
 void Mario::setSpeed(float x, float y) {
 	this -> speed.x = x;
@@ -156,7 +152,7 @@ void Mario::setSpeed(float x, float y) {
 }
 
 /**
- *	@brief Funzione chiamata quando il personaggio deve iniziare il salto
+ *	@brief Called when Mario starts jumping
  */
 void Mario::startJump() {
 	if (this -> onGround) {
@@ -175,7 +171,7 @@ void Mario::startJump() {
 }
 
 /**
- *	@brief Funzione chiamata quando il personaggio deve concludere il salto
+ *	@brief Called when Mario stops jumping
  */
 void Mario::endJump() {
 	if (this -> speed.y < -JUMP_SPEED / 2) {
@@ -184,9 +180,9 @@ void Mario::endJump() {
 }
 
 /**
- *	@brief Funzione chiamata quando il personaggio deve iniziare a correre
+ *	@brief Called when Mario starts running
  *
- *	@param d la direzione in cui il personaggio deve muoversi
+ *	@param d direction in which Mario should move
  */
 void Mario::startRunning(direction_t d) {
 	if (!(this -> running)) {
@@ -224,7 +220,7 @@ void Mario::startRunning(direction_t d) {
 }
 
 /**
- *	@brief Funzione chiamata quando il personaggio deve smettere di correre
+ *	@brief Called when Mario stops running
  */
 void Mario::endRunning() {
 	this -> running = false;
@@ -232,9 +228,9 @@ void Mario::endRunning() {
 }
 
 /**
- *	@brief Funzione di aggiornamento della texture del personaggio
+ *	@brief Updates Mario's texture
  *
- *	@param dt intervallo di tempo trascorso dall'ultimo aggiornamento
+ *	@param dt time elapsed since last update
  */
 void Mario::updateTexture(sf::Time dt) {
 	// Applico la texture giusta al personaggio.
@@ -275,27 +271,23 @@ void Mario::updateTexture(sf::Time dt) {
 }
 
 /**
- *	@brief Funzione di aggiornamento del personaggio
+ *	@brief Update function for Mario
  *
- *	@param dt intervallo di tempo trascorso dall'ultimo aggiornamento
- *	@param blocks array di puntatori ai blocchi della scena corrente
+ *	@param dt time elapsed since last update
+ *	@param blocks vector of pointers to the current scene's blocks
+ *	@param enemies vector of pointers to the current scene's enemies
+ *	@param powerups vector of pointers to the current scene's powerups
  */
 void Mario::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *> enemies, std::vector<Powerup *> *powerups) {
-	//float t = (float) dt.asMilliseconds();
-	//float tx = (t / 100) * 2;
-	//float ty = round(((t / 100) * 3) * 10) / 10;
 	float posX = this -> sprite.getPosition().x;
 	float posY = this -> sprite.getPosition().y;
 	float velX = this -> speed.x;
 	float velY = this -> speed.y;
 	// Calcolo la nuova posizione.
-	//posX += velX * tx;
 	posX += velX * 0.3f;
 	handleXCollisions(&posX, &posY, &velX, blocks, enemies, powerups);
-	//posY += velY * ty;
 	posY += velY * 0.5f;
 	handleYCollisions(&posX, &posY, &velY, blocks, enemies, powerups);
-	//if ((velY += GRAVITY * ty) > FALL_SPEED) velY = FALL_SPEED;
 	if ((velY += GRAVITY * 0.5f) > FALL_SPEED) velY = FALL_SPEED;
 	// Scrivo i risultati dei calcoli.
 	this -> setPosition(posX, posY);
@@ -306,10 +298,10 @@ void Mario::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *
 }
 
 /**
- *	@brief Controlla se c'è una collisione fra Mario e un blocco
+ *	@brief Checks for collisions between Mario and a block
  *
- *	@param blocks il vettore contenente i blocchi
- *	@param MarioR il rettangolo corrente del personaggio
+ *	@param blocks vector of pointers to blocks
+ *	@param MarioR current 
  *	@param IntR puntatore al rettangolo di intersezione
  *
  *	@return L'indice del blocco intersecato in caso di intersezione,
@@ -564,9 +556,9 @@ void Mario::handleYCollisions(
 }
 
 /**
- *	@brief Emette un suono relativo ad un'azione del personaggio
+ *	@brief Plays a sound related to Mario's action
  *
- *	@param id identificativo del suono da riprodurre
+ *	@param id identifier of the sound to play
  */
 void Mario::playSound(mario_sound_t id) {
 	if (this -> dead && id != DIE) return;
@@ -575,10 +567,10 @@ void Mario::playSound(mario_sound_t id) {
 }
 
 /**
- *	@brief Funzione invocata quando Mario collide con un blocco dinamico
+ *	@brief Called when Mario collides with a dynamic block
  *
- *	@param b puntatore al blocco
- *	@param powerups puntatore al vettore dei powerup
+ *	@param b pointer to the block
+ *	@param powerups pointer to the powerup vector
  */
 void Mario::triggerBlockAction(Block *b, std::vector<Powerup *> *powerups) {
 	block_t type = b -> getType();
@@ -614,19 +606,18 @@ void Mario::triggerBlockAction(Block *b, std::vector<Powerup *> *powerups) {
 }
 
 /**
- *	@brief Indica se Mario è in modalità super oppure no
+ *	@brief Tells whether Mario is in super mode or not
  *
- *	@return Un valore di verità che indica se Mario è super oppure no
+ *	@return true if Mario is in super mode, false otherwise
  */
 bool Mario::isSuper() {
 	return this -> super;
 }
 
 /**
- *	@brief Funzione invocata quando Mario cambia le proprie dimensioni
- *	da normale a super e vicecersa
+ *	@brief Called when Mario changes its size from normal to super and vice versa
  *
- *	@param v valore di verità che indica se Mario diventa super oppure no
+ *	@param v true to make Mario super, false to make him normal
  */
 void Mario::setSuper(bool v) {
 	// Voglio settare super a true.
@@ -660,18 +651,18 @@ void Mario::setSuper(bool v) {
 }
 
 /**
- *	@brief Dice se il personaggio è correntemente in modalità invisibile
+ *	@brief Tells whether Mario is currently invisible or not
  *
- *	@return Un valore di verità che dice se Mario è invisibile
+ *	@return true if Mario is invisible, false otherwise
  */
 bool Mario::isInvisible() {
 	return this -> invisible;
 }
 
 /**
- *	@brief Attiva o disattiva la modalità invisibile di Mario
+ *	@brief Sets whether Mario is invisible or not
  *
- *	@param v valore di verità che indica se attivare o disattivare
+ *	@param v true to make Mario invisible, false to make him visible
  */
 void Mario::setInvisible(bool v) {
 	if (v) {
@@ -690,18 +681,18 @@ void Mario::setInvisible(bool v) {
 }
 
 /**
- *	@brief Restituisce un valore di verità che dice se Mario è morto
+ *	@brief Tells whether Mario is dead or not
  *
- * 	@return Un valore di verità che indica se Mario è morto
+ * 	@return true if Mario is dead, false otherwise
  */
 bool Mario::isDead() {
 	return this -> dead;
 }
 
 /**
- *	@brief Imposta il valore di verità che dice se Mario è vivo oppure no
+ *	@brief Sets whether Mario is dead or not
  *
- *	@param v valore di verità da assegnare
+ *	@param v true to make Mario dead, false to let him live
  */
 void Mario::setDead(bool v) {
 	this -> dead = v;
@@ -709,9 +700,9 @@ void Mario::setDead(bool v) {
 }
 
 /**
- *	@brief Restituisce il punteggio corrente del personaggio
+ *	@brief Returns the current score of Mario
  *
- *	@return Il punteggio corrente totalizzato da Mario
+ *	@return total score of Mario
  */
 unsigned int Mario::getScore() {
 	return this -> score;

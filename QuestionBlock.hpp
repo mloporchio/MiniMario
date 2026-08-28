@@ -28,11 +28,11 @@ class QuestionBlock : public Block {
 };
 
 /**
- *	@brief Restituisce la prossima texture da utilizzare per il Question Block
+ *	@brief Returns the next texture to be used for the QuestionBlock
  *
- *	@param id identificativo della texture corrente
+ *	@param id current texture identifier
  *
- *	@return L'identificativo della prossima texture da usare
+ *	@return next texture identifier
  */
 static inline question_texture_t nextQuestionTexture(question_texture_t id) {
 	switch (id) {

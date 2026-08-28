@@ -2,7 +2,7 @@
  *	@file Menu.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Definizione della classe Menu, relativa al menu principale del gioco
+ *	@brief Definition of the Menu class
  */
 
 #ifndef MENU_H
@@ -12,13 +12,13 @@
 #include "Config.hpp"
 #include <SFML/Graphics.hpp>
 
-/** Dimensione del font delle voci del menu. */
+/** Font size for menu entries. */
 #define FONT_SIZE 20
 
-/** Numero di voci nel menu principale. */
+/** Number of entries in the main menu. */
 #define MAIN_ENTRY_N 2
 
-/** Tipo enumerato per identificare le voci del menu principale. */
+/** Enumeration for identifying main menu entries. */
 typedef enum {
 	PLAY_ENTRY = 0,
 	QUIT_ENTRY = 1
@@ -77,8 +77,8 @@ class Menu {
 	public:
 		Menu();
 		void handleEvent(sf::Event e);
-		void updateMenu(game_mode_t *gameMode);
-		void drawMenu(sf::RenderWindow *window);
+		void updateMenu(game_mode_t &gameMode);
+		void drawMenu(sf::RenderWindow &window);
 		std::string getLevelFile();
 };
 

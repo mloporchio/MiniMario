@@ -10,11 +10,11 @@
 #include "Config.hpp"
 
 /**
- *	@brief Costruttore della classe MenuEntry
+ *	@brief MenuEntry constructor
  *
- *	@param label stringa che costituisce il testo
- *	@param font puntatore al font da utilizzare
- *	@param fontSize dimensione del font
+ *	@param label string representing the entry's label
+ *	@param font font for the entry's label
+ *	@param fontSize font size for the entry's label
  */
 MenuEntry::MenuEntry(const std::string &label, const sf::Font &font, int fontSize) : sf::Text(font, label, fontSize) {
 	// this -> setString(label);
@@ -24,10 +24,9 @@ MenuEntry::MenuEntry(const std::string &label, const sf::Font &font, int fontSiz
 }
 
 /**
- *	@brief Restituisce il testo associato all'entry
+ *	@brief Returns the label associated with the MenuEntry
  *
- *	@return Una stringa contenente il testo in caso di successo, NULL in
- *	caso di fallimento
+ *	@return string containing the MenuEntry's label
  */
 std::string MenuEntry::getLabel() {
 	sf::String nameSfString = this -> getString();
@@ -35,28 +34,28 @@ std::string MenuEntry::getLabel() {
 }
 
 /**
- *	@brief Imposta il testo associato all'entry
+ *	@brief Sets the label associated with the MenuEntry
  *
- *	@param label stringa con il testo associato all'entry
+ *	@param label string containing the MenuEntry's label
  */
 void MenuEntry::setLabel(const std::string &label) {
-	// Per ora non fa nulla.
+	// Nothing to do here.
 	return;
 }
 
 /**
- *	@brief Dice se l'entry è selezionata oppure no
+ *	@brief Tells whether the MenuEntry is selected or not
  *
- *	@return Un valore di verità che indica se l'entry è selezionata
+ *	@return true if the MenuEntry is selected, false otherwise
  */
 bool MenuEntry::isSelected() {
 	return this -> selected;
 }
 
 /**
- *	@brief Seleziona o deseleziona l'entry
+ *	@brief Sets whether the MenuEntry is selected or not
  *
- * 	@param v valore di verità per selezionare o deselezionare
+ * 	@param v true to make the MenuEntry selected, false to make it unselected
  */
 void MenuEntry::setSelected(bool v) {
 	this -> selected = v;

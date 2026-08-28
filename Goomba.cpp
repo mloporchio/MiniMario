@@ -58,9 +58,9 @@ void Goomba::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy 
 /**
  *	@brief Handles collisions of Goomba along the x axis
  *
- *	@param px current x position
- *	@param py current y position
- *	@param vx current x velocity
+ *	@param px position on the x axis
+ *	@param py position on the y axis
+ *	@param vx velocity on the x axis
  *	@param blocks vector of blocks
  *	@param enemies vector of enemies
  *	@param index index of Goomba within the vector of enemies
@@ -111,14 +111,14 @@ void Goomba::handleXCollisions(float *px, float *py, float *vx,
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni di Goomba lungo l'asse y
+ *	@brief Handles collisions of Goomba along the y axis
  *
- *	@param px puntatore alla posizione sull'asse x
- *	@param py puntatore alla posizione sull'asse y
- *	@param vy puntatore alla velocità lungo l'asse y
- *	@param blocks vettore contenente i blocchi
- *	@param enemies vettore contenente i nemici
- *	@param index indice di Goomba all'interno del vettore dei nemici
+ *	@param px position on the x axis
+ *	@param py position on the y axis
+ *	@param vy velocity on the y axis
+ *	@param blocks vector of blocks
+ *	@param enemies vector of enemies
+ *	@param index index of Goomba within the vector of enemies
  */
 void Goomba::handleYCollisions(float *px, float *py, float *vy,
 	std::vector<Block *> blocks, std::vector<Enemy *> enemies, int index) {

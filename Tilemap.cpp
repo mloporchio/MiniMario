@@ -141,7 +141,7 @@ void Tilemap::save(const std::string &path) {
     if (!file) {
         throw std::runtime_error("save: Could not open file: " + path);
     }
-    // Write the width and height of the tilemap to the file.
+    // Write tilemap width and height to the file.
     unsigned int size[2];
     size[0] = this->rows;
     size[1] = this->cols;

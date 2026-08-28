@@ -10,7 +10,7 @@
 
 #include "Tilemap.hpp"
 
-/** Tipo enumerato per indicare le quattro direzioni. */
+/** Enumerated type for representing the different directions. */
 typedef enum {
 	LEFT,
 	RIGHT,
@@ -19,19 +19,18 @@ typedef enum {
 } direction_t;
 
 #define SIZE 32
-#define GRAVITY 4.0f // Era 4.0f
+#define GRAVITY 4.0f
 #define FRICTION 0.8f
 #define RUN_SPEED 15.0f
 #define JUMP_SPEED 35.0f
 #define FALL_SPEED 50.0f
 
 /**
- *	@brief Funzione che stabilisce se un elemento della tilemap è
- *	solido oppure può essere attraversato
+ *	@brief Tells whether a tile element is solid or not
  *
- *	@param element elemento della tilemap
+ *	@param element identifier of the tilemap element
  *
- *  @return Un valore di verità che dice se l'elemento è solido oppure no
+ *  @return true if the element is solid, false otherwise
  */
 static inline bool isCollidable(block_t element) {
 	switch (element) {

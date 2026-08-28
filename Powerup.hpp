@@ -10,7 +10,7 @@
 
 #include "Block.hpp"
 
-/** Tipo enumerato per indicizzare le varie tipologie di powerup. */
+/** Enumerated type for representing the different powerup types. */
 typedef enum {
 	SUPER_MUSHROOM 	= 0,
 	ONEUP_MUSHROOM 	= 1,
@@ -39,7 +39,7 @@ class Powerup {
 		sf::Vector2i getSize();
 		sf::IntRect getRectangle();
 		sf::Sprite getSprite();
-		// Metodi virtuali: da implementare da parte delle sottoclassi.
+		// Virtual methods: to be implemented by derived classes.
 		virtual void update(sf::Time dt, std::vector<Block *> blocks) {};
 		virtual void handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks) {};
 		virtual void handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> blocks) {};

@@ -2,25 +2,25 @@
  *	@file Sounds.hpp
  *	@author Matteo Loporchio
  *	
- *	@brief Definizioni per le risorse relative ai suoni del gioco
+ *	@brief Definitions for sound resources used in the game
  */
 
 #ifndef SOUNDS_H
 #define SOUNDS_H
 
+#include <string>
+
 /*
- *	Definizione dei suoni relativi al livello.
- *	Vengono utilizzati nella classe "Scene".
+ *	Definition of the sound resources required in the game, used within the Scene class.
  */
 #define SCENE_MUSIC_THEME "sounds/scene_theme.ogg"
 #define SCENE_SOUND_WIN "sounds/scene_win.wav"
 
 /*
- *	Definizione dei suoni relativi al personaggio Mario.
- *	Vengono utilizzati nella classe "Mario".
+ *	Definition of the sound resources required by the player, used within the Mario class.
  */
 
-/** Numero di suoni per il personaggio. */
+/** Number of sounds for the player. */
 #define MARIO_SOUND_N 8
 #define MARIO_SOUND_JUMP "sounds/mario_jump.wav"
 #define MARIO_SOUND_COIN "sounds/mario_coin.wav"
@@ -31,7 +31,7 @@
 #define MARIO_SOUND_ONEUP_TAKEN "sounds/mario_oneup_taken.wav"
 #define MARIO_SOUND_DIE "sounds/mario_die.wav"
 
-/** Tipo enumerato per indicizzare i suoni di Mario. */
+/** Enumerated type for indexing the sounds of the player. */
 typedef enum {
 	JUMP 				= 0,
 	PICK_COIN 			= 1,
@@ -44,13 +44,13 @@ typedef enum {
 } mario_sound_t;
 
 /**
- *	@brief Restituisce il percorso dei suoni relativi a Mario
+ *	@brief Returns the path of the sound resource for the player
  *
- *	@param id identificativo del suono
+ *	@param id sound identifier
  *
- *	@return Una stringa contenente il path del suono
+ *	@return string containing the path of the sound resource
  */
-static inline const char *getMarioSoundPath(mario_sound_t id) {
+static inline std::string getMarioSoundPath(mario_sound_t id) {
 	switch (id) {
 		case JUMP: return MARIO_SOUND_JUMP;
 		case PICK_COIN: return MARIO_SOUND_COIN;

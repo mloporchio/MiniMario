@@ -2,8 +2,7 @@
  *	@file PiranhaPlant.hpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene la definizione della classe PiranhaPlant relativa
- *	all'omonimo nemico di Mario
+ *	@brief Definition of the PiranhaPlant class
  */
 
 #ifndef PIRANHAPLANT_H
@@ -12,10 +11,10 @@
 #include "Enemy.hpp"
 #include "Textures.hpp"
 
-/** Tempo trascorso fra una texture e l'altra della Piranha Plant. */
+/** Time elapsed before the PiranhaPlant texture changes. */
 #define PIRANHAPLANT_ANIMATION_TIME 200
 
-/** Altezza del nemico Piranha Plant. */
+/** Height (in pixels) of the PiranhaPlant sprite. */
 #define PIRANHAPLANT_HEIGHT 48
 
 class PiranhaPlant : public Enemy {
@@ -29,11 +28,11 @@ class PiranhaPlant : public Enemy {
 };
 
 /**
- *	@brief Restituisce la prossima texture da utilizzare per la Piranha Plant
+ *	@brief Returns the next texture to be used for the PiranhaPlant
  *
- *	@param id identificativo della texture corrente
+ *	@param id current texture identifier
  *	
- *	@return L'identificativo della prossima texture da utilizzare
+ *	@return next texture identifier
  */
 static inline plant_texture_t nextPiranhaPlantTexture(plant_texture_t id) {
 	return ((id == PLANT_0) ? PLANT_1 : PLANT_0);

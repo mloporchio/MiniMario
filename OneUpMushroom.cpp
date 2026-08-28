@@ -2,33 +2,33 @@
  *	@file OneUpMushroom.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Contiene l'implementazione della classe OneUpMushroom
+ *	@brief Implementation of the OneUpMushroom class
  */
 
 #include "OneUpMushroom.hpp"
 #include "Physics.hpp"
 
 /**
- *	@brief Costruttore della classe OneUpMushroom
+ *	@brief OneUpMushroom constructor
  *
- *	@param x posizione iniziale sull'asse x
- *	@param y posizione iniziale sull'asse y
- *	@param t puntatore alla texture iniziale
+ *	@param x initial position on the x axis
+ *	@param y initial position on the y axis
+ *	@param t initial texture for the OneUpMushroom sprite
  */
 OneUpMushroom::OneUpMushroom(float x, float y, sf::Texture &t) : 
 	Powerup(ONEUP_MUSHROOM, x, y, SIZE, SIZE, t) 
 {
-	// Imposto la velocità con cui esce fuori il powerup.
+	// Set the speed with which the powerup will be ejected.
 	this -> setSpeed(ONEUP_MUSHROOM_SPEED, 0);
 }
 
 /**
- *	@brief Funzione di aggiornamento dell'oggetto OneUpMushroom
+ *	@brief Update function for the OneUpMushroom object
  *
- *	@param dt intervallo di tempo
- *	@param blocks vettore dei blocchi
+ *	@param dt time elapsed since last update
+ *	@param blocks vector of blocks
  */
-void OneUpMushroom::update(sf::Time dt, std::vector<Block *> blocks) {
+void OneUpMushroom::update(sf::Time dt, std::vector<Block *> &blocks) {
 	float posX = this -> sprite.getPosition().x;
 	float posY = this -> sprite.getPosition().y;
 	float velX = this -> speed.x;
@@ -45,14 +45,14 @@ void OneUpMushroom::update(sf::Time dt, std::vector<Block *> blocks) {
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni lungo l'asse x
+ *	@brief Handles collisions of OneUpMushroom along the x axis
  *
- *	@param px puntatore alla posizione corrente sull'asse x
- *	@param py puntatore alla posizione corrente sull'asse y
- *	@param vx puntatore alla velocità corrente sull'asse x
- *	@param blocks vettore dei blocchi
+ *	@param px current position on the x axis
+ *	@param py current position on the y axis
+ *	@param vx current velocity on the x axis
+ *	@param blocks vector of blocks
  */
-void OneUpMushroom::handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks) {
+void OneUpMushroom::handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> &blocks) {
 	sf::IntRect MushR({(int) *px, (int) *py}, {SIZE, SIZE}), BlockR, IntR;
 	std::optional<sf::IntRect> intersection;
 	bool collision = false, collidable = false;
@@ -81,15 +81,14 @@ void OneUpMushroom::handleXCollisions(float *px, float *py, float *vx, std::vect
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni lungo l'asse y
+ *	@brief Handles collisions of OneUpMushroom along the y axis
  *
- *	@param px puntatore alla posizione corrente sull'asse x
- *	@param py puntatore alla posizione corrente sull'asse y
- *	@param vy puntatore alla velocità corrente sull'asse y
- *	@param blocks vettore dei blocchi
+ *	@param px current position on the x axis
+ *	@param py current position on the y axis
+ *	@param vy current velocity on the y axis
+ *	@param blocks vector of blocks
  */
-void OneUpMushroom::handleYCollisions(float *px, float *py, float *vy,
-	std::vector<Block *> blocks) {
+void OneUpMushroom::handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> &blocks) {
 	sf::IntRect MushR({(int) *px, (int) *py}, {SIZE, SIZE}), BlockR, IntR;
 	std::optional<sf::IntRect> intersection;
 	bool collision = false, collidable = false;

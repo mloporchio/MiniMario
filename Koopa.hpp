@@ -48,11 +48,11 @@ class Koopa : public Enemy {
 };
 
 /**
- *	@brief Restituisce la prossima texture da utilizzare per Koopa
+ *	@brief Returns the next texture to be used for Koopa
  *
- * 	@param id identificativo della texture in uso
+ * 	@param id current texture identifier
  *
- * 	@return Identificativo della nuova texture da applicare
+ * 	@return next texture identifier
  */
 static inline koopa_texture_t nextKoopaTexture(koopa_texture_t id) {
 	switch (id) {
@@ -70,11 +70,11 @@ static inline koopa_texture_t nextKoopaTexture(koopa_texture_t id) {
 }
 
 /**
- *	@brief Restituisce l'identificativo della texture simmetrizzata per Koopa
+ *	@brief Returns the flipped texture identifier for Koopa
  *
- * 	@param id l'identificativo della texture in uso
+ * 	@param id current texture identifier
  *
- * 	@return Identificativo della nuova texture da applicare
+ * 	@return identifier of the flipped texture
  */
 static inline koopa_texture_t flipKoopaTexture(koopa_texture_t id) {
 	switch (id) {

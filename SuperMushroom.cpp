@@ -25,7 +25,7 @@ SuperMushroom::SuperMushroom(float x, float y, sf::Texture &t) : Powerup(SUPER_M
  *	@brief Update function for the SuperMushroom object
  *
  *	@param dt time elapsed since last update
- *	@param blocks vettore contenente i blocchi
+ *	@param blocks vector containing the blocks
  */
 void SuperMushroom::update(sf::Time dt, std::vector<Block *> blocks) {
 	float posX = this -> sprite.getPosition().x;

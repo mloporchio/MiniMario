@@ -4,7 +4,7 @@
  *
  *	@brief Definition of the Layer class
  *
- *	Layer extends the concept of view provided by the SFML library.
+ *	The Layer class extends the concept of view provided by the SFML library.
  */
 
 #ifndef LAYER_H

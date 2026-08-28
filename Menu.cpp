@@ -2,7 +2,7 @@
  *	@file Menu.cpp
  *	@author Matteo Loporchio
  *
- *	@brief Implementazione della classe relativa al menu principale del gioco
+ *	@brief Implementation of the Menu class
  */
 
 #include <cstdlib>
@@ -13,7 +13,7 @@
 #include "Textures.hpp"
 
 /**
- *	@brief Costruttore della classe Menu
+ *	@brief Menu constructor
  */
 Menu::Menu() : 
 	bgImage(BACKGROUND_TEXTURE), 
@@ -28,7 +28,6 @@ Menu::Menu() :
 	this -> menuMode = MAIN;
 	this -> levelName = std::nullopt;
 	this -> enterKeyPressed = false;
-	// this -> labelFont.loadFromFile(FONT_PATH);
 	// Creazione delle entry per il menu principale.
 	for (int i = 0; i < MAIN_ENTRY_N; i++) {
 		MenuEntry e(getEntryName((main_entry_t) i), this -> labelFont, FONT_SIZE);
@@ -41,24 +40,15 @@ Menu::Menu() :
 	if (this -> loadLevelEntries()) {
 		throw std::runtime_error("Menu: error while loading level entries.");
 	}
-	// Imposto il logo da mostrare nella schermata principale.
-	//this -> logoImage.loadFromFile(LOGO_TEXTURE);
-	//this -> logoSprite.setTexture(this -> logoImage);
+	// Set the position of the logo to be displayed in the initial screen.
 	unsigned int width = this -> logoImage.getSize().x;
 	float px = (W_WIDTH - width) / 2, py = W_HEIGHT / 8;
 	this -> logoSprite.setPosition({px, py});
-	// Imposto lo sfondo del menu.
-	// this -> bgImage.loadFromFile(BACKGROUND_TEXTURE);
-	// this -> bgSprite.setTexture(bgImage);
+	// Set the position of the background.
 	this -> bgSprite.setPosition(sf::Vector2f(0.f, 0.f));
-	// Imposto l'immagine di primo piano.
-	// this -> fgImage.loadFromFile(MENU_FOREGROUND_TEXTURE);
-	// this -> fgSprite.setTexture(fgImage);
+	// Set the position of the foreground image.
 	this -> fgSprite.setPosition(sf::Vector2f(0.f, 0.f));
-	// Imposto la scritta da mostrare nel sottomenu di selezione livello.
-	// this -> selectionTitle.setString(SELECTION_TITLE);
-	// this -> selectionTitle.setFont(this -> labelFont);
-	// this -> selectionTitle.setCharacterSize(FONT_SIZE);
+	// Set the position of the submenu title for level selection.
 	float stringLength = this -> selectionTitle.getLocalBounds().size.x,
 	x = (W_WIDTH - stringLength) / 2;
 	this -> selectionTitle.setPosition({x, W_HEIGHT / 8});
@@ -66,7 +56,7 @@ Menu::Menu() :
 }
 
 /**
- *	@brief Reads the level files from the LEVEL_DIRECTORY and creates a MenuEntry for each of them
+ *	@brief Reads the level files from the predefined LEVEL_DIRECTORY and creates a MenuEntry for each of them
  *
  *	@return 0 in case of success, 1 in case of failure
  */
@@ -90,9 +80,9 @@ int Menu::loadLevelEntries() {
 }
 
 /**
- *	@brief Funzione di gestione degli eventi indirizzati al menu di gioco
+ *	@brief Handles events directed to the game Menu
  *
- *	@param e evento ricevuto
+ *	@param e event received
  */
 void Menu::handleEvent(sf::Event e) {
 	if (const auto* keyPressed = e.getIf<sf::Event::KeyPressed>()) {
@@ -118,11 +108,11 @@ void Menu::handleEvent(sf::Event e) {
 }
 
 /**
- *	@brief Funzione di aggiornamento dello stato interno del menu
+ *	@brief Updates the internal state of the Menu
  *
- *	@param mode puntatore alla modalità di gioco
+ *	@param mode indicator of the current game mode
  */
-void Menu::updateMenu(game_mode_t *gameMode) {
+void Menu::updateMenu(game_mode_t &gameMode) {
 	// Aggiorno lo sfondo.
 	sf::Time dt = timer.restart();
 	float t = dt.asMilliseconds();
@@ -158,7 +148,7 @@ void Menu::updateMenu(game_mode_t *gameMode) {
 					this -> enterKeyPressed = false;
 				}; break;
 				case QUIT_ENTRY: {
-					*gameMode = QUIT;
+					gameMode = QUIT;
 				}; break;
 			}
 		}
@@ -173,7 +163,7 @@ void Menu::updateMenu(game_mode_t *gameMode) {
 				menuMode = MAIN;
 				this -> selected = 0;
 				// Imposto la modalità di gioco su PLAYING.
-				*gameMode = PLAYING;
+				gameMode = PLAYING;
 			}
 			// Voglio solo tornare al menu principale.
 			else {
@@ -186,45 +176,47 @@ void Menu::updateMenu(game_mode_t *gameMode) {
 
 
 /**
- *	@brief Disegna il contenuto del menu sulla finestra
+ *	@brief Draws the content of the Menu to the screen
  *
- *	@param window puntatore alla finestra su cui disegnare
+ *	@param window main window to draw to
  */
-void Menu::drawMenu(sf::RenderWindow *window) {
+void Menu::drawMenu(sf::RenderWindow &window) {
 	std::vector<MenuEntry> *list = NULL;
 	float y0 = 0.0f;
 	// Disegno lo sfondo.
-	window -> draw(this -> bgSprite);
+	window.draw(this -> bgSprite);
 	// Disegno l'immagine in primo piano.
-	window -> draw(this -> fgSprite);
+	window.draw(this -> fgSprite);
 	// Controllo cos'altro devo disegnare.
 	switch (this -> menuMode) {
 		case MAIN: {
 			list = &(this -> mainEntries);
-			window -> draw(this -> logoSprite);
+			window.draw(this -> logoSprite);
 			y0 = W_HEIGHT / 2;
 		}; break;
 		case SELECTION: {
 			list = &(this -> levelEntries);
 			y0 = W_HEIGHT / 8 + VSPACE;
-			window -> draw(this -> selectionTitle);
+			window.draw(this -> selectionTitle);
 		}; break;
 	}
 	for (int i = 0; i < list -> size(); i++) {
 		sf::FloatRect bounds = list -> at(i).getLocalBounds();
 		float stringLength = bounds.size.x;
-		float x = (W_WIDTH - stringLength) / 2, y = y0 + i * VSPACE;
+		float x = (W_WIDTH - stringLength) / 2;
+		float y = y0 + i * VSPACE;
 		list -> at(i).setPosition({x, y});
-		window -> draw(list -> at(i));
+		window.draw(list -> at(i));
 	}
 	return;
 }
 
 /**
- *	@brief Restituisce il percorso del file di livello selezionato
+ *	@brief Returns the path of the level file selected in the Menu
  *
- *	@return Una stringa contenente il percorso del file selezionato
- *	in caso di successo, NULL in caso di fallimento
+ *	@return string containing the path of the level file selected
+ *
+ *	@throw std::runtime_error if the level name has no value
  */
 std::string Menu::getLevelFile() {
 	if (!this -> levelName.has_value()) {

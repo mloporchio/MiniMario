@@ -10,12 +10,12 @@
 /**
  *	@brief Powerup constructor
  *
- *	@param type identificativo del tipo di powerup
- *	@param x posizione lungo l'asse x
- *	@param y posizione lungo l'asse y
- *	@param w larghezza del powerup
- *	@param h altezza del powerup
- *	@param t puntatore alla texture da utilizzare per il powerup
+ *	@param type_ powerup type identifier
+ *	@param x initial position along the x axis
+ *	@param y initial position along the y axis
+ *	@param w width of the powerup
+ *	@param h height of the powerup
+ *	@param t texture to use for the powerup
  */
 Powerup::Powerup(powerup_t type_, float x, float y, int w, int h, sf::Texture &t) : 
 	sprite(t),
@@ -28,46 +28,46 @@ Powerup::Powerup(powerup_t type_, float x, float y, int w, int h, sf::Texture &t
 }
 
 /**
- *	@brief Restituisce il tipo del powerup
+ *	@brief Returns the powerup type
  *
- *	@return L'identificativo del tipo di powerup
+ *	@return powerup type identifier
  */
 powerup_t Powerup::getType() {
 	return this -> type;
 }
 
 /**
- *	@brief Dice se il powerup è stato raccolto oppure no
+ *	@brief Tells whether the powerup has been taken
  *
- *	@return Un valore di verità che dice se il powerup è stato preso
+ *	@return true if the powerup has been taken, false otherwise
  */
 bool Powerup::isTaken() {
 	return this -> taken;
 }
 
 /**
- *	@brief Imposta il valore di verità relativo al powerup raccolto
+ *	@brief Sets whether the powerup has been taken
  *
- *	@param v valore di verità da assegnare
+ *	@param v true to set the powerup as taken, false to set it as not taken
  */
 void Powerup::setTaken(bool v) {
 	this -> taken = v;
 }
 
 /**
- *	@brief Restituisce la velocità corrente del powerup
+ *	@brief Returns the current speed of the powerup
  *
- *	@return Il vettore della velocità corrente del powerup
+ *	@return vector containing the speed of the powerup
  */
 sf::Vector2f Powerup::getSpeed() {
 	return this -> speed;
 }
 
 /**
- *	@brief Imposta la velocità corrente del powerup
+ *	@brief Sets the current speed of the powerup
  *
- *	@param x componente del vettore velocità lungo l'asse x
- *	@param y componente del vettore velocità lungo l'asse y
+ *	@param x speed along the x axis
+ *	@param y speed along the y axis
  */
 void Powerup::setSpeed(float x, float y) {
 	this -> speed.x = x; 
@@ -75,37 +75,37 @@ void Powerup::setSpeed(float x, float y) {
 }
 
 /**
- *	@brief Restituisce la posizione corrente del powerup
+ *	@brief Returns the current position of the powerup
  *
- *	@return Il vettore posizione corrente del powerup
+ *	@return vector representing the position of the powerup
  */
 sf::Vector2f Powerup::getPosition() {
 	return this -> sprite.getPosition();
 }
 
 /**
- *	@brief Imposta la posizione corrente del powerup
+ *	@brief Sets the current position of the powerup
  *
- *	@param x componente del vettore posizione lungo l'asse x
- *	@param y componente del vettore posizione lungo l'asse y
+ *	@param x position along the x axis
+ *	@param y position along the y axis
  */
 void Powerup::setPosition(float x, float y) {
 	this -> sprite.setPosition({x, y});
 }
 
 /**
- *	@brief Restituisce le dimensioni del powerup
+ *	@brief Returns the size of the powerup
  *
- *	@return Il vettore contenente le dimensioni dell'oggetto
+ *	@return vector containing the size of the powerup
  */
 sf::Vector2i Powerup::getSize() {
 	return this -> size;
 }
 
 /**
- *	@brief Restituisce il rettangolo associato all'oggetto powerup
+ *	@brief Returns the bounding rectangle of the powerup
  *
- * 	@return Un rettangolo con origine e dimensioni del powerup
+ * 	@return bounding rectangle of the powerup
  */
 sf::IntRect Powerup::getRectangle() {
 	sf::Vector2f p = this -> getPosition();
@@ -113,9 +113,9 @@ sf::IntRect Powerup::getRectangle() {
 }
 
 /**
- *	@brief Restituisce la sprite associata al powerup
+ *	@brief Returns the sprite associated with the powerup
  *
- *	@return La sprite associata al powerup
+ *	@return sprite associated with the powerup
  */
 sf::Sprite Powerup::getSprite() {
 	return this -> sprite;

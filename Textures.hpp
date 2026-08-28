@@ -17,12 +17,11 @@
 #define LOGO_TEXTURE "images/LOGO.png"
 
 /*
- *	Definizione delle texture di tipo statico.
- *	Le texture statiche vengono applicate a tutti i blocchi che non
- *	devono essere animati.
+ *	Static texture definitions.
+ *	The static textures are applied to all blocks that do not require animation.
  */
 
-/** Numero di texture statiche definite. */
+/** Number of static textures defined. */
 #define STATIC_TEXTURE_N 12
 #define SKY_TEXTURE "images/SKY.png"
 #define BRICKS_TEXTURE "images/BRICKS.png"
@@ -38,7 +37,7 @@
 #define GRASS_TEXTURE "images/GRASS.png"
 #define WATER_TEXTURE "images/WATER.png"
 
-/** Tipo enumerato per indicizzare le texture statiche. */
+/** Enumerated type for indexing static textures. */
 typedef enum {
 	STATIC_BRICKS = 0,
 	STATIC_TERRAIN = 1,
@@ -55,13 +54,13 @@ typedef enum {
 } static_texture_t;
 
 /**
- *	@brief Restituisce il path di una texture statica
+ *	@brief Returns the path of a static texture
  *
- *	@param id identificativo della texture
+ *	@param id texture identifier
  *
- *	@return Stringa contenente il percorso della texture
+ *	@return string containing the path of the texture
  */
-static inline const char *getStaticTexturePath(static_texture_t id) {
+static inline std::string getStaticTexturePath(static_texture_t id) {
 	switch (id) {
 		case STATIC_BRICKS: return BRICKS_TEXTURE;
 		case STATIC_TERRAIN: return TERRAIN_TEXTURE;
@@ -79,13 +78,11 @@ static inline const char *getStaticTexturePath(static_texture_t id) {
 }
 
 /**
- *	@brief Dato un elemento della tilemap, restituisce l'identificativo
- *	della texture statica ad esso associata
+ *	@brief Returns the static texture identifier associated with a tilemap element
+ 
+ *	@param element tilemap element
  *
- *	@param element elemento della tilemap
- *
- *	@return L'identificativo della texture statica in caso di successo,
- *	-1 in caso di fallimento
+ *	@return static texture identifier in case of success, -1 in case of failure
  */
 static inline int getStaticTextureID(block_t element) {
 	switch (element) {
@@ -106,13 +103,12 @@ static inline int getStaticTextureID(block_t element) {
 }
 
 /*
- *	Definizione delle texture dinamiche, utilizzate per tutti i blocchi
- *	con un'animazione.
+ *	Dynamic texture definitions, used for all blocks with an animation.
  */
 #define QUESTION_TEXTURE_N 4
 #define QUESTION_TEXTURE_SHEET "images/QUESTION_S.png"
 
-/** Tipo enumerato per indicizzare le texture relative al Question Block. */
+/** Enumerated type for indexing dynamic textures of the QuestionBlock. */
 typedef enum {
 	ACTIVE_0 = 0,
 	ACTIVE_1 = 1,
@@ -123,7 +119,7 @@ typedef enum {
 #define COIN_TEXTURE_N 4
 #define COIN_TEXTURE_SHEET "images/COIN_S.png"
 
-/** Tipo enumerato per indicizzare le texture relative alle monete. */
+/** Enumerated type for indexing dynamic textures of the Coin. */
 typedef enum {
 	STILL = 0,
 	MOVING_1 = 1,
@@ -132,14 +128,14 @@ typedef enum {
 } coin_texture_t;
 
 /*
- *	Definizione delle texture per il personaggio Mario.
+ *	Texture definitions for the player, i.e., Mario.
  */
 #define MARIO_TEXTURE_N 20
 #define MARIO_TEXTURE_SHEET "images/MARIO_S.png"
 
-/** Tipo enumerato per indicizzare le texture di Mario. */
+/** Enumerated type for indexing Mario's textures. */
 typedef enum {
-	// Dimensione standard.
+	// Standard size.
 	RUNNING_0 	= 0,
 	RUNNING_1 	= 1,
 	RUNNING_2 	= 2,
@@ -150,7 +146,7 @@ typedef enum {
 	RUNNING_2_L 	= 7,
 	STANDING_L	= 8,
 	JUMPING_L	= 9,
-	// Dimensione grande.
+	// Large (i.e., "super") size.
 	S_RUNNING_0 	= 10,
 	S_RUNNING_1 	= 11,
 	S_RUNNING_2 	= 12,
@@ -164,12 +160,12 @@ typedef enum {
 } mario_texture_t;
 
 /*
- *	Definizione delle texture per il nemico Goomba.
+ *	Texture definitions for the Goomba enemy.
  */
 #define GOOMBA_TEXTURE_N 2
 #define GOOMBA_TEXTURE_SHEET "images/GOOMBA_S.png"
 
-/** Tipo enumerato per indicizzare le texture di Goomba. */
+/** Enumerated type for indexing Goomba's textures. */
 typedef enum {
 	GOOMBA_0 = 0,
 	GOOMBA_1 = 1
@@ -177,26 +173,26 @@ typedef enum {
 
 
 /*
- *	Definizione delle texture per il nemico Piranha Plant.
+ *	Texture definitions for the PiranhaPlant enemy.
  */
 #define PIRANHAPLANT_TEXTURE_N 2
 #define PIRANHAPLANT_TEXTURE_SHEET "images/PIRANHA_PLANT_S.png"
 
-/** Tipo enumerato per indicizzare le texture della Piranha Plant. */
+/** Enumerated type for indexing PiranhaPlant's textures. */
 typedef enum {
 	PLANT_0 = 0,
 	PLANT_1 = 1
 } plant_texture_t;
 
 /*
- *	Definizioni delle texture relative al nemico Koopa.
+ *	Texture definitions for the Koopa enemy.
  */
 #define KOOPA_TEXTURE_N 10
 #define KOOPA_TEXTURE_SHEET "images/KOOPA_S.png"
 #define KOOPA_GREEN_SHELL_TEXTURE "images/GREEN_KOOPA_SHELL.png"
 #define KOOPA_RED_SHELL_TEXTURE "images/RED_KOOPA_SHELL.png"
 
-/** Tipo enumerato per indicizzare le texture di Koopa. */
+/** Enumerated type for indexing Koopa's textures. */
 typedef enum {
 	GREEN_KOOPA_0 = 0,
  	GREEN_KOOPA_1 = 1,
@@ -211,7 +207,7 @@ typedef enum {
 } koopa_texture_t;
 
 /*
- *	Definizioni delle texture relative ai powerup usati nel gioco.
+ *	Texture definitions for the powerups used in the game.
  */
 #define SUPERMUSHROOM_TEXTURE "images/SUPER_MUSHROOM.png"
 #define ONEUPMUSHROOM_TEXTURE "images/ONEUP_MUSHROOM.png"

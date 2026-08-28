@@ -29,16 +29,14 @@ sf::FloatRect Layer::getViewRectangle() {
 }
 
 /**
- *	@brief Restituisce il rettangolo di rendering del layer
+ *	@brief Returns the rendering rectangle of the layer
  *
- *	@return Il rettangolo di rendering associato al layer
+ *	@return rendering rectangle of the layer
  *
- *	Il rettangolo "di rendering" è quella parte di livello considerata
- *	"attiva". Ad ogni istante si aggiornano solamente i blocchi e i nemici
- *	contenuti in essa, invece che quelli di tutto il livello. 
- *
- *	NOTA: Il rettangolo di rendering associato al layer è leggermente più
- *	largo rispetto al rettangolo della vista.
+ *	The rendering rectangle is the part of the level considered "active". 
+ *	Only the blocks and enemies contained in this rectangle are updated at any given time, 
+ *	instead of the entire level. Note that the rendering rectangle of the layer is slightly 
+ *	larger than the view rectangle.
  */
 sf::FloatRect Layer::getRenderRectangle() {
 	sf::Vector2f c = this -> getCenter();

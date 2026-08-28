@@ -17,7 +17,7 @@ Game::Game() :
 	scene(NULL), 
 	gameMode(MENU) 
 {
-	// Inizializzo la finestra.
+	// Initialize the window.
 	this -> window.setVerticalSyncEnabled(true);
 	this -> window.setFramerateLimit(W_FRAMERATE_LIMIT);
 }
@@ -44,7 +44,7 @@ void Game::handleEvent() {
                 break;
 
             case PLAYING:
-                this->scene->handleEvent(*event, &gameMode);
+                this->scene->handleEvent(*event, this->gameMode);
                 break;
 
             default:
@@ -70,7 +70,7 @@ void Game::update() {
 				window.setView(defaultView);
 			}
 			// Update the menu.
-			this -> mainMenu.updateMenu(&(this -> gameMode));
+			this -> mainMenu.updateMenu(this -> gameMode);
 			if (this -> gameMode == PLAYING) {
 				// Open the level file and create a new scene object.
 				std::string levelPath = (this -> mainMenu).getLevelFile();
@@ -94,11 +94,11 @@ void Game::draw() {
 	switch (this -> gameMode) {
 		// Draw the main menu.
 		case MENU: {
-			this -> mainMenu.drawMenu(&(this -> window));
+			this -> mainMenu.drawMenu(this -> window);
 		}; break;
 		// Draw the game scene.
 		case PLAYING: {
-			this -> scene -> drawScene(&(this -> window));
+			this -> scene -> drawScene(this -> window);
 		}; break;
 		default: break;
 	}
