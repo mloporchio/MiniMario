@@ -13,6 +13,9 @@
 #include <SFML/Graphics.hpp>
 #include "Tilemap.hpp"
 
+/**
+ *	@brief Represents a generic block of the game
+ */
 class Block {
 	protected:
 		block_t type;

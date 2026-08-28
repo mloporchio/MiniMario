@@ -11,6 +11,9 @@
 #include "Powerup.hpp"
 #include "Textures.hpp"
 
+/**
+ *	@brief Represents a QuestionBlock, a block that can spawn a Powerup
+ */
 class QuestionBlock : public Block {
 	private:
 		std::vector<sf::Texture> &textures;

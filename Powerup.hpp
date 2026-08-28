@@ -20,6 +20,9 @@ typedef enum {
 /** Number of powerup types. */
 #define NUM_POWERUP 3
 
+/**
+ *	@brief Represents a generic powerup of the game
+ */
 class Powerup {
 	protected:
 		powerup_t type;

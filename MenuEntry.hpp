@@ -3,8 +3,6 @@
  *	@author Matteo Loporchio
  *
  *	@brief Definition of the MenuEntry class
- *
- *	The MenuEntry class represents a single entry in the game menu.
  */
 
 #ifndef MENUENTRY_H
@@ -12,6 +10,9 @@
 
 #include <SFML/Graphics.hpp>
 
+/**
+ *	@brief Represents an entry of the game menu
+ */
 class MenuEntry : public sf::Text {
 	private:
 		bool selected;

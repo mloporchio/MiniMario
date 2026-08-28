@@ -13,6 +13,9 @@
 /** Speed of the SuperMushroom powerup. */
 #define SUPER_MUSHROOM_SPEED 3.5f
 
+/**
+ *	@brief Represents the SuperMushroom powerup
+ */
 class SuperMushroom : public Powerup {
 	public:
 		SuperMushroom(float x, float y, sf::Texture &t);

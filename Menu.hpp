@@ -24,15 +24,18 @@ typedef enum {
 	QUIT_ENTRY = 1
 } main_entry_t;
 
+/** Text for the Play menu entry. */
 #define PLAY_ENTRY_TEXT "Play"
+
+/** Text for the Quit menu entry. */
 #define QUIT_ENTRY_TEXT "Quit"
 
 /**
- *	@brief Restituisce il nome della voce del menu principale
+ *	@brief Returns the name of the entry in the main menu
  *
- *	@param id identificativo della voce
+ *	@param id entry identifier
  *
- *	@return Una stringa contenente il nome della voce
+ *	@return string containing the name of the entry
  */
 static inline std::string getEntryName(main_entry_t id) {
 	switch (id) {
@@ -41,20 +44,20 @@ static inline std::string getEntryName(main_entry_t id) {
 	}
 }
 
-/** Spazio verticale fra una voce e l'altra (in pixel). */
+/** Vertical space between two entries (in pixels). */
 #define VSPACE 64
 
-/** Titolo della schermata di selezione livelli. */
+/** Title of the level selection screen. */
 #define SELECTION_TITLE "Select a level"
 
-/** Tipo enumerato per lo stato interno del menu. */
+/** Enumerated type for the internal state of the menu. */
 typedef enum {
 	MAIN 		= 0,
 	SELECTION 	= 1
 } menu_mode_t;
 
 /**
- *	@brief La classe che rappresenta il menu principale del gioco
+ *	@brief Represents the main menu of the game
  */
 class Menu {
 	private:
@@ -83,24 +86,22 @@ class Menu {
 };
 
 /**
- *	@brief Funzione di utilità per lo scorrimento in avanti
- *	delle voci nel menu
+ *	@brief Utility function for scrolling forward in the menu
  *
- *	@param id identificativo della voce correntemente selezionata
- *	@param n numero di voci nel menu
- *	@return L'identificativo della voce successiva
+ *	@param id identifier of the currently selected entry
+ *	@param n number of entries in the menu
+ *	@return identifier of the next entry
  */
 static inline int nextOption(int id, int n) {
 	return ((id + 1) % n);
 }
 
 /**
- *	@brief Funzione di utilità per lo scorrimento all'indietro
- *	delle voci nel menu
+ *	@brief Utility function for scrolling backward in the menu
  *
- *	@param id identificativo della voce correntemente selezionata
- *	@param n numero di voci nel menu
- *	@return L'identificativo della voce precedente
+ *	@param id identifier of the currently selected entry
+ *	@param n number of entries in the menu
+ *	@return identifier of the previous entry
  */
 static inline int prevOption(int id, int n) {
 	if (id > 0) return ((id - 1) % n);

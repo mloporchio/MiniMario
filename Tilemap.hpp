@@ -42,7 +42,7 @@ typedef enum {
 
 
 /**
- *	@brief This class represents a generic tilemap
+ *	@brief Represents a generic tilemap
  *
  *	A tilemap is represented as a rows*cols matrix of blocks.
  *	The tilemap is linearized in memory, i.e., stored as a single vector of block_t elements.

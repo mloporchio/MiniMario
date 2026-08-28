@@ -13,6 +13,9 @@
 /** Speed of the coin powerup. */
 #define COIN_POWERUP_SPEED 35.0f
 
+/**
+ *	@brief Represents the CoinPowerup powerup
+ */
 class CoinPowerup : public Powerup {
 	private:
 		float y0;

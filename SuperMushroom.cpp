@@ -43,14 +43,13 @@ void SuperMushroom::update(sf::Time dt, std::vector<Block *> blocks) {
     this -> speed.y = velY;
 }
 
-
 /**
- *	@brief Funzione di gestione delle collisioni lungo l'asse x
+ *	@brief Handles collisions of SuperMushroom along the x axis
  *
- *	@param px puntatore alla posizione corrente sull'asse x
- *	@param py puntatore alla posizione corrente sull'asse y
- *	@param vx puntatore alla velocità corrente sull'asse x
- *	@param blocks vettore dei blocchi
+ *	@param px position on the x axis
+ *	@param py position on the y axis
+ *	@param vx velocity on the x axis
+ *	@param blocks vector of blocks
  */
 void SuperMushroom::handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks) {
 	sf::IntRect MushR({(int) *px, (int) *py}, {SIZE, SIZE}), BlockR, IntR;
@@ -81,12 +80,12 @@ void SuperMushroom::handleXCollisions(float *px, float *py, float *vx, std::vect
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni lungo l'asse y
+ *	@brief Handles collisions of SuperMushroom along the y axis
  *
- *	@param px puntatore alla posizione corrente sull'asse x
- *	@param py puntatore alla posizione corrente sull'asse y
- *	@param vy puntatore alla velocità corrente sull'asse y
- *	@param blocks vettore dei blocchi
+ *	@param px position on the x axis
+ *	@param py position on the y axis
+ *	@param vy velocity on the y axis
+ *	@param blocks vector of blocks
  */
 void SuperMushroom::handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> blocks) {
 	sf::IntRect MushR({(int) *px, (int) *py}, {SIZE, SIZE}), BlockR, IntR;

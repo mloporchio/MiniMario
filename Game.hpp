@@ -14,6 +14,9 @@
 #include "Scene.hpp"
 #include "Config.hpp"
 
+/**
+ *	@brief Represents the main class of the game
+ */
 class Game {
 	private:
 		sf::RenderWindow window;

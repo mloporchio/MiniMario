@@ -21,6 +21,9 @@
 /** Standard Koopa speed. */
 #define KOOPA_SPEED 5.0f
 
+/**
+ *	@brief Represents Koopa, one of the enemies of the game
+ */
 class Koopa : public Enemy {
 	private:
 		block_t koopaType;

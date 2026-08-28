@@ -17,6 +17,9 @@
 /** Height (in pixels) of the PiranhaPlant sprite. */
 #define PIRANHAPLANT_HEIGHT 48
 
+/**
+ *	@brief Represents the PiranhaPlant, one of the enemies of the game
+ */
 class PiranhaPlant : public Enemy {
 	private:
 		std::vector<sf::Texture> &textures;

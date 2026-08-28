@@ -53,6 +53,9 @@
 /** Time elapsed between two textures for dynamic blocks. */
 #define BLOCK_ANIMATION_TIME 100
 
+/**
+ *	@brief Represents the game scene, i.e., a generic level
+ */
 class Scene {
 	private:
 		Layer fg;

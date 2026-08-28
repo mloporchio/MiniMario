@@ -12,6 +12,9 @@
 #include "Block.hpp"
 #include "Textures.hpp"
 
+/**
+ *	@brief Represents a coin, a collectible item of the game
+ */
 class Coin : public Block {
 	private:
 		std::vector<sf::Texture> &textures;

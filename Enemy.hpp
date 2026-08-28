@@ -12,6 +12,9 @@
 #include "Block.hpp"
 #include "Tilemap.hpp"
 
+/**
+ *	@brief Represents a generic enemy of the game
+ */
 class Enemy {
 	protected:
 		block_t type;

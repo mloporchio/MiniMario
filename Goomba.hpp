@@ -16,6 +16,9 @@
 /** Speed with which the Goomba moves. */
 #define GOOMBA_SPEED 7.0f
 
+/**
+ *	@brief Represents Goomba, one of the enemies of the game
+ */
 class Goomba : public Enemy {
 	private:
 		std::vector<sf::Texture> &textures;

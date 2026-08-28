@@ -12,6 +12,9 @@
 
 #define ONEUP_MUSHROOM_SPEED 3.5f
 
+/**
+ *	@brief Represents the OneUpMushroom powerup
+ */
 class OneUpMushroom : public Powerup {
 	public:
 		OneUpMushroom(float x, float y, sf::Texture &t);

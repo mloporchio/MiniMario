@@ -30,7 +30,9 @@
 /** Default score increment. */
 #define SCORE_INC 10
 
-/** Class representing Mario. */
+/**
+ *	@brief Represents Mario, the main character of the game
+ */
 class Mario {
 	private:
 		std::vector<sf::Texture> textures;
