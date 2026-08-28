@@ -300,12 +300,11 @@ void Mario::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *
 /**
  *	@brief Checks for collisions between Mario and a block
  *
- *	@param blocks vector of pointers to blocks
- *	@param MarioR current 
- *	@param IntR puntatore al rettangolo di intersezione
+ *	@param blocks vector of pointers to the current scene's blocks
+ *	@param MarioR current bounding rectangle of Mario
+ *	@param IntR pointer to the intersection rectangle
  *
- *	@return L'indice del blocco intersecato in caso di intersezione,
- *	-1 in caso di non intersezione
+ *	@return index of the block intersected in case of intersection, -1 in case of no intersection
  */
 int Mario::checkBlockCollisions(std::vector<Block *> blocks, sf::IntRect MarioR, sf::IntRect *IntR) {
 	sf::IntRect BlockR;
@@ -323,14 +322,13 @@ int Mario::checkBlockCollisions(std::vector<Block *> blocks, sf::IntRect MarioR,
 }
 
 /**
- *	@brief Controlla se c'è una collisione fra Mario e un nemico
+ *	@brief Checks for collisions between Mario and an enemy
  *
- *	@param enemies il vettore contenente i nemici
- *	@param MarioR il rettangolo corrente del personaggio
- *	@param IntR puntatore al rettangolo di intersezione
+ *	@param enemies vector of pointers to the current scene's enemies
+ *	@param MarioR current bounding rectangle of Mario
+ *	@param IntR pointer to the intersection rectangle
  *
- *	@return L'indice del nemico intersecato in caso di intersezione,
- *	-1 in caso di non intersezione
+ *	@return index of the enemy intersected in case of intersection, -1 in case of no intersection
  */
 int Mario::checkEnemyCollisions(std::vector<Enemy *> enemies, sf::IntRect MarioR, sf::IntRect *IntR) {
 	sf::IntRect EnemyR;
@@ -348,10 +346,10 @@ int Mario::checkEnemyCollisions(std::vector<Enemy *> enemies, sf::IntRect MarioR
 }
 
 /**
- *	@brief Controlla se c'è una collisione fra Mario e un powerup
+ *	@brief Checks for collisions between Mario and a powerup
  *
- *	@param powerups puntatore al vettore contenente i powerup
- *	@param MarioR il rettangolo corrente del personaggio Mario
+ *	@param powerups vector of pointers to the current scene's powerups
+ *	@param MarioR current bounding rectangle of Mario
  */
 void Mario::checkPowerupCollision(std::vector<Powerup *> *powerups, sf::IntRect MarioR) {
 	sf::IntRect PowerR;
@@ -377,13 +375,12 @@ void Mario::checkPowerupCollision(std::vector<Powerup *> *powerups, sf::IntRect 
 }
 
 /**
- *	@brief Controlla se c'è una collisione fra Mario e il bordo
- *	del livello ed eventualmente la gestisce
+ *	@brief Checks for collisions between Mario and the level boundary
  *
- *	@param px puntatore alla posizione corrente lungo l'asse x
- *	@param vx puntatore alla velocità corrente lungo l'asse x
+ *	@param px current position along the x axis
+ *	@param vx current velocity along the x axis
  *
- *	@brief Un valore di verità che indica se c'è la collisione
+ *	@brief true if there is a collision, false otherwise
  */
 bool Mario::checkBorderCollision(float *px, float *vx) {
 	if (*px < 0) {
@@ -395,16 +392,23 @@ bool Mario::checkBorderCollision(float *px, float *vx) {
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni lungo l'asse x
+ *	@brief Handles Mario's collisions along the x axis
  *
- *	@param px puntatore alla posizione corrente lungo l'asse x
- *	@param py puntatore alla posizione corrente lungo l'asse y
- *	@param vx puntatore alla velocità corrente lungo l'asse x
- *	@param blocks array di puntatori ai blocchi della scena corrente
+ *	@param px current position along the x axis
+ *	@param py current position along the y axis
+ *	@param vx current velocity along the x axis
+ *	@param blocks vector of pointers to the current scene's blocks
+ *	@param enemies vector of pointers to the current scene's enemies
+ *	@param powerups vector of pointers to the current scene's powerups
  */
-void Mario::handleXCollisions(float *px, float *py, float *vx,
-	std::vector<Block *> blocks, std::vector<Enemy *> enemies,
-	std::vector<Powerup *> *powerups) {
+void Mario::handleXCollisions(
+	float *px, 
+	float *py, 
+	float *vx, 
+	std::vector<Block *> blocks, 
+	std::vector<Enemy *> enemies, 
+	std::vector<Powerup *> *powerups
+) {
 	// Controllo se il personaggio ha posizione negativa.
 	if (checkBorderCollision(px, vx)) return;
 	sf::IntRect MarioR({(int) *px, (int) *py}, size);
@@ -471,12 +475,14 @@ void Mario::handleXCollisions(float *px, float *py, float *vx,
 }
 
 /**
- *	@brief Funzione di gestione delle collisioni lungo l'asse y
+ *	@brief Handles Mario's collisions along the y axis
  *
- *	@param px puntatore alla posizione corrente lungo l'asse x
- *	@param py puntatore alla posizione corrente lungo l'asse y
- *	@param vx puntatore alla velocità corrente lungo l'asse y
- *	@param blocks array di puntatori ai blocchi della scena corrente
+ *	@param px current position along the x axis
+ *	@param py current position along the y axis
+ *	@param vy current velocity along the y axis
+ *	@param blocks vector of pointers to the current scene's blocks
+ *	@param enemies vector of pointers to the current scene's enemies
+ *	@param powerups vector of pointers to the current scene's powerups
  */
 void Mario::handleYCollisions(
 	float *px, 
