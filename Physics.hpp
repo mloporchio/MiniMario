@@ -24,6 +24,7 @@ typedef enum {
 #define RUN_SPEED 15.0f
 #define JUMP_SPEED 35.0f
 #define FALL_SPEED 50.0f
+#define BOUNCE_SPEED 20.0f
 
 /**
  *	@brief Tells whether a tile element is solid or not

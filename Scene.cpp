@@ -463,7 +463,7 @@ bool Scene::checkPlayerWin() {
 void Scene::updateScene() {
 	// Aggiorno Mario e gestisco le sue collisioni.
 	sf::Time dt = timer.restart();
-	this -> hero.update(dt, this -> currentBlocks, this -> currentEnemies, &(this -> powerups));
+	this -> hero.update(dt, this -> currentBlocks, this -> currentEnemies, this -> powerups);
 	// Controllo se Mario è morto.
 	if (this -> checkPlayerDead() && !gameOver) {
 		gameOver = true;

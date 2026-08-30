@@ -5,6 +5,7 @@
  *	@brief Implementation of the Mario class
  */
 
+#include <climits>
 #include <cmath>
 #include "Mario.hpp"
 #include "Textures.hpp"
@@ -123,6 +124,16 @@ void Mario::setPosition(float x, float y) {
 }
 
 /**
+ *	@brief Returns Mario's current bounding rectangle
+ *
+ *	@return bounding rectangle of Mario
+ */
+sf::IntRect Mario::getRectangle() {
+	sf::Vector2f p = this -> getPosition();
+	return sf::IntRect({static_cast<int>(p.x), static_cast<int>(p.y)}, {this->size.x, this->size.y});
+}
+
+/**
  *	@brief Returns Mario's sprite
  *
  *	@return sprite associated with Mario
@@ -212,7 +223,9 @@ void Mario::startRunning(direction_t d) {
 					else this -> textureID = S_STANDING;
 				}
 			}; break;
-			default: this -> speed.x = 0; break;
+			default: {
+				this -> speed.x = 0; 
+			}; break;
 		}
 		this -> sprite.setTexture(textures[(int) textureID]);
 		this -> running = true;
@@ -278,22 +291,17 @@ void Mario::updateTexture(sf::Time dt) {
  *	@param enemies vector of pointers to the current scene's enemies
  *	@param powerups vector of pointers to the current scene's powerups
  */
-void Mario::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *> enemies, std::vector<Powerup *> *powerups) {
-	float posX = this -> sprite.getPosition().x;
-	float posY = this -> sprite.getPosition().y;
-	float velX = this -> speed.x;
-	float velY = this -> speed.y;
-	// Calcolo la nuova posizione.
-	posX += velX * 0.3f;
-	handleXCollisions(&posX, &posY, &velX, blocks, enemies, powerups);
-	posY += velY * 0.5f;
-	handleYCollisions(&posX, &posY, &velY, blocks, enemies, powerups);
-	if ((velY += GRAVITY * 0.5f) > FALL_SPEED) velY = FALL_SPEED;
-	// Scrivo i risultati dei calcoli.
-	this -> setPosition(posX, posY);
-	this -> speed.x = velX;
-	this -> speed.y = velY;
-	// Aggiorno la texture.
+void Mario::update(sf::Time dt, std::vector<Block *> &blocks, std::vector<Enemy *> &enemies, std::vector<Powerup *> &powerups) {
+	sf::Vector2f pos = this -> getPosition();
+	sf::Vector2f vel = this -> getSpeed();
+	this->onGround = false;
+	pos.x += vel.x * 0.3f;
+	handleXCollisions(pos.x, pos.y, vel.x, blocks, enemies, powerups);
+	pos.y += vel.y * 0.5f;
+	handleYCollisions(pos.x, pos.y, vel.y, blocks, enemies, powerups);
+	if ((vel.y += GRAVITY * 0.5f) > FALL_SPEED) vel.y = FALL_SPEED;
+	this -> setPosition(pos.x, pos.y);
+	this -> setSpeed(vel.x, vel.y);
 	updateTexture(dt);
 }
 
@@ -306,15 +314,12 @@ void Mario::update(sf::Time dt, std::vector<Block *> blocks, std::vector<Enemy *
  *
  *	@return index of the block intersected in case of intersection, -1 in case of no intersection
  */
-int Mario::checkBlockCollisions(std::vector<Block *> blocks, sf::IntRect MarioR, sf::IntRect *IntR) {
-	sf::IntRect BlockR;
-	bool collidable = false;
+int Mario::checkBlockCollisions(std::vector<Block *> &blocks, sf::IntRect &MarioR, sf::IntRect &IntR) {
 	for (int i = 0; i < blocks.size(); i++) {
-		BlockR = blocks[i] -> getRectangle();
-		collidable = blocks[i] -> isCollidable();
-		std::optional<sf::IntRect> intersection = MarioR.findIntersection(BlockR);
-		if (collidable && intersection.has_value()) {
-			*IntR = intersection.value();
+		if (!blocks[i] -> isCollidable()) continue;
+		auto intersection = MarioR.findIntersection(blocks[i] -> getRectangle());
+		if (intersection.has_value()) {
+			IntR = intersection.value();
 			return i;
 		}
 	}
@@ -330,15 +335,12 @@ int Mario::checkBlockCollisions(std::vector<Block *> blocks, sf::IntRect MarioR,
  *
  *	@return index of the enemy intersected in case of intersection, -1 in case of no intersection
  */
-int Mario::checkEnemyCollisions(std::vector<Enemy *> enemies, sf::IntRect MarioR, sf::IntRect *IntR) {
-	sf::IntRect EnemyR;
-	bool collidable = false;
+int Mario::checkEnemyCollisions(std::vector<Enemy *> &enemies, sf::IntRect &MarioR, sf::IntRect &IntR) {
 	for (int i = 0; i < enemies.size(); i++) {
-		EnemyR = enemies[i] -> getRectangle();
-		collidable = enemies[i] -> isCollidable();
-		std::optional<sf::IntRect> intersection = MarioR.findIntersection(EnemyR);
-		if (collidable && intersection.has_value()) {
-			*IntR = intersection.value();
+		if (!enemies[i] -> isCollidable()) continue;
+		auto intersection = MarioR.findIntersection(enemies[i] -> getRectangle());
+		if (intersection.has_value()) {
+			IntR = intersection.value();
 			return i;
 		}
 	}
@@ -351,24 +353,23 @@ int Mario::checkEnemyCollisions(std::vector<Enemy *> enemies, sf::IntRect MarioR
  *	@param powerups vector of pointers to the current scene's powerups
  *	@param MarioR current bounding rectangle of Mario
  */
-void Mario::checkPowerupCollision(std::vector<Powerup *> *powerups, sf::IntRect MarioR) {
+void Mario::checkPowerupCollision(std::vector<Powerup *> &powerups, sf::IntRect &MarioR) {
 	sf::IntRect PowerR;
 	bool taken = false;
 	powerup_t type;
-	for (int i = 0; i < powerups -> size(); i++) {
-		PowerR = (*powerups)[i] -> getRectangle();
-		taken = (*powerups)[i] -> isTaken();
-		type = (*powerups)[i] -> getType();
+	for (int i = 0; i < powerups.size(); i++) {
+		PowerR = powerups[i] -> getRectangle();
+		taken = powerups[i] -> isTaken();
+		type = powerups[i] -> getType();
 		std::optional<sf::IntRect> intersection = MarioR.findIntersection(PowerR);
 		if (!taken && intersection.has_value()) {
-			// IntR = intersection.value();
 			// Controllo di che tipo si tratta.
 			switch (type) {
 				case SUPER_MUSHROOM: this -> setSuper(true); break;
 				case ONEUP_MUSHROOM: this -> setInvisible(true); break;
 				default: break;
 			}
-			(*powerups)[i] -> setTaken(true);
+			powerups[i] -> setTaken(true);
 		}
 	}
 	return;
@@ -382,10 +383,10 @@ void Mario::checkPowerupCollision(std::vector<Powerup *> *powerups, sf::IntRect 
  *
  *	@brief true if there is a collision, false otherwise
  */
-bool Mario::checkBorderCollision(float *px, float *vx) {
-	if (*px < 0) {
-		*px = 0;
-		*vx = 0;
+bool Mario::checkBorderCollision(float &px, float &vx) {
+	if (px < 0) {
+		px = 0;
+		vx = 0;
 		return true;
 	}
 	return false;
@@ -402,20 +403,20 @@ bool Mario::checkBorderCollision(float *px, float *vx) {
  *	@param powerups vector of pointers to the current scene's powerups
  */
 void Mario::handleXCollisions(
-	float *px, 
-	float *py, 
-	float *vx, 
-	std::vector<Block *> blocks, 
-	std::vector<Enemy *> enemies, 
-	std::vector<Powerup *> *powerups
+	float &px, 
+	float &py, 
+	float &vx,
+	std::vector<Block *> &blocks, 
+	std::vector<Enemy *> &enemies, 
+	std::vector<Powerup *> &powerups
 ) {
 	// Controllo se il personaggio ha posizione negativa.
 	if (checkBorderCollision(px, vx)) return;
-	sf::IntRect MarioR({(int) *px, (int) *py}, size);
+	// Build Mario's current bounding rectangle.
+	sf::IntRect MarioR{{static_cast<int>(px), static_cast<int>(py)}, {this->size.x, this->size.y}};
 	sf::IntRect IntR;
-	int collidedBlock = -1, collidedEnemy = -1;
 	// Controllo se c'è una collisione con qualche blocco.
-	collidedBlock = checkBlockCollisions(blocks, MarioR, &IntR);
+	int collidedBlock = checkBlockCollisions(blocks, MarioR, IntR);
 	// Gestisco la collisione con il blocco.
 	if (collidedBlock != -1) {
 		// Determino il rettangolo e il tipo del blocco.
@@ -423,23 +424,23 @@ void Mario::handleXCollisions(
 		block_t type = blocks[collidedBlock] -> getType();
 		// Se è una moneta non gestisco la collisione.
 		if (type == COIN) {
-			this -> triggerBlockAction(blocks[collidedBlock], NULL);
+			this -> interactWithCoin(blocks[collidedBlock]);
 			return;
 		}
 		// Altrimenti si procede normalmente.
 		if (MarioR.position.x < BlockR.position.x) {
-			*px = *px - IntR.size.x;
-			*vx = 0;
+			px = px - IntR.size.x;
+			vx = 0;
 		}
 		else {
-			*px = *px + IntR.size.x;
-			*vx = 0;
+			px = px + IntR.size.x;
+			vx = 0;
 		}
 		// Termino non appena ho gestito la collisione.
 		return;
 	}
 	// Se sono qui controllo se c'è una collisione con qualche nemico.
-	collidedEnemy = checkEnemyCollisions(enemies, MarioR, &IntR);
+	int collidedEnemy = checkEnemyCollisions(enemies, MarioR, IntR);
 	if (collidedEnemy != -1 && !ignoreEnemyCollision) { // Mario muore.
 		sf::IntRect EnemyR = enemies[collidedEnemy] -> getRectangle();
 		block_t type = enemies[collidedEnemy] -> getType();
@@ -448,13 +449,13 @@ void Mario::handleXCollisions(
 			Koopa *k = (Koopa *) enemies[collidedEnemy];
 			if (!(k -> isMoving())) {
 				if (MarioR.position.x < EnemyR.position.x) {
-					*px = *px - IntR.size.x;
-					*vx = 0;
+					px = px - IntR.size.x;
+					vx = 0;
 					k -> move(RIGHT);
 				}
 				else {
-					*px = *px + IntR.size.x;
-					*vx = 0;
+					px = px + IntR.size.x;
+					vx = 0;
 					k -> move(LEFT);
 				}
 				return;
@@ -485,44 +486,44 @@ void Mario::handleXCollisions(
  *	@param powerups vector of pointers to the current scene's powerups
  */
 void Mario::handleYCollisions(
-	float *px, 
-	float *py, 
-	float *vy,
-	std::vector<Block *> blocks, 
-	std::vector<Enemy *> enemies,
-	std::vector<Powerup *> *powerups
+	float &px, 
+	float &py, 
+	float &vy,
+	std::vector<Block *> &blocks, 
+	std::vector<Enemy *> &enemies,
+	std::vector<Powerup *> &powerups
 ) {
-	sf::IntRect MarioR({(int) *px, (int) *py}, size), IntR;
-	//sf::IntRect MarioR((int) *px, (int) *py, size.x, size.y), IntR;
-	int collidedBlock = -1, collidedEnemy = -1;
+	// Build Mario's current bounding rectangle.
+	sf::IntRect MarioR{{static_cast<int>(px), static_cast<int>(py)}, {this->size.x, this->size.y}};
+	sf::IntRect IntR;
 	// Controllo se c'è una collisione con qualche blocco.
-	collidedBlock = checkBlockCollisions(blocks, MarioR, &IntR);
+	int collidedBlock = checkBlockCollisions(blocks, MarioR, IntR);
 	// Gestisco la collisione con il blocco.
 	if (collidedBlock != -1) {
 		sf::IntRect BlockR = blocks[collidedBlock] -> getRectangle();
 		block_t type = blocks[collidedBlock] -> getType();
 		// Se è una moneta non gestisco la collisione.
 		if (type == COIN) {
-			this -> triggerBlockAction(blocks[collidedBlock], NULL);
+			this -> interactWithCoin(blocks[collidedBlock]);
 			return;
 		}
 		// Altrimenti si procede normalmente.
 		if (MarioR.position.y < BlockR.position.y) {
 			this -> onGround = true;
-			*py = *py - IntR.size.y;
-			*vy = 0;
+			py = py - IntR.size.y;
+			vy = 0;
 		}
 		else {
-			*py = *py + IntR.size.y;
-			*vy = 0;
+			py = py + IntR.size.y;
+			vy = 0;
 			if (type == QUESTION) {
-				this -> triggerBlockAction(blocks[collidedBlock], powerups);
+				this -> interactWithQuestionBlock(blocks[collidedBlock], powerups);
 			}
 		}
 		return;
 	}
 	// Se sono qui controllo se c'è una collisione con qualche nemico.
-	collidedEnemy = checkEnemyCollisions(enemies, MarioR, &IntR);
+	int collidedEnemy = checkEnemyCollisions(enemies, MarioR, IntR);
 	if (collidedEnemy != -1 && !ignoreEnemyCollision) {
 		sf::IntRect EnemyR = enemies[collidedEnemy] -> getRectangle();
 		block_t type = enemies[collidedEnemy] -> getType();
@@ -537,6 +538,9 @@ void Mario::handleYCollisions(
 				this -> setDead(true);
 				return;
 			}
+			vy = 0;
+			this -> onGround = true;
+			py = py - IntR.size.y;
 			if (type == GREEN_KOOPA || type == RED_KOOPA) {
 				Koopa *k = (Koopa *) enemies[collidedEnemy];
 				if (!(k -> isHit())) this -> playSound(STOMP);
@@ -546,14 +550,12 @@ void Mario::handleYCollisions(
 				enemies[collidedEnemy] -> setAlive(false);
 				enemies[collidedEnemy] -> setCollidable(false);
 				this -> playSound(STOMP);
+				vy = -BOUNCE_SPEED;
 			}
-			this -> onGround = true;
-			*py = *py - IntR.size.y;
-			*vy = 0;
 		}
 		else {
-			*py = *py + IntR.size.y;
-			*vy = 0;
+			py = py + IntR.size.y;
+			vy = 0;
 		}
 		return;
 	}
@@ -573,41 +575,43 @@ void Mario::playSound(mario_sound_t id) {
 }
 
 /**
- *	@brief Called when Mario collides with a dynamic block
+ *	@brief Called when Mario has collided with a Coin block
  *
- *	@param b pointer to the block
- *	@param powerups pointer to the powerup vector
+ *	@param b pointer to a Coin block
  */
-void Mario::triggerBlockAction(Block *b, std::vector<Powerup *> *powerups) {
-	block_t type = b -> getType();
-	switch (type) {
-		case QUESTION: {
-			Powerup *p;
-			// Ho colpito un QuestionBlock.
-			QuestionBlock *q = (QuestionBlock *) b;
-			q -> hit();
-			// Produco il powerup e lo aggiungo alla scena.
-			if ((p = q -> getPowerup())) {
-				// Controllo che tipo di powerup ho preso.
-				powerup_t type = p -> getType();
-				if (type == COIN_POWERUP) {
-					this -> playSound(PICK_COIN);
-					this -> score += SCORE_INC;
-				}
-				else {
-					// Riproduco il suono di uscita powerup.
-					this -> playSound(POWERUP_TRIGGERED);
-				}
-				// Lo aggiungo alla scena.
-				powerups -> push_back(p);
-			}
-		}; break;
-		case COIN: {
-			((Coin *) b) -> hit();
+void Mario::interactWithCoin(Block *b) {
+	if (b -> getType() != COIN) return;
+	((Coin *) b) -> hit();
+	this -> playSound(PICK_COIN);
+	this -> score += SCORE_INC;
+}
+
+/**
+ *	@brief Called when Mario has collided with a QuestionBlock
+ *
+ *	@param b pointer to a QuestionBlock
+ */
+void Mario::interactWithQuestionBlock(Block *b, std::vector<Powerup *> &powerups) {
+	if (b -> getType() != QUESTION) return;
+	Powerup *p;
+	// Ho colpito un QuestionBlock.
+	QuestionBlock *q = (QuestionBlock *) b;
+	q -> hit();
+	// Produco il powerup e lo aggiungo alla scena.
+	if ((p = q -> getPowerup())) {
+		// Controllo che tipo di powerup ho preso.
+		powerup_t type = p -> getType();
+		if (type == COIN_POWERUP) {
 			this -> playSound(PICK_COIN);
 			this -> score += SCORE_INC;
-		}; break;
-		default: break;
+		}
+		else {
+			// Riproduco il suono di uscita powerup.
+			this -> playSound(POWERUP_TRIGGERED);
+			this -> score += 5 * SCORE_INC;
+		}
+		// Lo aggiungo alla scena.
+		powerups.push_back(p);
 	}
 }
 

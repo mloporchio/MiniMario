@@ -40,10 +40,8 @@ class Enemy {
 		sf::IntRect getRectangle();
 		sf::Sprite getSprite();
 		virtual void update(sf::Time dt, std::vector<Block *> blocks) {};
-		virtual void handleXCollisions(float *px, float *py, float *vx,
-			std::vector<Block *> blocks, std::vector<Enemy *> enemies) {};
-		virtual void handleYCollisions(float *px, float *py, float *vy,
-			std::vector<Block *> blocks, std::vector<Enemy *> enemies) {};
+		virtual void handleXCollisions(float *px, float *py, float *vx, std::vector<Block *> blocks, std::vector<Enemy *> enemies) {};
+		virtual void handleYCollisions(float *px, float *py, float *vy, std::vector<Block *> blocks, std::vector<Enemy *> enemies) {};
 };
 
 #endif
